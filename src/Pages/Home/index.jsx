@@ -1,12 +1,12 @@
 import React from 'react'
-import HomeSlider from '../../components/HomeSlider'
-import HomeCatSlider from '../../components/HomeCatSlider'
+import HomeSlider from '../../components/HomeSlider/Index'
+import HomeCatSlider from '../../components/HomeCatSlider/Index'
 
-import AdsBannerSlider from '../../components/AdsBannerSlider';
+import AdsBannerSlider from '../../components/AdsBannerSlider/Index';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import ProductSlider from '../../components/ProductSlider';
+import ProductSlider from '../../components/ProductSlider/Index';
 const Home = () => {
  const [value, setValue] = React.useState(0);
 
@@ -20,14 +20,14 @@ const Home = () => {
 
 
       <section className='bg-white py-8'>
-        <div className='container-fluid'>
-        <div className='flex items-center justify-between'>
-          <div className='leftSec p-10'>
-          <h2 className='text-[22px] font-[600]  '>Popular Products</h2>
-          <p className='text-[14px] font-[500]' >Do not miss the current offers until the end of March</p>
+        <div className='container'>
+        <div className='flex flex-col md:flex-row items-center justify-between gap-4'>
+          <div className='leftSec p-4 md:p-10 text-center md:text-left w-full md:w-auto'>
+          <h2 className='text-[18px] md:text-[22px] font-[600]'>Popular Products</h2>
+          <p className='text-[12px] md:text-[14px] font-[500]'>Do not miss the current offers until the end of March</p>
           </div>
 
-          <div className='rightSec w-[57%]'>
+          <div className='rightSec w-full md:w-[57%]'>
             <Box sx={{ maxWidth: { xs: 320, sm: 780 }, bgcolor: 'background.paper' }}>
       <Tabs
         value={value}
@@ -35,11 +35,12 @@ const Home = () => {
         variant="scrollable"
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
+        className="w-full"
       >
-        <Tab label="Ethnic" />
-        <Tab label="West Wear" />
-        <Tab label="Co-Ords" />
-        
+        <Tab label="Ethnic" className="!text-sm md:!text-base" />
+        <Tab label="West Wear" className="!text-sm md:!text-base" />
+        <Tab label="Co-Ords" className="!text-sm md:!text-base" />
+
       </Tabs>
     </Box>
           </div>

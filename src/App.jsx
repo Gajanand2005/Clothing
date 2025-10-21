@@ -1,30 +1,30 @@
 import React, { createContext, useState } from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/Header/Index.jsx";
+import Footer from "./components/Footer/Index.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProductListing from "./Pages/ProductListing/index.jsx";
-import Home from "./Pages/Home/index.jsx";
-import ProductDetails from "./Pages/ProductDetails/index.jsx";
+import ProductListing from "./Pages/ProductListing/Index.jsx";
+import Home from "./Pages/Home/Index.jsx";
+import ProductDetails from "./Pages/ProductDetails/Index.jsx";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import ProductZoom from "./components/ProductZoom/index.jsx";
+import ProductZoom from "./components/ProductZoom/Index.jsx";
 import { IoClose } from "react-icons/io5";
-import ProductDetailsComponent from "./components/ProductDetails/index.jsx";
-import Login from "./Pages/Login/index.jsx";
-import Register from "./Pages/Register/index.jsx";
-import CartPage from "./Pages/Cart/index.jsx";
-import Verify from "./Pages/Verify/index.jsx";
+import ProductDetailsComponent from "./components/ProductDetails/Index.jsx";
+import Login from "./Pages/Login/Index.jsx";
+import Register from "./Pages/Register/Index.jsx";
+import CartPage from "./Pages/Cart/Index.jsx";
+import Verify from "./Pages/Verify/Index.jsx";
 import toast, {Toaster} from 'react-hot-toast'; 
-import ForgotPassword from './Pages/ForgotPassword/index.jsx'
-import CheckOut from "./Pages/CheckOut/index.jsx";
-import MyAccount from "./Pages/MyAccount/index.jsx";
-import MyList from "./Pages/MyList/index.jsx";
-import Order from "./Pages/Orders/index.jsx";
-import Whataap from "./components/Whataap/index.jsx";
+import ForgotPassword from './Pages/ForgotPassword/Index.jsx'
+import CheckOut from "./Pages/CheckOut/Index.jsx";
+import MyAccount from "./Pages/MyAccount/Index.jsx";
+import MyList from "./Pages/MyList/Index.jsx";
+import Order from "./Pages/Orders/Index.jsx";
+import Whataap from "./components/Whataap/Index.jsx";
 
 const MyContext = createContext();
 

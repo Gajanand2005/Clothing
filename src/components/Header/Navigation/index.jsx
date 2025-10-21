@@ -15,19 +15,19 @@ const Navigation = () => {
   return (
     <>
       <nav className="py-2">
-        <div className="container flex items-center justify-end gap-9">
-          <div className="col_1 w-[20%]">
+        <div className="container flex items-center justify-between gap-2 md:gap-9">
+          <div className="col_1 w-full md:w-[20%]">
             <Button
-              className="!text-black !font-bold gap-2 w-full"
+              className="!text-black !font-bold gap-2 w-full !text-sm md:!text-base"
               onClick={openCategoryPanel}
             >
-              <BsMenuButtonWideFill className="text-[15px]" /> Shop By
+              <BsMenuButtonWideFill className="text-[12px] md:text-[15px]" /> Shop By
               Categories
-              <FaAngleDown className="text-[18px] font-bold  " />
+              <FaAngleDown className="text-[14px] md:text-[18px] font-bold" />
             </Button>
           </div>
-          <div className="col_2 w-[60%] ">
-            <ul className="flex items-center gap-3 nav ">
+          <div className="col_2 w-full md:w-[60%] hidden md:block">
+            <ul className="flex items-center justify-center gap-2 md:gap-3 nav">
               <li className="list-none">
                 <Link
                   to="/"
@@ -240,9 +240,9 @@ const Navigation = () => {
               </li>
             </ul>
           </div>
-          <div className="col_3 w-[20%]">
-            <p className="text-[14px] font-bold flex items-center gap-3 mb-0 mt-0">
-              <MdOutlineRocketLaunch className="text-[18px]" /> WorldWide Shipping
+          <div className="col_3 w-full md:w-[20%] hidden md:flex justify-end">
+            <p className="text-[12px] md:text-[14px] font-bold flex items-center gap-2 md:gap-3 mb-0 mt-0">
+              <MdOutlineRocketLaunch className="text-[14px] md:text-[18px]" /> WorldWide Shipping
             </p>
           </div>
         </div>

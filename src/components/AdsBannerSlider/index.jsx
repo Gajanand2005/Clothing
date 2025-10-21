@@ -8,7 +8,7 @@ import banner3 from '../../assets/ban3.jpg'
 import banner4 from '../../assets/ban4.jpg'
 
 import { Navigation } from 'swiper/modules';
-import BannerBox from '../BannerBox';
+import BannerBox from '../BannerBox/Index';
 const AdsBannerSlider = (props) => {
   return (
     <div className='py-5 w-full'>

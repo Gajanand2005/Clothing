@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import thief from '../../assets/thief.png'
-import OtpBox from '../../components/OtpBox';
+import OtpBox from '../../components/OtpBox/Index';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 

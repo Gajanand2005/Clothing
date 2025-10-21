@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import MyListItems from "./myListItems";
-import AccountSidebar from "../../components/AccountSidebar";
+import MyListItems from "./MyListItems";
+import AccountSidebar from "../../components/AccountSidebar/Index";
 
 const MyList = () => {
  

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/ba-removebg-preview.png";
-import Search from "../Search";
+import Search from "../Search/Index";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -9,7 +9,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { IoMdGitCompare } from "react-icons/io";
 import { GiTechnoHeart } from "react-icons/gi";
 import Tooltip from '@mui/material/Tooltip';
-import Navigation from "./Navigation";
+import Navigation from "./Navigation/Index";
 import { MyContext } from "../../App";
 import Button from "@mui/material/Button";
 import { FaUserAstronaut } from "react-icons/fa";

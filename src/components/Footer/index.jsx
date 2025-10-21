@@ -18,7 +18,7 @@ import { BsWallet2 } from "react-icons/bs";
 import { TfiGift } from "react-icons/tfi";
 import { BiSupport } from "react-icons/bi";
 import Drawer from "@mui/material/Drawer";
-import CartPanel from "../CartPanel";
+import CartPanel from "../CartPanel/Index.jsx";
 import { MyContext } from "../../App.jsx";
 import { IoClose } from "react-icons/io5";
 
@@ -51,8 +51,8 @@ const Footer = () => {
         </div>
       </footer>
       <footer className="bg-white border-t border-gray-200  ">
-        <div className="container mx-auto py-10  footer-flex px-4  gap-2 pb-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 border-b border-gray-300 pb-8">
+        <div className="container mx-auto py-6 md:py-10 footer-flex px-4 gap-2 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 border-b border-gray-300 pb-6 md:pb-8">
             {/* Contact us */}
             <div>
               <h3 className="text-base font-semibold mb-3">Contact us</h3>
@@ -126,9 +126,9 @@ const Footer = () => {
           </div>
 
           {/* Bottom footer */}
-          <div className="flex flex-col md:flex-row items-center justify-between mt-6 pt-6">
+          <div className="flex flex-col md:flex-row items-center justify-between mt-4 md:mt-6 pt-4 md:pt-6 gap-4">
             {/* Social media icons */}
-            <div className="flex gap-4 text-gray-600 text-xl">
+            <div className="flex gap-3 md:gap-4 text-gray-600 text-lg md:text-xl">
               <FaFacebookF className="hover:text-red-500 cursor-pointer" />
               <FaYoutube className="hover:text-red-500 cursor-pointer" />
               <FaPinterestP className="hover:text-red-500 cursor-pointer" />
@@ -136,12 +136,12 @@ const Footer = () => {
             </div>
 
             {/* Copyright */}
-            <div className="text-gray-500 text-sm mt-4 md:mt-0">
+            <div className="text-gray-500 text-xs md:text-sm">
               © 2025 - Ecommerce Template
             </div>
 
             {/* Payment icons */}
-            <div className="flex gap-4  text-2xl mt-4 md:mt-0">
+            <div className="flex gap-3 md:gap-4 text-xl md:text-2xl">
               <SiVisa className="text-blue-600" title="Visa" />
               <SiMastercard className="text-yellow-400" title="MasterCard" />
               <SiAmericanexpress

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { LuCarTaxiFront } from "react-icons/lu";
 import { TbHeartHandshake } from "react-icons/tb";
-import QtyBox from "../../components/QtyBox";
+import QtyBox from "../QtyBox/Index";
 import Button from "@mui/material/Button";
 
 const ProductDetailsComponent = () => {

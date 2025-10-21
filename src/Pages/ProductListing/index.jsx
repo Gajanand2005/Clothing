@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Sidebar from "../../components/Sidebar/index.jsx";
+import Sidebar from "../../components/Sidebar/Index.jsx";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import ProductItem from "../../components/ProductItem/index.jsx";
-import ProductItemListView from "../../components/ProductItemListView/index.jsx";
+import ProductItem from "../../components/ProductItem/Index.jsx";
+import ProductItemListView from "../../components/ProductItemListView/Index.jsx";
 import Button from "@mui/material/Button";
 import { BsUiRadiosGrid } from "react-icons/bs";
 import { TfiLayoutGrid2Thumb } from "react-icons/tfi";

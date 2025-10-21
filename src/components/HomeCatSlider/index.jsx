@@ -28,13 +28,25 @@ const HomeCatSlider = () => {
               slidesPerView: 2,
               spaceBetween: 10,
             },
+            480: {
+              slidesPerView: 3,
+              spaceBetween: 15,
+            },
             640: {
               slidesPerView: 4,
-              spaceBetween: -100,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 5,
+              spaceBetween: -50,
             },
             1024: {
               slidesPerView: 6,
-              spaceBetween: -320,
+              spaceBetween: -100,
+            },
+            1200: {
+              slidesPerView: 6,
+              spaceBetween: -200,
             },
           }}
           modules={[Navigation, Autoplay]}
@@ -58,9 +70,9 @@ const HomeCatSlider = () => {
                   <img
                     src={item.img}
                     alt={item.title}
-                    className='w-[95px] h-[95px] rounded-full object-cover border-[2px] border-gray-200 shadow-sm hover:scale-105 transition-transform duration-300'
+                    className='w-[70px] h-[70px] sm:w-[80px] sm:h-[80px] md:w-[95px] md:h-[95px] rounded-full object-cover border-[2px] border-gray-200 shadow-sm hover:scale-105 transition-transform duration-300'
                   />
-                  <h3 className='text-[15px] font-[500] mt-3 text-gray-700'>{item.title}</h3>
+                  <h3 className='text-[12px] sm:text-[14px] md:text-[15px] font-[500] mt-2 sm:mt-3 text-gray-700'>{item.title}</h3>
                 </div>
               </Link>
             </SwiperSlide>

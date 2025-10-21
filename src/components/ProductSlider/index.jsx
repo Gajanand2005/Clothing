@@ -4,7 +4,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 import { Navigation } from 'swiper/modules';
-import ProductItem from '../ProductItem';
+import ProductItem from '../ProductItem/Index';
 const ProductSlider  = (props) => {
   return (
     <section className='productsSlider py-5'>

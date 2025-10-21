@@ -6,7 +6,7 @@ import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
 import { IoMdClose } from "react-icons/io";
 
-import CategoryCollapse from '../../CategoryCollapse'
+import CategoryCollapse from '../../CategoryCollapse/Index'
 
 const CategoryPanel = (props) => {
 
