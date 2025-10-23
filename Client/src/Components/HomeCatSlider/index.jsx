@@ -22,7 +22,7 @@ const HomeCatSlider = () => {
       <div className='container'>
         <Swiper
           slidesPerView={6}
-          spaceBetween={-320}
+          spaceBetween={-420}
           breakpoints={{
             320: {
               slidesPerView: 2,

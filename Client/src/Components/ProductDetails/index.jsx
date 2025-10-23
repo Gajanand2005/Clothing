@@ -118,9 +118,6 @@ const ProductDetailsComponent = () => {
       </div>
       <p className="text-[14px] !mt-4 mb-2">Dilvery Time 5-12 Days</p>
       <div className="flex items-center !mt-4 gap-4">
-        <div className="qtyBoxWrapper w-[69px]">
-          <QtyBox />
-        </div>
         <Button className="!bg-orange-600 hover:!bg-black !text-white flex gap-2">
           <LuCarTaxiFront className="!text-[22px] " />
           Add to Cart

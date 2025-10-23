@@ -64,11 +64,11 @@ const Footer = () => {
 
               <p className="mb-1 text-sm">smalcouture@gmail.com</p>
               <p className="text-red-500 font-bold mb-3 text-base">
-                (+91) 9876-543-210
+               8199985004
               </p>
               <div className="flex items-center gap-2 text-red-500 font-semibold cursor-pointer text-sm">
                 <FaRegCommentDots size={20} />
-                <span>Online Chat</span>
+                <span></span>
               </div>
               <p className="font-semibold text-sm">Get Expert Help</p>
             </div>
@@ -129,9 +129,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between mt-4 md:mt-6 pt-4 md:pt-6 gap-4">
             {/* Social media icons */}
             <div className="flex gap-3 md:gap-4 text-gray-600 text-lg md:text-xl">
-              <FaFacebookF className="hover:text-red-500 cursor-pointer" />
-              <FaYoutube className="hover:text-red-500 cursor-pointer" />
-              <FaPinterestP className="hover:text-red-500 cursor-pointer" />
+             
               <FaInstagram className="hover:text-red-500 cursor-pointer" />
             </div>
 

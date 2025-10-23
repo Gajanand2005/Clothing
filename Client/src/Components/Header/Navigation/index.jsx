@@ -242,7 +242,7 @@ const Navigation = () => {
           </div>
           <div className="col_3 w-full md:w-[20%] hidden md:flex justify-end">
             <p className="text-[12px] md:text-[14px] font-bold flex items-center gap-2 md:gap-3 mb-0 mt-0">
-              <MdOutlineRocketLaunch className="text-[14px] md:text-[18px]" /> WorldWide Shipping
+              <MdOutlineRocketLaunch className="text-[14px] md:text-[18px]" /> Worldwide Shipping
             </p>
           </div>
         </div>

@@ -50,7 +50,7 @@ const Header = () => {
             <div className="flex flex-col sm:flex-row items-center justify-between">
               <div className="col1 w-full sm:w-[50%] lg:w-[60%]">
                 <p className="text-[9px] sm:text-[11px] lg:text-[13px] font-[500]">
-                  Get up to 50% off new season styles, limited time{" "}
+                  S-Mal Couture
                 </p>
               </div>
               <div className="flex items-center justify-center sm:justify-end col2 w-full sm:w-[50%] lg:w-[40%]">
@@ -179,15 +179,7 @@ const Header = () => {
                 </>
                 }
                 
-                <li>
-                   <Tooltip title="Compare" placement="top">
-                  <IconButton aria-label="cart">
-                    <StyledBadge badgeContent={4} color="secondary">
-                     <IoMdGitCompare />
-                    </StyledBadge>
-                  </IconButton>
-                  </Tooltip>
-                </li>
+              
                  <li>
                   <Tooltip title="Wishlist" placement="top">
                   <IconButton aria-label="cart">
