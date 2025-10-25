@@ -10,6 +10,7 @@ import { FaJediOrder } from "react-icons/fa6";
 import { CgLogOut } from "react-icons/cg";
 import { FaAngleDown } from "react-icons/fa";
 import { Collapse } from "react-collapse";
+import logo from '../../assets/logo.png';
 const Sidebar = () => {
   const [submenuIndex, setSubmenuIndex] = useState(null);
   const isOpenSubMenu = (index) => {
@@ -23,12 +24,12 @@ const Sidebar = () => {
   return (
     <>
       <div className="sidebar fixed top-0 left-0 bg-[#f1f1f1] w-[18%] h-full border-r border-[rgba(0,0,0,0.1)] py-2 px-4">
-        <div className="py-2 w-full">
+        <div className="py-2 w-full absolute top-[-40px]">
           <Link to="/">
             <img
-              src="https://ecme-react.themenate.net/img/logo/logo-light-full.png"
+              src={logo}
               alt=""
-              className="w-[120px]  "
+              className="w-[150px] h-[150px]  "
             />
           </Link>
         </div>
