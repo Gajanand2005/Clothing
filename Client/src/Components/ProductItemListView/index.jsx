@@ -87,7 +87,7 @@ function ProductItem() {
       <span className='oldPrice line-through text-gray-500 text-[14px] md:text-[16px] font-[500]'>$58.00</span>
       <span className='oldPrice text-orange-600 font-bold text-[14px] md:text-[16px]'>$12.00</span>
     </div>
-
+      
     <div className='!mt-3'>
           <Button className='!bg-orange-600 !text-white hover:!bg-[#484747] flex gap-2 '>Add to Cart<LuCarTaxiFront className='text-[20px]'  /></Button>
 

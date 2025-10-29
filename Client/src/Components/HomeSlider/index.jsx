@@ -3,103 +3,40 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
-import banner1 from '../../assets/ban1.jpg'
-import banner2 from '../../assets/ban2.jpg'
-import banner3 from '../../assets/ban3.jpg'
-import banner4 from '../../assets/ban4.jpg'
+
+import banner1 from "../../assets/ban1.jpg";
+import banner2 from "../../assets/ban2.jpg";
+import banner3 from "../../assets/ban3.jpg";
+import banner4 from "../../assets/ban4.jpg";
+
 const HomeSlider = () => {
+  const banners = [banner1, banner2, banner3, banner4];
+
   return (
-    <div className="homeSlider">
-      <div className="container">
+    <div className="homeSlider w-full bg-gray-50 py-6">
+      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6">
         <Swiper
-          spaceBetween={-570}
-          breakpoints={{
-            320: {
-              spaceBetween: -100,
-            },
-            640: {
-              spaceBetween: -300,
-            },
-            1024: {
-              spaceBetween: -570,
-            },
-          }}
           modules={[Navigation, Autoplay]}
-          autoplay={{ delay: 2500, disableOnInteraction: false }}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          loop={true}
+          grabCursor={true}
+          centeredSlides={false}
+          slidesPerView={1}
+          spaceBetween={10}
+         
           className="sliderHome"
         >
-          <SwiperSlide key="slide-1">
-            <div className="item rounded-[20px] overflow-hidden">
-              <img
-                src={banner1}
-                alt="Banner Slide"
-                className="w-[50%] "
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide key="slide-2">
-            <div className="item rounded-[20px] overflow-hidden">
-              <img
-                src={banner2}
-                alt="Banner Slide"
-                className="w-[50%] "
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide key="slide-3">
-            <div className="item rounded-[20px] overflow-hidden">
-              <img
-                src={banner3}
-                alt="Banner Slide"
-                className="w-[50%]"
-              />
-            </div>
-          </SwiperSlide>
-           <SwiperSlide key="slide-4">
-            <div className="item rounded-[20px] overflow-hidden">
-              <img
-                src={banner4}
-                alt="Banner Slide"
-                className="w-[50%]"
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide key="slide-5">
-            <div className="item rounded-[20px] overflow-hidden">
-              <img
-                src={banner1}
-                alt="Banner Slide"
-                className="w-[50%]"
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide key="slide-6">
-            <div className="item rounded-[20px] overflow-hidden">
-              <img
-                src={banner2}
-                alt="Banner Slide"
-                className="w-[50%]"
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide key="slide-7">
-            <div className="item rounded-[20px] overflow-hidden">
-              <img
-                src={banner3}
-                alt="Banner Slide"
-                className="w-[50%]"
-              />
-            </div>
-          </SwiperSlide>
-           <SwiperSlide key="slide-8">
-            <div className="item rounded-[20px] overflow-hidden">
-              <img
-                src={banner4}
-                alt="Banner Slide"
-                className="w-[50%]"
-              />
-            </div>
-          </SwiperSlide>
+          {banners.map((banner, index) => (
+            <SwiperSlide key={index}>
+              <div className="item rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out">
+                <img
+                  src={banner}
+                  alt={`Banner ${index + 1}`}
+                  className="w-full h-[300px] xs:h-[300px] sm:h-[350px] md:h-[300px] lg:h-[350px] xl:h-[400px] object-cover"
+                />
+              </div>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </div>
