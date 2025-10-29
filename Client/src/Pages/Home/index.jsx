@@ -24,7 +24,6 @@ const Home = () => {
         <div className='flex flex-col md:flex-row items-center justify-between gap-4'>
           <div className='leftSec p-4 md:p-10 text-center md:text-left w-full md:w-auto'>
           <h2 className='text-[18px] md:text-[22px] font-[600]'>Popular Products</h2>
-          <p className='text-[12px] md:text-[14px] font-[500]'>Do not miss the current offers until the end of March</p>
           </div>
 
           <div className='rightSec w-full md:w-[57%]'>
