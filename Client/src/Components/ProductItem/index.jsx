@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import "../Productitem/style.css"
 import {Link} from 'react-router-dom';
-import Rating from '@mui/material/Rating';
+
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 import Button from '@mui/material/Button';
@@ -11,18 +11,7 @@ import { MdZoomOutMap } from "react-icons/md";
 import Tooltip from '@mui/material/Tooltip';
 import { MyContext } from '../../App';
 
-const labels = {
-  0.5: 'Useless',
-  1: 'Useless+',
-  1.5: 'Poor',
-  2: 'Poor+',
-  2.5: 'Ok',
-  3: 'Ok+',
-  3.5: 'Good',
-  4: 'Good+',
-  4.5: 'Excellent',
-  5: 'Excellent+',
-};
+
 
 
 function getLabelText(value) {
@@ -61,24 +50,7 @@ function ProductItem() {
         <h6 className='text-[11px] sm:text-[12px] md:text-[14px]'><Link to={'/product/:id'} className='link transition-all'>Flying Machine</Link></h6>
          <h3 className='text-[13px] sm:text-[14px] md:text-[16px] title mt-1 font-[500] text-[#000]' ><Link to={'/product/:id'} className='link transition-all'>Women Wide Leg High-Rise ...</Link></h3>
         <div className='py-1'>
-         <Box sx={{ width: { xs: 150, md: 200 }, display: 'flex', alignItems: 'center' }}>
-      <Rating
-        name="hover-feedback"
-        value={value}
-        precision={0.5}
-        getLabelText={getLabelText}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        onChangeActive={(event, newHover) => {
-          setHover(newHover);
-        }}
-        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-      />
-      {value !== null && (
-        <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
-      )}
-    </Box>
+        
         </div>
 
     <div className='flex items-center gap-3 sm:gap-4 py-1'>
