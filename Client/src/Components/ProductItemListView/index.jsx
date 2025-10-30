@@ -12,18 +12,6 @@ import Tooltip from '@mui/material/Tooltip';
 import { LuCarTaxiFront } from "react-icons/lu";
 import { MyContext } from '../../App';
 
-const labels = {
-  0.5: 'Useless',
-  1: 'Useless+',
-  1.5: 'Poor',
-  2: 'Poor+',
-  2.5: 'Ok',
-  3: 'Ok+',
-  3.5: 'Good',
-  4: 'Good+',
-  4.5: 'Excellent',
-  5: 'Excellent+',
-};
 
 
 function getLabelText(value) {
@@ -63,24 +51,7 @@ function ProductItem() {
         <h3 className='text-[14px] md:text-[18px] title mt-2 !mb-2 font-[500] text-[#000]' ><Link to={'/product/:id'} className='link transition-all '>Women Wide Leg High-Rise ...</Link></h3>
         <p className='text-[12px] md:text-[14px] mt-3 mb-3'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nemo aspernatur tempora natus, labore doloribus ullam nisi quae minima, voluptates cum animi reiciendis sit magni. Repellendus voluptas fugit quia necessitatibus delectus.</p>
         <div className='py-1'>
-         <Box sx={{ width: { xs: 150, md: 200 }, display: 'flex', alignItems: 'center' }}>
-      <Rating
-        name="hover-feedback"
-        value={value}
-        precision={0.5}
-        getLabelText={getLabelText}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        onChangeActive={(event, newHover) => {
-          setHover(newHover);
-        }}
-        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-      />
-      {value !== null && (
-        <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
-      )}
-    </Box>
+    
         </div>
 
     <div className='flex items-center gap-4 py-1'>

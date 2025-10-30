@@ -26,6 +26,9 @@ import MyList from "./Pages/MyList/Index.jsx";
 import Order from "./Pages/Orders/Index.jsx";
 import Whataap from "./components/Whataap/Index.jsx";
 
+import HelpCenter from "./Pages/HelpCenter/Index.jsx";
+import OrderTracking from "./Pages/OrderTracking/Index.jsx";
+
 const MyContext = createContext();
 
 const App = () => {
@@ -89,6 +92,8 @@ const App = () => {
              <Route path={"/my-account"} exact={true} element={<MyAccount />} />
               <Route path={"/my-list"} exact={true} element={<MyList />} />
               <Route path={"/my-order"} exact={true} element={<Order />} />
+              <Route path={"/order-tracking"} exact={true} element={<OrderTracking />} />
+               <Route path={"/help-center"} exact={true} element={<HelpCenter />} />
           </Routes>
           <Whataap/>
           <Footer />
