@@ -22,8 +22,14 @@ const HomeSlider = () => {
           grabCursor={true}
           centeredSlides={false}
           slidesPerView={1}
-          spaceBetween={10}
-         
+          spaceBetween={20}
+          
+          Breakpoints={{
+            640: {
+              slidesPerView: 1,
+              spaceBetween: 20,
+            },
+          }}
           className="sliderHome"
         >
           {banners.map((banner, index) => (
