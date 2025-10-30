@@ -6,13 +6,34 @@ import Sidebar from './Components/Sidebar';
 import { createContext, useState } from 'react';
 import Login from './Pages/Login';
 import SignUp from './Pages/Signup';
+import Products from './Pages/Products/Index';
 
 export const MyContext = createContext();
+
+function createData(id, name, category, subCategory, oldPrice, newPrice, stock) {
+  return { id, name, category, subCategory, oldPrice, newPrice, stock };
+}
 
 function App() {
 
   const[isSidebarOpen,setisSidebarOpen] = useState(true);
   const[isLogin, setisLogin] = useState(false);
+
+  const [productRows, setProductRows] = useState([
+    createData(1, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 85),
+    createData(2, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 35),
+    createData(3, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 75),
+    createData(4, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 55),
+    createData(5, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 15),
+    createData(6, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 5),
+    createData(7, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 40),
+    createData(8, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 20),
+    createData(9, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 90),
+    createData(10, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 70),
+    createData(11, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 40),
+    createData(12, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 39),
+    createData(13, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 69),
+  ]);
 
   const router = createBrowserRouter([
     {
@@ -61,9 +82,32 @@ function App() {
           </>
         ),
     },
+
+      {
+      path: "/products",
+      exact: true,
+      element:
+        (
+          <>
+            <section className="main">
+              <Header />
+              <div className="contentMain flex">
+                <div className={`overflow-hidden sidebarWrapper ${isSidebarOpen === true ? 'w-[23%] transition-all' : 'w-[0%] opacity-0 transition-all'}`}>
+                  <Sidebar />
+                </div>
+                <div className={`contentRight py-4 px-5 ${isSidebarOpen ? 'w-[77%] transition-all' : 'w-[100%] transition-all'}`}>
+                  <Products />
+                </div>
+              </div>
+            </section>
+          </>
+        ),
+    },
+
+
   ]);
 
-  const values = {isSidebarOpen,setisSidebarOpen,isLogin,setisLogin};
+  const values = {isSidebarOpen,setisSidebarOpen,isLogin,setisLogin, productRows, setProductRows};
 
   return (
     <> 

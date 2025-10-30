@@ -43,7 +43,7 @@ const Sidebar = () => {
       <div className="flex-1 overflow-y-auto px-3 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
         <ul className="mt-4">
           <li>
-            <Link to="/dashboard">
+            <Link to="/">
               <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
                 <MdSpaceDashboard className="text-[23px]" />
                 <span> Dashboard </span>
@@ -192,7 +192,7 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li className="w-full">
-                  <Link to="/products/list">
+                  <Link to="/products">
                     <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
                       <PiDiamondLight />
                       <span>
