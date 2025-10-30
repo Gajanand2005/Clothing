@@ -11,6 +11,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { FaRegEye } from "react-icons/fa";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { FaEyeSlash } from "react-icons/fa";
+import logo from '../../assets/logo.png'
 
 const SignUp = () => {
   const [loadingGoogle, setLoadingGoogle] = useState(false);
@@ -28,9 +29,9 @@ const SignUp = () => {
       <header className="w-full top-0 left-0 px-4 py-3 fixed flex items-center justify-between z-50 ">
         <Link to="/">
           <img
-            src={udrcrafts_logo}
+            src={logo}
             alt="logo-image"
-            className="w-[75px] h-[75px] object-cover rounded-full "
+            className="w-[95px] h-[75px] object-cover rounded-full "
           />
         </Link>
         <div className="flex items-center gap-4">
@@ -51,7 +52,7 @@ const SignUp = () => {
 
       <div className="loginBox card w-[600px] pb-50 h-[auto] mx-auto pt-20 z-50 relative">
         <div className="text-center">
-          <img src={udrcrafts_logo} className="m-auto h-[120px] w-[120px] object-cover rounded-full" />
+          <img src={logo} className="m-auto h-[120px] w-[180px] object-cover rounded-full" />
         </div>
 
         <div>

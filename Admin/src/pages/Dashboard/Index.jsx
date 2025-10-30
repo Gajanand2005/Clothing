@@ -25,6 +25,8 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { PiExportBold } from "react-icons/pi";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area } from 'recharts';
+import Badge from '../../Components/Badge/Index.jsx';
+
 
 
 const columns = [
@@ -114,6 +116,16 @@ const orderColumns = [
 ];
 
 const Dashboard = () => {
+    const [isOpenOrderProduct, setIsOpenOrderProduct]= useState(null);
+  
+  const isShowOrderdProduct =(index)=>{
+    if(isOpenOrderProduct===index){
+      setIsOpenOrderProduct(null);
+    }else{
+      setIsOpenOrderProduct(index);
+  
+    }
+  }
 
   const [openRow, setOpenRow] = React.useState(null);
   const [rows, setRows] = React.useState([
@@ -271,7 +283,7 @@ const Dashboard = () => {
       <div className="w-full py-2 px-5 border border-[rgba(0,0,0,0.1)] rounded-md bg-white flex items-center justify-between mb-6 gap-8">
         <div className="info">
           <h1 className="text-[30px] font-[600] leading-18">
-            Good Morning, <br /> Naema Mohamed Rafiq! <span>👋</span>
+            Good Morning, <br />S-Mal Couture <span>👋</span>
           </h1>
           <p className="leading-10">
             Here's what's happening on your store today. See the statistics at once.
@@ -306,9 +318,21 @@ const Dashboard = () => {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={10}>Men</MenuItem>
-              <MenuItem value={20}>Women</MenuItem>
-              <MenuItem value={30}>Kids</MenuItem>
+              <MenuItem value={10}>Organza</MenuItem>
+              <MenuItem value={20}>Georgette</MenuItem>
+              <MenuItem value={30}>Silk</MenuItem>
+              <MenuItem value={40}>Banarsi</MenuItem>
+              <MenuItem value={50}>Cotton</MenuItem>
+              <MenuItem value={60}>Chinnon</MenuItem>
+              <MenuItem value={70}>Woollen</MenuItem>
+              <MenuItem value={80}>Lucknowi</MenuItem>
+              <MenuItem value={90}>Crepe</MenuItem>
+              <MenuItem value={100}>Net</MenuItem>
+              <MenuItem value={110}>Winter Wear</MenuItem>
+              <MenuItem value={120}>Summer Wear</MenuItem>
+              <MenuItem value={130}>Western Co-ords</MenuItem>
+              <MenuItem value={140}> Ethnic Co-ords</MenuItem>
+              
             </Select>
           </div>
           <br />
@@ -385,102 +409,149 @@ const Dashboard = () => {
         <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
           <h2 className="text-[18px] font-[600]">Recent Orders</h2>
         </div>
+          <div className="col2 w-full">
+           <div className="shadow-md rounded-md  bg-white">
+              <div className="py-2 px-3 border-b border-[rgba(0,0,0,0.1)]">
+                <h2 className="text-[18px] font-[600]">My Order</h2>
+                <p className="!mt-0">
+                  There are
+                  <span className="font-bold text-orange-600 ">2</span> Order
+                </p>
+                  <div className="relative overflow-x-auto !mt-5">
+                <table className="w-full text-sm text-left rtl:text-right text-black ">
+                  <thead className="text-xs text-black uppercase  ">
+                    <tr>
+                       <th scope="col" className="px-6 py-3">
+                        &nbsp;
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Order Id
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Payment Id
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Name
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Number
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Address
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       PinCode
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Total
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Email
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       User Id
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Order Status
+                      </th>
+                       <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Date
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="bg-white border-b  dark:border-gray-700 border-gray-200 font-[600]">
+                      <td className="px-6 py-4">
+                        <Button className='!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-[#f1f1f1]' onClick={()=>isShowOrderdProduct(0)} >
+                          {
+                            isOpenOrderProduct === 0 ? <FaAngleUp className='text-[18px] text-[#000]' /> : <FaAngleDown className='text-[18px] text-[#000]' />
+                          }
+                         </Button>
+                      </td>
+                      <td className="px-6 py-4">123456</td>
+                      <td className="px-6 py-4">4564tyut56</td>
+                      <td className="px-6 py-4">Gagan</td>
+                      <td className="px-6 py-4">4564564564</td>
+                      <td className="px-6 py-4 "><span className='block w-[300px]'>MOnn H.NO 29 outside the earth</span> </td>
+                      <td className="px-6 py-4">12345</td>
+                      <td className="px-6 py-4">1200</td>
+                      <td className="px-6 py-4">Gagan@gmail.com</td>
+                      <td className="px-6 py-4">12345646</td>
+                      <td className="px-6 py-4"><Badge status="delivered" /></td>
+                      <td className="px-6 py-4 whitespace-nowrap">12-2-2025</td>
+                    </tr>
+                    {
+                      isOpenOrderProduct=== 0 && (
+                        <tr>
+                      <td className='bg-[#f1f1f1] pl-20' colSpan={6}>
+                        <div className='relative overflow-x-auto'>
+                        <table className="w-full text-sm text-left rtl:text-right text-black ">
+                  <thead className="text-xs text-black uppercase  ">
+                    <tr>
+                     
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                        Product Id
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Product Title 
+                       </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Image
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Qty
+                      </th>
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Price
+                      </th>
+                     
+                      <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                       Sub total 
+                      </th>
+                     </tr>
+                     
+                  </thead>
+                  <tbody>
+                    <tr className="bg-white border-b  dark:border-gray-700 border-gray-200 font-[600]">
+                      
+                      <td className="px-6 py-4">123456</td>
+                      <td className="px-6 py-4 whitespace-nowrap">A -lien color Blue shari for ladiys this is cool</td>
+                      <td className="px-6 py-4">
+                        <img src="https://demos.codezeel.com/prestashop/PRS21/PRS210502/90-home_default/hummingbird-cushion.jpg" alt="" className='w-[40px] h-[40px] object-cover rounded-md'/>
+                      </td>
+                      <td className="px-6 py-4">2</td>
+                      <td className="px-6 py-4 ">1200 </td>
+                      <td className="px-6 py-4">1200</td>
+                     
+                    </tr>
 
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <TableContainer sx={{ maxHeight: 440 }}>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell />
-                  {orderColumns.map((col) => (
-                    <TableCell key={col.id} style={{ minWidth: col.minWidth }} sx={{ fontWeight: "bold" }}>
-                      {col.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {orderRows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <React.Fragment key={row.orderId}>
-                      <TableRow
-                        hover
-                        sx={{
-                          cursor: "pointer",
-                          "&:hover": { color: "1976d2" },
-                        }}
-                        onClick={() => setOpenRow(openRow === row.orderId ? null : row.orderId)}
-                      >
-                        <TableCell>
-                          <IconButton
-                            size="small"
-                            onClick={() => setOpenRow(openRow === row.orderId ? null : row.orderId)}
-                          >
-                            {openRow === row.orderId ? <FaAngleUp /> : <FaAngleDown />}
-                          </IconButton>
-                        </TableCell>
-                        <TableCell sx={{ color: "#1976d2" }}> {row.orderId}</TableCell>
-                        <TableCell sx={{ color: "#1976d2" }}> {row.paymentId}</TableCell>
-                        <TableCell >{row.name}</TableCell>
-                        <TableCell sx={{ fontWeight: 600 }}>₹{row.amount}</TableCell>
-                        <TableCell >{row.ph_no}</TableCell>
-                        <TableCell >{row.address}</TableCell>
-                        <TableCell >{row.date}</TableCell>
-                      </TableRow>
-
-                      <TableRow>
-                        <TableCell colSpan={8} style={{ paddingBottom: 0, paddingTop: 0 }}>
-                          <Collapse in={openRow === row.orderId} timeout="auto" unmountOnExit>
-                            <Box margin={2} display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2}>
-                              <Box>
-                                <Typography variant="subtitle2" className="text-gray-400">
-                                  Status
-                                </Typography>
-                                <Typography>{row.status}</Typography>
-                              </Box>
-
-                              <Box>
-                                <Typography variant="subtitle2" className="text-gray-400">
-                                  Products
-                                </Typography>
-                                <Typography>{row.products}</Typography>
-                              </Box>
-
-                              <Box>
-                                <Typography variant="subtitle2" className="text-gray-400">
-                                  Order Date
-                                </Typography>
-                                <Typography>{row.date}</Typography>
-                              </Box>
-
-                              <Box>
-                                <Typography variant="subtitle2" className="text-gray-400">
-                                  Delivery Date
-                                </Typography>
-                                <Typography>{row.deliveryDate}</Typography>
-                              </Box>
-                            </Box>
-                          </Collapse>
-                        </TableCell>
-                      </TableRow>
-                    </React.Fragment>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={orderRows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
+                    <tr>
+                      <td className='bg-[#f1f1f1]' colSpan={6}>
+                        
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+              
+                  
+                </table>
+                </div>
+                      </td>
+                    </tr>
+                      )
+                    }
+                    
+                    
+                  </tbody>
+                </table>
+             
+              </div>
+              </div>
+            </div>
+           
+            
+        </div>
+        
       </div>
 
       <div className="card my-5 shadow-md sm:rounded-lg bg-white">

@@ -3,6 +3,7 @@ import udrcrafts_logo from "../../assets/udrcrafts_logo.jpg"
 import { CgLogIn } from "react-icons/cg";
 import { FaRegUser } from "react-icons/fa";
 import loginbg from "../../assets/Login.jpg"
+import logo from '../../assets/logo.png'
 import Button from "@mui/material/Button";
 import { FaFacebook } from "react-icons/fa";
 import { useState } from "react";
@@ -30,9 +31,9 @@ const Login = () => {
       <header className="  w-full top-0 left-0 fixed px-4 py-3 flex items-center justify-between z-50 ">
         <Link to="/">
           <img
-            src={udrcrafts_logo}
+            src={logo}
             alt="logo-image"
-            className="w-[75px] h-[75px] object-cover rounded-full "
+            className="w-[95px] h-[75px] object-cover rounded-full "
           />
         </Link>
         <div className="flex items-center gap-4">
@@ -53,7 +54,7 @@ const Login = () => {
 
       <div className="  loginBox card w-[600px] pb-80 h-[auto] mx-auto pt-20 z-50 relative">
         <div className="text-center">
-          <img src={udrcrafts_logo} className="m-auto h-[120px] w-[120px] object-cover rounded-full " />
+          <img src={logo} className="m-auto h-[120px] w-[180px] object-cover rounded-full " />
         </div>
 
         <div>

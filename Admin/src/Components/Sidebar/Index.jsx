@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/udrcrafts_logo.jpg";
+import logo from '../../assets/logo.png'
 import Button from "@mui/material/Button";
 import { MdSpaceDashboard } from "react-icons/md";
 import { MdGroups } from "react-icons/md";
@@ -30,12 +30,12 @@ const Sidebar = () => {
 
   return (
     <div className={`sidebar fixed top-0 left-0 bg-[#f1f1f1] ${isSidebarOpen ? 'w-[23%]' : 'w-0'} h-screen border-r border-[rgba(0,0,0,0.1)] py-2 px-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 bg-white`}>
-      <div className="py-2 w-full flex justify-center border-b border-[rgba(0,0,0,0.1)] shrink-0">
+      <div className="py-2 w-full flex justify-center border-b border-[rgba(0,0,0,0.1)] shrink-0 rounded-2xl">
         <Link to="/">
           <img
             src={logo}
             alt="UDR Crafts Logo"
-            className="w-[120px] object-contain"
+            className="w-[190px] h-[130px] object-contain "
           />
         </Link>
       </div>
