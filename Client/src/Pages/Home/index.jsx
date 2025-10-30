@@ -1,12 +1,12 @@
 import React from 'react'
-import HomeSlider from '../../components/HomeSlider/Index'
-import HomeCatSlider from '../../components/HomeCatSlider/Index'
+import HomeSlider from '../../Components/HomeSlider/Index.jsx'
+import HomeCatSlider from '../../Components/HomeCatSlider/Index.jsx'
 
 import AdsBannerSlider from '../../components/AdsBannerSlider/Index';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import ProductSlider from '../../components/ProductSlider/Index';
+import ProductSlider from '../../Components/ProductSlider/Index';
 const Home = () => {
  const [value, setValue] = React.useState(0);
 

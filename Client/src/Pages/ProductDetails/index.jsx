@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
-import ProductZoom from "../../components/ProductZoom/Index";
+import ProductZoom from "../../Components/ProductZoom/Index";
 import Button from "@mui/material/Button";
 
 import { MyContext } from '../../App';
 import TextField from "@mui/material/TextField";
-import ProductSlider from "../../components/ProductSlider/Index";
-import ProductDetailsComponent from "../../components/ProductDetails/Index";
+import ProductSlider from "../../Components/ProductSlider/Index";
+import ProductDetailsComponent from "../../Components/ProductDetails/Index";
 
 const ProductDetails = () => {
   
