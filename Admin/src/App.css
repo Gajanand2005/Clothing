@@ -31,3 +31,7 @@ body{
   background: rgb(22, 74, 195) !important;
 }
 
+.MuiAppBar-colorPrimary{
+  background-color:  #e6e6e6 !important;
+  color: black !important;
+}

@@ -59,40 +59,11 @@ const Sidebar = () => {
               <MdGroups className="text-[25px]" />
               <span> Users </span>
               <span className="ml-auto w-[30px] h-[30px] flex items-center justify-center">
-                <FaAngleDown
-                  className={`transition-all ${submenuIndex === 1 ? "rotate-180" : ""}`}
-                />
+               
               </span>
             </Button>
 
-            <Collapse isOpened={submenuIndex === 1}>
-              <ul className="w-full">
-                <li className="w-full">
-                  <Link to="/users">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
-                      <PiDiamondLight />
-                      <span> All Users</span>
-                    </Button>
-                  </Link>
-                </li>
-                <li className="w-full">
-                  <Link to="/users">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
-                      <PiDiamondLight />
-                      <span> Login </span>
-                    </Button>
-                  </Link>
-                </li>
-                <li className="w-full">
-                  <Link to="/users">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
-                      <PiDiamondLight />
-                      <span> Sign-up </span>
-                    </Button>
-                  </Link>
-                </li>
-              </ul>
-            </Collapse>
+            
           </li>
 
           <li>
@@ -181,16 +152,7 @@ const Sidebar = () => {
 
             <Collapse isOpened={submenuIndex === 4 ? true : false}>
               <ul className="w-full">
-                <li className="w-full">
-                  <Link to="/products/add">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
-                      <PiDiamondLight />
-                      <span>
-                        Add New Product
-                      </span>
-                    </Button>
-                  </Link>
-                </li>
+               
                 <li className="w-full">
                   <Link to="/products">
                     <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
@@ -202,14 +164,17 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li className="w-full">
-                  <Link to="/products/details">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+                  
+                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={()=>context.setIsOpenFullScreenPanel({
+                      open: true,
+                      model:"Add Product"
+                    })}>
                       <PiDiamondLight />
                       <span>
-                        Product Details
+                        Product Upload
                       </span>
                     </Button>
-                  </Link>
+                
                 </li>
               </ul>
             </Collapse>
