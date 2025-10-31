@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { FaPlus } from "react-icons/fa6";
@@ -26,7 +26,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { PiExportBold } from "react-icons/pi";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area } from 'recharts';
 import Badge from '../../Components/Badge/Index.jsx';
-import { MyContext } from "../../App.jsx";
 
 
 
@@ -60,7 +59,6 @@ function createData(id, product, category, subCategory, oldPrice, currentPrice, 
   const action = (
     <div className="flex items-center gap-1">
       <TooltipMUI title="Edit Product" placement="top">
-        
         <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
           <FaEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
         </Button>
@@ -147,7 +145,6 @@ const Dashboard = () => {
   ]);
 
   const [page, setPage] = React.useState(0);
-  const context = useContext(MyContext);
 
   const [chart1Data, setChart1Data] = useState([
     {
@@ -291,10 +288,7 @@ const Dashboard = () => {
           <p className="leading-10">
             Here's what's happening on your store today. See the statistics at once.
           </p>
-          <Button className="btn-blue !capitalize mt-4 flex items-center gap-2" variant="contained" onClick={()=>context.setIsOpenFullScreenPanel({
-                      open: true,
-                      model:"Add Product"
-                    })}>
+          <Button className="btn-blue !capitalize mt-4 flex items-center gap-2" variant="contained">
             <FaPlus /> Add Product
           </Button>
         </div>
@@ -344,15 +338,12 @@ const Dashboard = () => {
           <br />
           <div className="col w-[15%] ml-auto flex items-center gap-2">
             <TooltipMUI title="Export" placement="top">
-              <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black !hover:bg-black-300 hover:scale-105" >
+              <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black !hover:bg-black-300 hover:scale-105">
                 <PiExportBold />
               </Button>
             </TooltipMUI>
             <TooltipMUI title="Add Product" placement="top">
-              <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black hover:bg-black-300 hover:scale-105" onClick={()=>context.setIsOpenFullScreenPanel({
-                      open: true,
-                      model:"Add Product"
-                    })}>
+              <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black hover:bg-black-300 hover:scale-105">
                 <span className="text-[18px]"><FaPlus /></span>
               </Button>
             </TooltipMUI>

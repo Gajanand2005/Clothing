@@ -24,16 +24,13 @@ import { IoEyeOutline } from "react-icons/io5";
 import { AiTwotoneDelete } from "react-icons/ai";
 
 const columns = [
-  { id: "id", label: "ID", minWidth: 50 },
-  { id: "product", label: "Product Name", minWidth: 80 },
-  { id: "category", label: "Category", minWidth: 100 },
-  { id: "subCategory", label: "Sub Category", minWidth: 100 },
-  { id: "price", label: "Price", minWidth: 80 },
-  { id: "sales", label: "Sales", minWidth: 120 },
-  { id: "action", label: "Action", minWidth: 100 },
+  { id: "userImg", label: "USER IMAGE", minWidth: 100 },
+  { id: "userName", label: "USER NAME", minWidth: 150 },
+  { id: "userEmail", label: "USER EMAIL", minWidth: 150 },
+  { id: "userPh", label: "USER PHONE NUMBER", minWidth: 120 },
 ];
 
-function createData(id, product, category, subCategory, oldPrice, currentPrice, salesPercent) {
+function createData(id, product, userName,userEmail, userPh, oldPrice, currentPrice, salesPercent) {
   const sales = (
     <div className="flex items-center gap-3">
       <ProgressBar
@@ -77,26 +74,21 @@ function createData(id, product, category, subCategory, oldPrice, currentPrice, 
     </div>
   );
 
-  const productName = (
+  const userImg = (
     <div className="flex items-center gap-4 w-[220px]">
       <Link to="/products/485789">
         <div className="img w-[55px] h-[55px] rounded-md overflow-hidden group">
           <img
-            src="https://m.media-amazon.com/images/I/71i6Cc-hFQL._AC_SY200_.jpg"
+            src="https://imgs.search.brave.com/XU02EQY1eIHc1fmfy8XyKpyeq5l5mLEjMKoA4412ajI/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/aWNvbnNob2NrLmNv/bS9pbWFnZS9JbXBy/ZXNzaW9ucy9EYXRh/YmFzZS91c2Vy"
             className="w-full group-hover:scale-105 transition-all"
           />
         </div>
       </Link>
-      <div className="info w-[75%] text-[#696969]">
-        <h3 className="font-[600] text-[12px] leading-4 hover:text-blue-600">
-          <Link to="/products/485789">{product}</Link>
-        </h3>
-        <span className="text-[11px]">Kitchen Appliances</span>
-      </div>
+    
     </div>
   );
 
-  return { id, product: productName, category, subCategory, price: priceColumn, sales, action };
+  return { id, userImg: userImg, userName, userName, price: priceColumn, sales, action,userEmail,userPh };
 }
 
 const orderColumns = [
@@ -109,7 +101,7 @@ const orderColumns = [
   { id: "date", label: "Ordered date", minWidth: 150 },
 ];
 
-const Product = () => {
+const Users = () => {
     const [isOpenOrderProduct, setIsOpenOrderProduct]= useState(null);
   
   const isShowOrderdProduct =(index)=>{
@@ -123,19 +115,19 @@ const Product = () => {
 
   const [openRow, setOpenRow] = React.useState(null);
   const [rows, setRows] = React.useState([
-    createData(1, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 85),
-    createData(2, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 35),
-    createData(3, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 75),
-    createData(4, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 55),
-    createData(5, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 15),
-    createData(6, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 5),
-    createData(7, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 40),
-    createData(8, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 20),
-    createData(9, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 90),
-    createData(10, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 70),
-    createData(11, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 40),
-    createData(12, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 39),
-    createData(13, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 69),
+    createData(1, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 85),
+    createData(2, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 35),
+    createData(3, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 75),
+    createData(4, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 55),
+    createData(5, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 15),
+    createData(6, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 5),
+    createData(7, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 40),
+    createData(8, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 20),
+    createData(9, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 90),
+    createData(10, "Vegetable Steamer for Cooking","kunal", "Kunal@gmail.com", "789654123", "₹299", 70),
+    createData(11, "Vegetable Steamer for Cooking","kunal", "Kunal@gmail.com", "789654123", "₹299", 40),
+    createData(12, "Vegetable Steamer for Cooking","kunal", "Kunal@gmail.com", "789654123", "₹299", 39),
+    createData(13, "Vegetable Steamer for Cooking","kunal", "Kunal@gmail.com", "789654123", "₹299", 69),
   ]);
 
   const [page, setPage] = React.useState(0);
@@ -280,61 +272,19 @@ const Product = () => {
     
 
      <div className="card my-5 shadow-md sm:rounded-lg bg-white">
-        <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
-          <h2 className="text-[18px] font-[600]">Products</h2>
-          <div className="col w-[15%] ml-auto flex items-center gap-2">
-            <TooltipMUI title="Export" placement="top">
-              <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black !hover:bg-black-300 hover:scale-105">
-                <PiExportBold />
-              </Button>
-            </TooltipMUI>
-            <TooltipMUI title="Add Product" placement="top">
-              <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black hover:bg-black-300 hover:scale-105" onClick={()=>context.setIsOpenFullScreenPanel({
-                open: true,
-                 model: 'Add Product',
-              })}>
-                <span className="text-[18px]"><FaPlus /></span>
-              </Button>
-            </TooltipMUI>
-          </div>
-        </div>
+       
           
         <div className="flex items-center w-full px-5 justify-between pr-5">
-          <div className="col w-[25%]">
-            <h4 className="font-[600] text-[13px] pl-3"> Category by </h4>
+       <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
+          <h2 className="text-[18px] font-[600]">Users</h2>
+          <div className="col w-[15%] ml-auto flex items-center gap-2">
             
-            <Select
-              className="w-full"
-              size="small"
-              labelId="Category"
-              id="Category"
-              value={categoryFilterValue}
-              onChange={handleChangecatFilter}
-              label="Category"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Organza</MenuItem>
-              <MenuItem value={20}>Georgette</MenuItem>
-              <MenuItem value={30}>Silk</MenuItem>
-              <MenuItem value={40}>Banarsi</MenuItem>
-              <MenuItem value={50}>Cotton</MenuItem>
-              <MenuItem value={60}>Chinnon</MenuItem>
-              <MenuItem value={70}>Woollen</MenuItem>
-              <MenuItem value={80}>Lucknowi</MenuItem>
-              <MenuItem value={90}>Crepe</MenuItem>
-              <MenuItem value={100}>Net</MenuItem>
-              <MenuItem value={110}>Winter Wear</MenuItem>
-              <MenuItem value={120}>Summer Wear</MenuItem>
-              <MenuItem value={130}>Western Co-ords</MenuItem>
-              <MenuItem value={140}> Ethnic Co-ords</MenuItem>
-              
-            </Select>
+        
           </div>
+        </div>
           <br />
 
-           <div className="col w-[25%] ml-auto">
+           <div className="col w-[40%] ml-auto">
             <SearchBox/>
            </div>
           
@@ -400,4 +350,4 @@ const Product = () => {
   )
 }
 
-export default Product
+export default Users

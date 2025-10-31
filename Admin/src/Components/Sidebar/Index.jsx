@@ -52,6 +52,7 @@ const Sidebar = () => {
           </li>
 
           <li>
+            <Link to='/users'>
             <Button
               className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3"
               onClick={() => isOpenSubMenu(1)}
@@ -62,7 +63,7 @@ const Sidebar = () => {
                
               </span>
             </Button>
-
+            </Link>
             
           </li>
 
@@ -78,7 +79,7 @@ const Sidebar = () => {
             <Collapse isOpened={submenuIndex === 2 ? true : false}>
               <ul className="w-full">
                 <li className="w-full">
-                  <Link to="/banner/list">
+                  <Link to="/homeSlider/list">
                     <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
                       <PiDiamondLight />
                       <span>
@@ -89,14 +90,17 @@ const Sidebar = () => {
                 </li>
 
                 <li className="w-full">
-                  <Link to="/banner/add">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+                  
+                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3"onClick={()=>context.setIsOpenFullScreenPanel({
+                      open: true,
+                      model:"Add Home Slide"
+                    })}>
                       <PiDiamondLight />
                       <span>
                         Add New Banner
                       </span>
                     </Button>
-                  </Link>
+                
                 </li>
               </ul>
             </Collapse>
@@ -126,14 +130,40 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li className="w-full">
-                  <Link to="/category/add">
+                  <Link to="/subCategory/list">
                     <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+                      <PiDiamondLight />
+                      <span>
+                       Sub Category List
+                      </span>
+                    </Button>
+                  </Link>
+                </li>
+                 <li className="w-full">
+                 
+                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={()=>context.setIsOpenFullScreenPanel({
+                      open: true,
+                      model:"Add New Sub Category"
+                    })}>
+                      <PiDiamondLight />
+                      <span>
+                      New Sub CategoryList
+                      </span>
+                    </Button>
+                 
+                </li>
+                <li className="w-full">
+                 
+                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={()=>context.setIsOpenFullScreenPanel({
+                      open: true,
+                      model:"Add New Category"
+                    })}>
                       <PiDiamondLight />
                       <span>
                         Add New Category
                       </span>
                     </Button>
-                  </Link>
+               
                 </li>
               </ul>
             </Collapse>
@@ -181,13 +211,14 @@ const Sidebar = () => {
           </li>
 
           <li>
+            <Link to='/orders'>
             <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={() => isOpenSubMenu(5)}>
               <SiTicktick className="text-[23px]" />
               <span>
                 Orders
               </span>
             </Button>
-
+            </Link>
           </li>
 
         </ul>

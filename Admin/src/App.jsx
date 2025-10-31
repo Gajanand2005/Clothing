@@ -18,6 +18,14 @@ import Typography from '@mui/material/Typography';
 import { FaDoorClosed } from "react-icons/fa6";
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
+import HomeSliderBanners from './Pages/HomeSliderBanners/Index';
+import AddHomeSlide from './Pages/HomeSliderBanners/AddHomeSlide';
+import CategoryList from './Pages/Categegory/Index';
+import AddCategory from './Pages/Categegory/AddCategory';
+import SubCatList from './Pages/Categegory/SubCatList';
+import AddSubCategory from './Pages/Categegory/AddSubCategory';
+import Users from './Pages/Users/Index';
+import Orders from './Pages/Orders/Index';
 
 
 
@@ -257,6 +265,168 @@ function App() {
         </>
       ),
     },
+
+     {
+      path: "/homeSlider/list",
+      exact: true,
+      element: (
+        <>
+          <section className="main">
+            <Header />
+            <div className="contentMain flex">
+              <div
+                className={`overflow-hidden sidebarWrapper ${
+                  isSidebarOpen === true
+                    ? "w-[23%] transition-all"
+                    : "w-[0%] opacity-0 transition-all"
+                }`}
+              >
+                <Sidebar />
+              </div>
+              <div
+                className={`contentRight py-4 px-5 ${
+                  isSidebarOpen
+                    ? "w-[77%] transition-all"
+                    : "w-[100%] transition-all"
+                }`}
+              >
+                <HomeSliderBanners />
+              </div>
+            </div>
+          </section>
+        </>
+      ),
+    },
+
+      {
+      path: "/category/list",
+      exact: true,
+      element: (
+        <>
+          <section className="main">
+            <Header />
+            <div className="contentMain flex">
+              <div
+                className={`overflow-hidden sidebarWrapper ${
+                  isSidebarOpen === true
+                    ? "w-[23%] transition-all"
+                    : "w-[0%] opacity-0 transition-all"
+                }`}
+              >
+                <Sidebar />
+              </div>
+              <div
+                className={`contentRight py-4 px-5 ${
+                  isSidebarOpen
+                    ? "w-[77%] transition-all"
+                    : "w-[100%] transition-all"
+                }`}
+              >
+                <CategoryList />
+              </div>
+            </div>
+          </section>
+        </>
+      ),
+    },
+
+      {
+      path: "/subCategory/list",
+      exact: true,
+      element: (
+        <>
+          <section className="main">
+            <Header />
+            <div className="contentMain flex">
+              <div
+                className={`overflow-hidden sidebarWrapper ${
+                  isSidebarOpen === true
+                    ? "w-[23%] transition-all"
+                    : "w-[0%] opacity-0 transition-all"
+                }`}
+              >
+                <Sidebar />
+              </div>
+              <div
+                className={`contentRight py-4 px-5 ${
+                  isSidebarOpen
+                    ? "w-[77%] transition-all"
+                    : "w-[100%] transition-all"
+                }`}
+              >
+                <SubCatList />
+              </div>
+            </div>
+          </section>
+        </>
+      ),
+    },
+
+      {
+      path: "/users",
+      exact: true,
+      element: (
+        <>
+          <section className="main">
+            <Header />
+            <div className="contentMain flex">
+              <div
+                className={`overflow-hidden sidebarWrapper ${
+                  isSidebarOpen === true
+                    ? "w-[23%] transition-all"
+                    : "w-[0%] opacity-0 transition-all"
+                }`}
+              >
+                <Sidebar />
+              </div>
+              <div
+                className={`contentRight py-4 px-5 ${
+                  isSidebarOpen
+                    ? "w-[77%] transition-all"
+                    : "w-[100%] transition-all"
+                }`}
+              >
+                <Users />
+              </div>
+            </div>
+          </section>
+        </>
+      ),
+    },
+
+      {
+      path: "/orders",
+      exact: true,
+      element: (
+        <>
+          <section className="main">
+            <Header />
+            <div className="contentMain flex">
+              <div
+                className={`overflow-hidden sidebarWrapper ${
+                  isSidebarOpen === true
+                    ? "w-[23%] transition-all"
+                    : "w-[0%] opacity-0 transition-all"
+                }`}
+              >
+                <Sidebar />
+              </div>
+              <div
+                className={`contentRight py-4 px-5 ${
+                  isSidebarOpen
+                    ? "w-[77%] transition-all"
+                    : "w-[100%] transition-all"
+                }`}
+              >
+                <Orders />
+              </div>
+            </div>
+          </section>
+        </>
+      ),
+    },
+
+
   ]);
 
 
@@ -308,6 +478,18 @@ function App() {
      
         {
           isOpenFullScreenPanel ?.model === "Add Product" && <AddProduct/>
+        }
+
+        {
+          isOpenFullScreenPanel ?.model === "Add Home Slide" && <AddHomeSlide/>
+        }
+
+         {
+          isOpenFullScreenPanel ?.model === "Add New Category" && <AddCategory/>
+        }
+
+      {
+          isOpenFullScreenPanel ?.model === "Add New Sub Category" && <AddSubCategory/>
         }
 
       </Dialog>
