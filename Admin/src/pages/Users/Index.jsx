@@ -19,18 +19,19 @@ import ProgressBar from "../../Components/ProgressBar";
 import SearchBox from '../../Components/SearchBox/Index';
 import { MyContext } from '../../App';
 import { Link } from 'react-router-dom';
-import { FaEdit } from "react-icons/fa";
-import { IoEyeOutline } from "react-icons/io5";
-import { AiTwotoneDelete } from "react-icons/ai";
+import { SlCalender } from "react-icons/sl";
+
+
 
 const columns = [
   { id: "userImg", label: "USER IMAGE", minWidth: 100 },
   { id: "userName", label: "USER NAME", minWidth: 150 },
   { id: "userEmail", label: "USER EMAIL", minWidth: 150 },
   { id: "userPh", label: "USER PHONE NUMBER", minWidth: 120 },
+  { id: "action", label: "CREATED", minWidth: 100 },
 ];
 
-function createData(id, product, userName,userEmail, userPh, oldPrice, currentPrice, salesPercent) {
+function createData(id,  userName,userEmail, userPh,  oldPrice, currentPrice, salesPercent) {
   const sales = (
     <div className="flex items-center gap-3">
       <ProgressBar
@@ -49,21 +50,14 @@ function createData(id, product, userName,userEmail, userPh, oldPrice, currentPr
 
   const action = (
     <div className="flex items-center gap-1">
-      <TooltipMUI title="Edit Product" placement="top">
+      <TooltipMUI title="Created" placement="top">
         <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
-          <FaEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+         
+          <SlCalender  className="text-[rgba(0,0,0,0.7)] text-[20px]" />
         </Button>
+        10-10-2023
       </TooltipMUI>
-      <TooltipMUI title="View Product Details" placement="top">
-        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
-          <IoEyeOutline className="text-[rgba(0,0,0,0.7)] text-[24px]" />
-        </Button>
-      </TooltipMUI>
-      <TooltipMUI title="Remove Product" placement="top">
-        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
-          <AiTwotoneDelete className="text-[rgba(0,0,0,0.7)] text-[25px]" />
-        </Button>
-      </TooltipMUI>
+
     </div>
   );
 
@@ -75,7 +69,7 @@ function createData(id, product, userName,userEmail, userPh, oldPrice, currentPr
   );
 
   const userImg = (
-    <div className="flex items-center gap-4 w-[220px]">
+    <div className="flex items-center gap-4 w-[120px]">
       <Link to="/products/485789">
         <div className="img w-[55px] h-[55px] rounded-md overflow-hidden group">
           <img
@@ -84,11 +78,11 @@ function createData(id, product, userName,userEmail, userPh, oldPrice, currentPr
           />
         </div>
       </Link>
-    
+
     </div>
   );
 
-  return { id, userImg: userImg, userName, userName, price: priceColumn, sales, action,userEmail,userPh };
+  return { id, userImg: userImg, userName,  price: priceColumn, sales, action, userEmail, userPh };
 }
 
 const orderColumns = [
@@ -115,19 +109,8 @@ const Users = () => {
 
   const [openRow, setOpenRow] = React.useState(null);
   const [rows, setRows] = React.useState([
-    createData(1, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 85),
-    createData(2, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 35),
-    createData(3, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 75),
-    createData(4, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 55),
-    createData(5, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 15),
-    createData(6, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 5),
-    createData(7, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 40),
-    createData(8, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 20),
-    createData(9, "Vegetable Steamer for Cooking", "kunal", "Kunal@gmail.com", "789654123", "₹299", 90),
-    createData(10, "Vegetable Steamer for Cooking","kunal", "Kunal@gmail.com", "789654123", "₹299", 70),
-    createData(11, "Vegetable Steamer for Cooking","kunal", "Kunal@gmail.com", "789654123", "₹299", 40),
-    createData(12, "Vegetable Steamer for Cooking","kunal", "Kunal@gmail.com", "789654123", "₹299", 39),
-    createData(13, "Vegetable Steamer for Cooking","kunal", "Kunal@gmail.com", "789654123", "₹299", 69),
+    createData(1, "Kapil", "Kunal@gmail.com", "789654123", "789654123", "₹299", "85", "2025-10-28"),
+
   ]);
 
   const [page, setPage] = React.useState(0);
