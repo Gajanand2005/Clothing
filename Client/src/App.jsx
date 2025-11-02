@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Header from "./Components/Header/Index.jsx";
 import Footer from "./Components/Footer/Index.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -15,7 +15,7 @@ import ProductZoom from "./Components/ProductZoom/Index.jsx";
 import { IoClose } from "react-icons/io5";
 import ProductDetailsComponent from "./Components/ProductDetails/Index.jsx";
 import Login from "./Pages/Login/Index.jsx";
-import Register from "./Pages/Register/Index.jsx";
+import Register from "./Pages/Register/index.jsx";
 import CartPage from "./Pages/Cart/Index.jsx";
 import Verify from "./Pages/Verify/Index.jsx";
 import toast, {Toaster} from 'react-hot-toast'; 
@@ -28,6 +28,9 @@ import Whataap from "./Components/Whataap/Index.jsx";
 
 import HelpCenter from "./Pages/HelpCenter/Index.jsx";
 import OrderTracking from "./Pages/OrderTracking/Index.jsx";
+import { fetchDataFromApi } from "./Utlis/Api.js";
+ 
+
 
 const MyContext = createContext();
 
@@ -36,7 +39,9 @@ const App = () => {
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
   const [openCartPanel, setOpenCartPanel] =useState(false)
-  const [isLogin, setIsLogin]= useState(true);
+  const [isLogin, setIsLogin]= useState(false);
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const [userData, setUserData]= useState(null);
 
   const handleCloseProductDetailsModal = () => {
     setOpenProductDetailsModel(false);
@@ -46,7 +51,28 @@ const App = () => {
     setOpenCartPanel(newOpen);
   }
 
-  const openAlertBox = (status, msg)=>{
+  useEffect(()=>{
+    const token= localStorage.getItem('accessToken');
+    if(token!==undefined && token!==null && token !==""){
+      setIsLogin(true)
+
+      fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
+        
+        setUserData(res.data);
+      }).catch((error)=>{
+        
+        setIsLogin(false);
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+      })
+
+    }else{
+      setIsLogin(false)
+    }
+  },[isLogin])
+
+  const alertBox = (status, msg)=>{
+
     if(status.toLowerCase()==="success"){
       toast.success(msg);
     }
@@ -61,9 +87,11 @@ const App = () => {
     setOpenCartPanel,
     toggleCartPanel,
     openCartPanel,
-    openAlertBox,
+    alertBox,
     isLogin,
     setIsLogin,
+    setUserData,
+    userData,
   };
 
   return (

@@ -114,3 +114,7 @@ img{ max-width: 100%; height: auto; display: block; }
 @media (min-width: 768px){
   .product-details{ grid-template-columns: 1fr 420px; }
 }
+
+button .MuiCircularProgress-root{ width: 30px !important;
+height: 30px !important;
+}
