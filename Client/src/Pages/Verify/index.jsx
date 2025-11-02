@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import thief from '../../assets/thief.png'
 import OtpBox from '../../Components/OtpBox/Index';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { postData } from '../../Utlis/Api';
+
+import { MyContext } from '../../App';
+
 
 const verify = () => {
     const [otp, setOtp]= useState('');
@@ -10,8 +14,47 @@ const verify = () => {
         setOtp(value);
     };
 
+    const history = useNavigate();
+   const context = useContext(MyContext);
+    const actionType = localStorage.getItem("actionType")
+
     const verifyOTP = (e)=>{
         e.preventDefault();
+
+        const actionType = localStorage.getItem("actionType");
+
+        if(actionType!=="forgot-password"){
+             postData("/api/user/verifyEmail",{
+        email: localStorage.getItem("userEmail"),
+        otp:otp
+      }).then((res)=>{
+        if(res?.error === false){
+          context.alertBox("success", res?.message);
+          localStorage.removeItem("userEmail")
+          history("/login")
+        }else{
+          context.alertBox("error", res?.message);
+        }
+      })
+        }else{
+             postData("/api/user/verify-forgot-password-otp",{
+        email: localStorage.getItem("userEmail"),
+        otp:otp
+      }).then((res)=>{
+        if(res?.error === false){
+          context.alertBox("success", res?.message);
+          
+          history("/forgot-password")
+        }else{
+          context.alertBox("error", res?.message);
+        }
+      })
+        }
+
+      
+    
+   
+      
     }
 
   return (
@@ -30,8 +73,7 @@ const verify = () => {
 
             <form action="" onSubmit={verifyOTP}>
                 <div className='flex items-center justify-center !mt-3 px-3'>
-                <Link to='/forgot-password' className='w-full'><Button type="submit" className='w-full !bg-orange-600 !text-white hover:!bg-black'>Verify OTP</Button>
-                </Link>
+                <Button type="submit" className='w-full !bg-orange-600 !text-white hover:!bg-black'>Verify OTP</Button>
 
             </div>
 

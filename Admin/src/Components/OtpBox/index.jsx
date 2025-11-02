@@ -16,12 +16,6 @@ const OtpBox = ({ length, onChange }) => {
       document.getElementById(`otp-input-${index + 1}`).focus();
     }
   };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      document.getElementById(`otp-input-${index - 1}`).focus();
-    }
-  };
   return (
     <>
       <div

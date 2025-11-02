@@ -8,18 +8,18 @@ import IconButton from "@mui/material/IconButton";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoMdGitCompare } from "react-icons/io";
 import { GiTechnoHeart } from "react-icons/gi";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import Navigation from "./Navigation/Index";
 import { MyContext } from "../../App";
 import Button from "@mui/material/Button";
 import { FaUserAstronaut } from "react-icons/fa";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 import { PiBagFill } from "react-icons/pi";
 import { TbHeartHandshake } from "react-icons/tb";
 import { SlLogout } from "react-icons/sl";
-
+import { fetchDataFromApi, postData } from "../../Utlis/Api";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -31,8 +31,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const Header = () => {
-   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -40,7 +41,22 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const context = useContext(MyContext)
+  const context = useContext(MyContext);
+
+  const logout = () => {
+    setAnchorEl(null);
+
+    fetchDataFromApi(
+      `/api/user/logout?token=${localStorage.getItem("accessToken")}`,
+      { withCredentials: true }
+    ).then((res) => {
+      if (res?.error === false) {
+        context.setIsLogin(false);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      }
+    });
+  };
 
   return (
     <>
@@ -80,7 +96,11 @@ const Header = () => {
           <div className="container flex flex-col md:flex-row items-center justify-between gap-3 ">
             <div className="col1 w-full md:w-[25%] flex justify-center md:justify-start">
               <Link to={"/"}>
-                <img src={logo} alt="Logo" className="h-[50px] md:h-[70px] w-[130px] md:w-[190px] object-cover bg-transparent "/>
+                <img
+                  src={logo}
+                  alt="Logo"
+                  className="h-[50px] md:h-[70px] w-[130px] md:w-[190px] object-cover bg-transparent "
+                />
               </Link>
             </div>
             <div className="col2 w-full md:w-[40%] ">
@@ -88,114 +108,133 @@ const Header = () => {
             </div>
             <div className="col3 w-full md:w-[35%] flex items-center justify-center md:justify-end pl-0 md:pl-7">
               <ul className="flex items-center justify-center md:justify-end gap-2 md:gap-3 w-full flex-wrap">
-                {
-                  context.isLogin === false ? 
+                {context.isLogin === false ? (
                   <li className="list-none">
-                  <Link
-                    to="/login"
-                    className="link transition text-[13px] sm:text-[15px] font-[500]"
-                  >
-                    Login
-                  </Link>{" "}
-                  | &nbsp;
-                  <Link
-                    to="/register"
-                    className="link transition text-[13px] sm:text-[15px] font-[500]"
-                  >
-                    Register
-                  </Link>
-                </li>
-                :
-                <>
-                 <div className=" !text-[#000] myAccountWrap flex items-center gap-3 cursor-pointer" onClick={handleClick}>
-                    <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-[#f1f1f1]"><FaUserAstronaut className="text-[20px] text-[rgba(0,0,0,0.7)]" /></Button>
+                    <Link
+                      to="/login"
+                      className="link transition text-[13px] sm:text-[15px] font-[500]"
+                    >
+                      Login
+                    </Link>
+                    | &nbsp;
+                    <Link
+                      to="/register"
+                      className="link transition text-[13px] sm:text-[15px] font-[500]"
+                    >
+                      Register
+                    </Link>
+                  </li>
+                ) : (
+                  <>
+                    <div
+                      className=" !text-[#000] myAccountWrap flex items-center gap-3 cursor-pointer"
+                      onClick={handleClick}
+                    >
+                      <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-[#f1f1f1]">
+                        <FaUserAstronaut className="text-[20px] text-[rgba(0,0,0,0.7)]" />
+                      </Button>
 
-                  <div className="info flex flex-col ">
-                    <h4 className="text-[14px] leading-5 font-[600] !mb-0 capitalize text-left justify-start text-black">Gagan</h4>
-                    <span className="text-[13px] text-left justify-start text-black">smalcouture@gmail.com</span>
-                  </div>
+                      <div className="info flex flex-col ">
+                        <h4 className="text-[14px] leading-5 font-[600] !mb-0 capitalize text-left text-black">
+                          {context?.userData?.name}
+                        </h4>
+                        <span className="text-[13px] text-left text-black">
+                            {context?.userData?.email}
+                        </span>
+                      </div>
+                    </div>
+                    <Menu
+                      anchorEl={anchorEl}
+                      id="account-menu"
+                      open={open}
+                      onClose={handleClose}
+                      onClick={handleClose}
+                      slotProps={{
+                        paper: {
+                          elevation: 0,
+                          sx: {
+                            overflow: "visible",
+                            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                            mt: 1.5,
+                            "& .MuiAvatar-root": {
+                              width: 32,
+                              height: 32,
+                              ml: -0.5,
+                              mr: 1,
+                            },
+                            "&::before": {
+                              content: '""',
+                              display: "block",
+                              position: "absolute",
+                              top: 0,
+                              right: 14,
+                              width: 10,
+                              height: 10,
+                              bgcolor: "background.paper",
+                              transform: "translateY(-50%) rotate(45deg)",
+                              zIndex: 0,
+                            },
+                          },
+                        },
+                      }}
+                      transformOrigin={{ horizontal: "right", vertical: "top" }}
+                      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                    >
+                      <Link to="/my-account" className="w-full block">
+                        <MenuItem
+                          onClick={handleClose}
+                          className="flex gap-2 !py-2"
+                        >
+                          <FaUserAstronaut />{" "}
+                          <span className="text-[14px]">My account </span>
+                        </MenuItem>
+                      </Link>
+                      <Link to="/my-order" className="w-full block">
+                        <MenuItem
+                          onClick={handleClose}
+                          className="flex gap-2 !py-2"
+                        >
+                          <PiBagFill />{" "}
+                          <span className="text-[14px]">Orders</span>
+                        </MenuItem>
+                      </Link>
+                      <Link to="/my-list" className="w-full block">
+                        <MenuItem
+                          onClick={handleClose}
+                          className="flex gap-2 !py-2"
+                        >
+                          <TbHeartHandshake />{" "}
+                          <span className="text-[14px]">My List</span>
+                        </MenuItem>
+                      </Link>
 
-                 </div>
-                  <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        slotProps={{
-          paper: {
-            elevation: 0,
-            sx: {
-              overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-              mt: 1.5,
-              '& .MuiAvatar-root': {
-                width: 32,
-                height: 32,
-                ml: -0.5,
-                mr: 1,
-              },
-              '&::before': {
-                content: '""',
-                display: 'block',
-                position: 'absolute',
-                top: 0,
-                right: 14,
-                width: 10,
-                height: 10,
-                bgcolor: 'background.paper',
-                transform: 'translateY(-50%) rotate(45deg)',
-                zIndex: 0,
-              },
-            },
-          },
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-        <Link to='/my-account' className="w-full block">
-        <MenuItem onClick={handleClose} className="flex gap-2 !py-2">
-          <FaUserAstronaut />  <span className="text-[14px]">My account </span>
-        </MenuItem>
-        </Link>
-         <Link to='/my-order' className="w-full block">
-        <MenuItem onClick={handleClose}  className="flex gap-2 !py-2">
-          <PiBagFill /> <span className="text-[14px]">Orders</span>
-        </MenuItem>
-        </Link>
-         <Link to='/my-list' className="w-full block">
-         <MenuItem onClick={handleClose}  className="flex gap-2 !py-2">
-          <TbHeartHandshake /> <span className="text-[14px]">My List</span>
-        </MenuItem>
-        </Link>
-        
-         <MenuItem onClick={handleClose}  className="flex gap-2 !py-2">
-          <SlLogout /> <span className="text-[14px]">Logout</span>
-        </MenuItem>
-        <Divider />
-        
-       
-      </Menu>
-                </>
-                }
-                
-              
-                 <li>
+                      <MenuItem onClick={logout} className="flex gap-2 !py-2">
+                        <SlLogout /> <span className="text-[14px]">Logout</span>
+                      </MenuItem>
+                      <Divider />
+                    </Menu>
+                  </>
+                )}
+
+                <li>
                   <Tooltip title="Wishlist" placement="top">
-                  <IconButton aria-label="cart">
-                    <StyledBadge badgeContent={4} color="secondary">
-                   <GiTechnoHeart />
-                    </StyledBadge>
-                  </IconButton>
+                    <IconButton aria-label="cart">
+                      <StyledBadge badgeContent={4} color="secondary">
+                        <GiTechnoHeart />
+                      </StyledBadge>
+                    </IconButton>
                   </Tooltip>
                 </li>
-                 <li>
-                   <Tooltip title="Cart" placement="top">
-                  <IconButton aria-label="cart"  onClick={()=>context.setOpenCartPanel(true)}>
-                    <StyledBadge badgeContent={4} color="secondary">
-                      <FaCartShopping />
-                    </StyledBadge>
-                  </IconButton>
+                <li>
+                  <Tooltip title="Cart" placement="top">
+                    <IconButton
+                      aria-label="cart"
+                      onClick={() => context.setOpenCartPanel(true)}
+                    >
+                      <StyledBadge badgeContent={4} color="secondary">
+                        <FaCartShopping />
+                      </StyledBadge>
+                    </IconButton>
                   </Tooltip>
                 </li>
               </ul>
@@ -203,8 +242,7 @@ const Header = () => {
           </div>
         </div>
 
-        <Navigation/>
-
+        <Navigation />
       </header>
     </>
   );
