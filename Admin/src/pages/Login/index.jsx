@@ -1,11 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
-import udrcrafts_logo from "../../assets/udrcrafts_logo.jpg"
 import { CgLogIn } from "react-icons/cg";
 import { FaRegUser } from "react-icons/fa";
 import loginbg from "../../assets/Login.jpg"
 import logo from '../../assets/logo.png'
 import Button from "@mui/material/Button";
-import { FaFacebook } from "react-icons/fa";
+
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Checkbox from "@mui/material/Checkbox";
@@ -16,14 +15,12 @@ import { FaEyeSlash } from "react-icons/fa";
 const Login = () => {
 
   const [loadingGoogle, setLoadingGoogle] = useState(false);
-  const [loadingFacebook, setLoadingFacebook] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   function handleClickGoogle() {
     setLoadingGoogle(true);
   }
-  function handleClickFacebook() {
-    setLoadingFacebook(true);
-  }
+ 
 
   return (
     <section className="w-full h-[auto] ">
@@ -40,7 +37,7 @@ const Login = () => {
           <NavLink to="/login" exact={true} activeClassName="active bg-[#f1f1f1]">
             <button className="!rounded-full !text-[rgba(0,0,0,0.0.8)] bg-gray-200 !px-5 flex gap-3 items-center hover:bg-[#f1f1f2] h-[20px]">
               <CgLogIn className="text-[18px]" />
-              Login
+              login
             </button>
           </NavLink>
           <NavLink to="/signup" exact={true} activeClassName="active">
@@ -71,18 +68,7 @@ const Login = () => {
               variant="outlined"
               className="!bg-none !text-[16px] !px-5 !capitalize"
             >
-              Signin with Google
-            </Button>
-            <Button
-              size="small"
-              onClick={handleClickFacebook}
-              endIcon={<FaFacebook size={"25px"} />}
-              loading={loadingFacebook}
-              loadingPosition="end"
-              variant="outlined"
-              className="!bg-none !text-[16px] !px-5 !capitalize"
-            >
-              Signup with Facebook
+              Sign in with Google
             </Button>
           </div>
           <br />
@@ -106,7 +92,7 @@ const Login = () => {
               <h4 className="text-[14px] font-[600] mb-1">Password</h4>
               <div className="w-full relative">
                 <input
-                  type='password'
+                  type={isPasswordShow===false?'password' :'text' }
                   className="w-full h-[45px] border-2  border-[rgba(0,0,0,0.1)] rounded-md  focus:border-[rgba(0,0,0,0.7)] focus:outline-none px-3 mt-2"
                 />
                 <Button

@@ -41,7 +41,7 @@ const Header = () => {
   return (
     <header className='w-full h-[auto] py-2 shadow-md pr-7 bg-[#f1f1f1] flex items-center justify-between bg-white'>
       <div className={`part1 ${context.isSidebarOpen === true ? 'pl-[25%] transition-all' : 'pl-[1%] transition-all'}`}>
-        <Button className="!w-[40px] !h-[40px] !rounded-full !min-w-[40px] !text-[rgba(0,0,0,0.8)]" onClick={() => context.setisSidebarOpen(!context.isSidebarOpen)}>
+        <Button className="!w-[40px] !h-[40px] !rounded-full !min-w-[40px] !text-[rgba(0,0,0,0.8)]" onClick={() => context.setIsSidebarOpen(!context.isSidebarOpen)}>
           <IoMenuSharp className="text-[22px] text-[rgba(0,0,0,0.8)]" />
         </Button>
       </div>
@@ -120,9 +120,9 @@ const Header = () => {
 
             :
 
-            <Link to="/login">
+          
               <Button className="btn-blue btn-sm !rounded-full">Sign-In</Button>
-            </Link>
+            
         }
 
       </div>

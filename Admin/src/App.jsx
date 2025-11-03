@@ -1,14 +1,14 @@
 import React from 'react'
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "./Pages/Dashboard";
-import Header from "./Components/Header";
-import Sidebar from "./Components/Sidebar";
+import Dashboard from "./Pages/Dashboard/Index.jsx";
+import Header from "./Components/Header/Index.jsx";
+import Sidebar from "./Components/Sidebar/Index.jsx";
 import { createContext, useState } from "react";
-import Login from "./Pages/Login";
-import SignUp from "./Pages/Signup";
-import Products from "./Pages/Products/Index";
-import AddProduct from './Pages/Products/AddProduct';
+import Login from "./pages/Login/index.jsx";
+import SignUp from "./pages/Signup/index.jsx";
+import Products from "./pages/Products/Index.jsx";
+import AddProduct from './pages/Products/AddProduct.jsx';
 import Dialog from '@mui/material/Dialog';
 
 import AppBar from '@mui/material/AppBar';
@@ -18,17 +18,17 @@ import Typography from '@mui/material/Typography';
 import { FaDoorClosed } from "react-icons/fa6";
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
-import HomeSliderBanners from './Pages/HomeSliderBanners/Index';
-import AddHomeSlide from './Pages/HomeSliderBanners/AddHomeSlide';
-import CategoryList from './Pages/Categegory/Index';
-import AddCategory from './Pages/Categegory/AddCategory';
-import SubCatList from './Pages/Categegory/SubCatList';
-import AddSubCategory from './Pages/Categegory/AddSubCategory';
-import Users from './pages/Users/Index';
-import Orders from './Pages/Orders/Index';
-import ForgotPassword from './pages/ForgotPassword';
-import VerifyAccount from './pages/VerifyAccount';
-import ChangePassword from './pages/ChangePassword';
+import HomeSliderBanners from './Pages/HomeSliderBanners/Index.jsx';
+import AddHomeSlide from './pages/HomeSliderBanners/AddHomeSlide.jsx';
+import CategoryList from './pages/Categegory/Index.jsx';
+import AddCategory from './pages/Categegory/AddCategory.jsx';
+import SubCatList from './pages/Categegory/SubCatList.jsx';
+import AddSubCategory from './pages/Categegory/AddSubCategory.jsx';
+import Users from './pages/Users/Index.jsx';
+import Orders from './pages/Orders/Index.jsx';
+import ForgotPassword from './pages/ForgotPassword/index.jsx';
+import VerifyAccount from './pages/VerifyAccount/index.jsx';
+import ChangePassword from './pages/ChangePassword/index.jsx';
 
 
 
@@ -53,8 +53,8 @@ function createData(
 }
 
 function App() {
-  const [isSidebarOpen, setisSidebarOpen] = useState(true);
-  const [isLogin, setisLogin] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
@@ -474,9 +474,9 @@ function App() {
 
   const values = {
     isSidebarOpen,
-    setisSidebarOpen,
+    setIsSidebarOpen,
     isLogin,
-    setisLogin,
+    setIsLogin,
     productRows,
     setProductRows,
     isOpenFullScreenPanel,

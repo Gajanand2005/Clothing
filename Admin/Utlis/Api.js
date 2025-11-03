@@ -1,12 +1,8 @@
 import axios from 'axios';
-import { GiToken } from 'react-icons/gi';
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const postData = async (url, formData)=>{
-
-     
-
-
 
     try {
         const res= await fetch(apiUrl + url,{

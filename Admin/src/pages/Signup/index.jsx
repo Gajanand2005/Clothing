@@ -4,7 +4,7 @@ import { CgLogIn } from "react-icons/cg";
 import { FaRegUser } from "react-icons/fa";
 import loginbg from "../../assets/Login.jpg"
 import Button from "@mui/material/Button";
-import { FaFacebook } from "react-icons/fa";
+
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Checkbox from "@mui/material/Checkbox";
@@ -15,7 +15,6 @@ import logo from '../../assets/logo.png'
 
 const SignUp = () => {
   const [loadingGoogle, setLoadingGoogle] = useState(false);
-  const [loadingFacebook, setLoadingFacebook] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   function handleClickGoogle() {
     setLoadingGoogle(true);
@@ -71,17 +70,7 @@ const SignUp = () => {
             >
               Signin with Google
             </Button>
-            <Button
-              size="small"
-              onClick={handleClickFacebook}
-              endIcon={<FaFacebook size={"25px"} />}
-              loading={loadingFacebook}
-              loadingPosition="end"
-              variant="outlined"
-              className="!bg-none !text-[16px] !px-5 !capitalize"
-            >
-              Signup with Facebook
-            </Button>
+           
           </div>
           <br />
           <div className="w-full flex items-center justify-center gap-4">
@@ -111,7 +100,7 @@ const SignUp = () => {
               <h4 className="text-[14px] font-[600] mb-1">Password</h4>
               <div className="w-full relative">
                 <input
-                  type="text"
+                   type={isPasswordShow===false?'password' :'text' }
                   className="w-full h-[45px] border-2  border-[rgba(0,0,0,0.1)] rounded-md  focus:border-[rgba(0,0,0,0.7)] focus:outline-none px-3 mt-2"
                 />
                 <Button
