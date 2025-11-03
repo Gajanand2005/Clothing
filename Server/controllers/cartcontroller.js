@@ -40,7 +40,7 @@ export const addToCartItemController = async(req, res)=>{
         })
 
         return res.status(200).json({
-            date : save,
+            data : save,
             message : 'item add to cart successfully',
             error : false,
             success: true

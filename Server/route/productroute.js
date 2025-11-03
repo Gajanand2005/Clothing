@@ -24,5 +24,4 @@ productRouter.delete('/deleteImage',auth, removeImageFromCloudinary);
 productRouter.put('/updateProduct/ :id',auth, updateProduct);
 
 
-
 export default productRouter; 

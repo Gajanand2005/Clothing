@@ -2,16 +2,14 @@ import jwt from 'jsonwebtoken';
 
 const auth = async(req,res,next) => {
     try{
-<<<<<<< HEAD
+
         const token = req.cookies.accessToken || req?.headers?.authorization?.split(" ")[1]
-=======
-        var token = req.cookies.accessToken || req?.headers?.authorization?.split(" ")[1]
+
+   
 
         if(!token){
             token = req.query.token;
         }
-
->>>>>>> d8f2562b69d0e4cd6621ad29612b6617aeb9b60d
 
         if(!token) {
             return res.status(401).json({

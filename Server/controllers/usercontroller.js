@@ -103,11 +103,9 @@ export async function verifyEmailController(request, response) {
             await user.save();
             return response.status(200).json({ error: false, success: true, message: "Email verified successfully" });
         } else if (!isCodeValid) {
-<<<<<<< HEAD
+
             return response.status(400), json({ error: true, success: false, message: "Invalid OTP" });
-=======
             return response.status(400).json({ error: true, success: false, message: "Invalid OTP" });
->>>>>>> d8f2562b69d0e4cd6621ad29612b6617aeb9b60d
         } else {
             return response.status(400).json({ error: true, success: false, message: "OTP Expired" });
         }
@@ -407,11 +405,9 @@ export async function forgotPasswordController(request, response) {
 
             await sendEmailFun({
                 sendTo: email,
-<<<<<<< HEAD
+
                 subject: "Verify email from SmalCouture ",
-=======
                 subject: "Verify OTP from SmalCouture ",
->>>>>>> d8f2562b69d0e4cd6621ad29612b6617aeb9b60d
                 text: "",
                 html: VerificationEmail(user.name, verifyCode)
             })

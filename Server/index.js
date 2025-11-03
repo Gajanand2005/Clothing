@@ -8,11 +8,9 @@ import connectDB from './config/connectDb.js';
 import userRouter from './route/userroute.js';
 import categoryRouter from './route/categoryroute.js';
 import productRouter from './route/productroute.js';
-<<<<<<< HEAD
-=======
 import cartRouter from './route/cartroutes.js';
 import myListRouter from './route/mylistroute.js';
->>>>>>> d8f2562b69d0e4cd6621ad29612b6617aeb9b60d
+
 
 dotenv.config();
 
@@ -37,11 +35,8 @@ app.get("/", (req, res) => {
 app.use('/api/user', userRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/product', productRouter);
-<<<<<<< HEAD
-=======
 app.use('/api/cart', cartRouter);
 app.use('/api/myList', myListRouter);
->>>>>>> d8f2562b69d0e4cd6621ad29612b6617aeb9b60d
 
 // Connect DB and start server
 connectDB().then(() => {
