@@ -8,7 +8,7 @@ import { postData } from '../../Utlis/Api';
 import { MyContext } from '../../App';
 
 
-const verify = () => {
+const Verify = () => {
     const [otp, setOtp]= useState('');
     const handleOtpChange = (value) =>{
         setOtp(value);
@@ -43,7 +43,7 @@ const verify = () => {
       }).then((res)=>{
         if(res?.error === false){
           context.alertBox("success", res?.message);
-          
+
           history("/forgot-password")
         }else{
           context.alertBox("error", res?.message);
@@ -51,10 +51,9 @@ const verify = () => {
       })
         }
 
-      
-    
-   
-      
+
+
+
     }
 
   return (
@@ -85,4 +84,4 @@ const verify = () => {
   )
 }
 
-export default verify
+export default Verify

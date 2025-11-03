@@ -17,7 +17,7 @@ import ProductDetailsComponent from "./Components/ProductDetails/Index.jsx";
 import Login from "./Pages/Login/Index.jsx";
 import Register from "./Pages/Register/index.jsx";
 import CartPage from "./Pages/Cart/Index.jsx";
-import Verify from "./Pages/Verify/Index.jsx";
+
 import toast, {Toaster} from 'react-hot-toast'; 
 import ForgotPassword from './Pages/ForgotPassword/Index.jsx'
 import CheckOut from "./Pages/CheckOut/Index.jsx";
@@ -29,6 +29,8 @@ import Whataap from "./Components/Whataap/Index.jsx";
 import HelpCenter from "./Pages/HelpCenter/Index.jsx";
 import OrderTracking from "./Pages/OrderTracking/Index.jsx";
 import { fetchDataFromApi } from "./Utlis/Api.js";
+import Verify from "./Pages/Verify/index.jsx";
+
  
 
 
