@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { FaHouseUser } from "react-icons/fa";
 import { PiBagFill } from "react-icons/pi";
@@ -6,23 +6,93 @@ import { TbHeartHandshake } from "react-icons/tb";
 import { SlLogout } from "react-icons/sl";
 import { NavLink } from "react-router";
 import Button from "@mui/material/Button";
+import { MyContext } from '../../App';
+import CircularProgress from '@mui/material/CircularProgress';
+import { editData } from '../../Utlis/Api';
 
 const AccountSidebar = () => {
+
+const [previews, setPreviews] = useState([]);
+const [uploading, setUploading] = useState(false);
+
+
+
+let img_arr = [];
+let uniqueArray= [];
+let selectedImages = [];
+
+const formdata = new FormData();
+const onChangeFile = async (e, apiEndPoint) => {
+  try {
+    setPreviews([]);
+    const files = e.target.files;
+    setUploading(true);
+
+    for (let i = 0; i < files.length; i++) {
+      if (files[i] && (files[i].type === "image/jpeg" || files[i].type === "image/jpg" ||
+          files[i].type === "image/webp" ||
+          files[i].type === "image/gif" ||
+          files[i].type === "image/png"
+        )
+      ) {
+       const file = files[i];
+       selectedImages.push(file);
+       formdata.append(`avatar`,file);
+       editData("/api/user/user-avatar",formdata).then((res)=>{
+     setUploading(false);
+     let avatar =[];
+     avatar.push(res?.data?.avatar);
+     setPreviews(avatar);
+      })}else{
+        setUploading(false);
+        return false;
+      }
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
   return (
     <>
       <div className="card bg-white shadow-md rounded-md sticky top-[10px] ">
               <div className="w-full p-4 md:p-5 flex items-center justify-center flex-col ">
-                <div className="w-[90px] md:w-[110px] h-[90px] md:h-[110px] rounded-full overflow-hidden !mb-3 relative group">
-                  <img
-                    src="https://imgs.search.brave.com/s0yRgvnWX8rHZngQu2PRnV_KIXWykff9K69XuYcGFSg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvNS9Qcm9m/aWxlLU1hbGUtUE5H/LnBuZw"
+                <div className="w-[90px] md:w-[110px] h-[90px] md:h-[110px] rounded-full overflow-hidden !mb-3 relative group flex items-center justify-center bg-gray-200">
+                   {
+                   uploading === true ? <CircularProgress color='inherit' /> :
+                   <>
+                   {
+                    previews?.length!==0 && previews?.map((img,index)=>{
+                     return (
+                         <img
+                    src={img}
+                    index={index}
                     alt=""
                     className="w-full h-full object-cover"
                   />
+                     )
+                    })
+                   }
+                   </>
+                 
+                   }
+                 
+
+                 
+
                   <div className="overlay w-[100%] h-[100%] absolute top-0 left-0 z-50 bg-[rgba(0,0,0,0.5)] flex items-center justify-center cursor-pointer opacity-0 transition-all group-hover:opacity-100 ">
                     <FaCloudUploadAlt className="text-[#fff] text-[20px] md:text-[25px]" />
                     <input
                       type="file"
                       className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
+                      accept='image/*'
+                      onChange={(e)=>
+                        onChangeFile(e,"/api/user/user-avatar")
+                      }
+                      name="avatar"
                     />
                   </div>
                 </div>

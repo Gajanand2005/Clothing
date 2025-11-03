@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { use, useContext, useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import logo from "../../assets/ba-removebg-preview.png";
 import Search from "../Search/Index";
 import Badge from "@mui/material/Badge";
@@ -42,6 +42,8 @@ const Header = () => {
   };
 
   const context = useContext(MyContext);
+  const history = useNavigate();
+
 
   const logout = () => {
     setAnchorEl(null);
@@ -54,6 +56,7 @@ const Header = () => {
         context.setIsLogin(false);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        history("/");
       }
     });
   };

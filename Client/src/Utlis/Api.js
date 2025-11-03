@@ -3,11 +3,6 @@ import { GiToken } from 'react-icons/gi';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const postData = async (url, formData)=>{
-
-     
-
-
-
     try {
         const res= await fetch(apiUrl + url,{
             method : 'POST',
@@ -49,4 +44,18 @@ export const fetchDataFromApi = async (url)=>{
         console.log(error);
         return error;
     }
+}
+
+export const editData= async (url, updatedData) => {
+       const params={
+            headers: {
+                'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
+                'Content-Type' : 'multipart/form-data', //adjust the content type as needed
+            },
+        }
+        let response;
+    await axios.put(apiUrl + url , updatedData, params).then((res)=>{
+    response=res;
+    })
+    return response;
 }

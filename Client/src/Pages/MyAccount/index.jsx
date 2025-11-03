@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Button from "@mui/material/Button";
 
 import TextField from '@mui/material/TextField';
 import AccountSidebar from "../../components/AccountSidebar/Index";
+import { MyContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 const MyAccount = () => {
+  const context=useContext(MyContext);
+  const history=useNavigate();
+
+  useEffect(() => {
+  const token = localStorage.getItem("accessToken");
+  if(token===null){
+    history('/');
+  }
+
+  }, [context?.isLogin]);
+
   return (
     <>
       <section className="py-10 w-full">
