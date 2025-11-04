@@ -12,8 +12,9 @@ import Divider from "@mui/material/Divider";
 import { IoMdSettings } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
-import { MyContext } from "../../App"
+import { MyContext } from "../../App";
 import { Link } from "react-router-dom";
+import { fetchDataFromApi } from "../../../Utlis/Api";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -38,10 +39,35 @@ const Header = () => {
 
   const context = useContext(MyContext);
 
+  const logout = () => {
+    setAnchorMyAcc(null);
+
+    fetchDataFromApi(
+      `/api/user/logout?token=${localStorage.getItem("accessToken")}`,
+      { withCredentials: true }
+    ).then((res) => {
+      if (res?.error === false) {
+        context.setIsLogin(false);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        history("/");
+      }
+    });
+  };
+
   return (
-    <header className='w-full h-[auto] py-2 shadow-md pr-7 bg-[#f1f1f1] flex items-center justify-between bg-white'>
-      <div className={`part1 ${context.isSidebarOpen === true ? 'pl-[25%] transition-all' : 'pl-[1%] transition-all'}`}>
-        <Button className="!w-[40px] !h-[40px] !rounded-full !min-w-[40px] !text-[rgba(0,0,0,0.8)]" onClick={() => context.setIsSidebarOpen(!context.isSidebarOpen)}>
+    <header className="w-full h-[auto] py-2 shadow-md pr-7 bg-[#f1f1f1] flex items-center justify-between bg-white">
+      <div
+        className={`part1 ${
+          context.isSidebarOpen === true
+            ? "pl-[25%] transition-all"
+            : "pl-[1%] transition-all"
+        }`}
+      >
+        <Button
+          className="!w-[40px] !h-[40px] !rounded-full !min-w-[40px] !text-[rgba(0,0,0,0.8)]"
+          onClick={() => context.setIsSidebarOpen(!context.isSidebarOpen)}
+        >
           <IoMenuSharp className="text-[22px] text-[rgba(0,0,0,0.8)]" />
         </Button>
       </div>
@@ -53,78 +79,91 @@ const Header = () => {
           </StyledBadge>
         </IconButton>
 
-        {
-          context.isLogin === true ?
-            <div className="relative">
-              <div
-                className="rounded-full w-[35px] h-[35px] overflow-hidden cursor-pointer"
-                onClick={handleClickMyAcc}
-              >
-                <img
-                  src={profilePhoto}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <Menu
-                anchorEl={anchorMyAcc}
-                id="account-menu"
-                open={openMyAcc}
-                onClose={handleCloseMyAcc}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                PaperProps={{
-                  elevation: 3,
-                  sx: {
-                    mt: 1.5,
-                    "&::before": {
-                      content: '""',
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
-                  },
-                }}
-              >
-                <MenuItem onClick={handleCloseMyAcc} className="!bg-white">
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-full w-[40px] h-[40px] overflow-hidden cursor-pointer">
-                      <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
-                    </div>
-                    <div className="info">
-                      <h3 className="text-[15px] font-[500] leading-5">Naema Mohamed Rafiq</h3>
-                      <p className="text-[13px] font-[400] opacity-70">admin_01@gmail.com</p>
-                    </div>
-                  </div>
-                </MenuItem>
-
-                <Divider />
-                <MenuItem onClick={handleCloseMyAcc} className="flex items-center gap-4">
-                  <FaUser className="text-[16px]" /> <span className="text-[16px]">Profile</span>
-                </MenuItem>
-                <MenuItem onClick={handleCloseMyAcc} className="flex items-center gap-3">
-                  <IoMdSettings className="text-[20px]" /> <span className="text-[16px]">Settings</span>
-                </MenuItem>
-                <MenuItem onClick={handleCloseMyAcc} className="flex items-center gap-3">
-                  <IoMdLogOut className="text-[20px]" /> <span className="text-[16px]">Logout</span>
-                </MenuItem>
-              </Menu>
+        {context.isLogin === true ? (
+          <div className="relative">
+            <div
+              className="rounded-full w-[35px] h-[35px] overflow-hidden cursor-pointer"
+              onClick={handleClickMyAcc}
+            >
+              <img
+                src={profilePhoto}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            :
+            <Menu
+              anchorEl={anchorMyAcc}
+              id="account-menu"
+              open={openMyAcc}
+              onClose={handleCloseMyAcc}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              PaperProps={{
+                elevation: 3,
+                sx: {
+                  mt: 1.5,
+                  "&::before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              }}
+            >
+              <MenuItem onClick={handleCloseMyAcc} className="!bg-white">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-full w-[40px] h-[40px] overflow-hidden cursor-pointer">
+                    <img
+                      src={profilePhoto}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="info">
+                    <h3 className="text-[15px] font-[500] leading-5">
+                      {context?.userData?.name}
+                    </h3>
+                    <p className="text-[13px] font-[400] opacity-70">
+                      {context?.userData?.email}
+                    </p>
+                  </div>
+                </div>
+              </MenuItem>
 
-          
-              <Button className="btn-blue btn-sm !rounded-full">Sign-In</Button>
-            
-        }
-
+              <Divider />
+              <MenuItem
+                onClick={handleCloseMyAcc}
+                className="flex items-center gap-4"
+              >
+                <FaUser className="text-[16px]" />{" "}
+                <span className="text-[16px]">Profile</span>
+              </MenuItem>
+              <MenuItem
+                onClick={handleCloseMyAcc}
+                className="flex items-center gap-3"
+              >
+                <IoMdSettings className="text-[20px]" />{" "}
+                <span className="text-[16px]">Settings</span>
+              </MenuItem>
+              <MenuItem onClick={logout} className="flex items-center gap-3">
+                <IoMdLogOut className="text-[20px]" />{" "}
+                <span className="text-[16px]">Logout</span>
+              </MenuItem>
+            </Menu>
+          </div>
+        ) : (
+          <Link to="/signup">
+            <Button className="btn-blue btn-sm !rounded-full">Sign-In</Button>
+          </Link>
+        )}
       </div>
     </header>
   );

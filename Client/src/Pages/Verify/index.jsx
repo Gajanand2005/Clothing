@@ -67,7 +67,7 @@ const Verify = () => {
             <h3 className="text-center text-[20px] text-black font-[500] !mt-4">
           Verify OTP
             </h3>
-            <p className='text-center !mt-0 !mb-4'>OTP send to <span className='text-orange-600 font-bold'>smalcouture@gmail.com</span></p>
+            <p className='text-center !mt-0 !mb-4'>OTP send to <span className='text-orange-600 font-bold'>{localStorage.getItem("userEmail")}</span></p>
             <OtpBox length={6} onChange={handleOtpChange}/>
 
             <form action="" onSubmit={verifyOTP}>

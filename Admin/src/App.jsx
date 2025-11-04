@@ -10,7 +10,7 @@ import SignUp from "./pages/Signup/index.jsx";
 import Products from "./pages/Products/Index.jsx";
 import AddProduct from './pages/Products/AddProduct.jsx';
 import Dialog from '@mui/material/Dialog';
-
+import toast, {Toaster} from 'react-hot-toast'; 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -29,6 +29,8 @@ import Orders from './pages/Orders/Index.jsx';
 import ForgotPassword from './pages/ForgotPassword/index.jsx';
 import VerifyAccount from './pages/VerifyAccount/index.jsx';
 import ChangePassword from './pages/ChangePassword/index.jsx';
+import { fetchDataFromApi } from '../Utlis/Api.js';
+import { useEffect } from 'react';
 
 
 
@@ -37,6 +39,16 @@ import ChangePassword from './pages/ChangePassword/index.jsx';
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const alertBox = (status, msg)=>{
+
+    if(status.toLowerCase()==="success"){
+      toast.success(msg);
+    }
+    if(status.toLowerCase()==="error"){
+      toast.error(msg);
+    }
+
+  }
 
 export const MyContext = createContext();
 
@@ -55,6 +67,7 @@ function createData(
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
+  const [userData, setUserData]= useState(null);
 
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
@@ -226,6 +239,8 @@ function App() {
         </>
       ),
     },
+
+    
 
     {
       path: "/forgot-password",
@@ -470,6 +485,29 @@ function App() {
 
   ]);
 
+useEffect(()=>{
+     const token= localStorage.getItem('accessToken');
+     if(token!==undefined && token!==null && token !==""){
+       setIsLogin(true)
+
+       fetchDataFromApi(`/api/user/user-details`).then((res)=>{
+
+         if(res?.error === true){
+           if(res?.message === "You have not login" || res?.message === "jwt expired" || res?.message === "Invalid token"){
+             localStorage.removeItem('accessToken');
+             localStorage.removeItem('refreshToken');
+             alertBox("error","Your session is closed please login again")
+             setIsLogin(false);
+           }
+         } else {
+           setUserData(res.data);
+         }
+       });
+
+     }else{
+       setIsLogin(false)
+     }
+   },[]) // Remove [isLogin] to prevent infinite loop
 
 
   const values = {
@@ -481,6 +519,9 @@ function App() {
     setProductRows,
     isOpenFullScreenPanel,
     setIsOpenFullScreenPanel,
+    alertBox,
+    setUserData,
+    userData,
   };
 
   return (
@@ -535,7 +576,7 @@ function App() {
 
       </Dialog>
 
-
+        <Toaster/>
 
       </MyContext.Provider>
     </>

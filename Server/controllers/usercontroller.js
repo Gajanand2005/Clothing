@@ -7,6 +7,7 @@ import generatedAccessToken from "../utils/generatedAcessToken.js";
 import generatedRefreshToken from "../utils/generatedRefresToken.js";
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
+import { error } from "console";
 
 
 cloudinary.config({
@@ -487,50 +488,70 @@ export async function verifyForgotPasswordOtp(request, response) {
 
 // reset password
 export async function resetPassword(request, response) {
-    try {
-        const { email, newPassword, confirmPassword } = request.body;
-        if (!email || !newPassword || !confirmPassword) {
-            return response.status(400).json({
-                message: "Provide required feilds email,newPassword,confirmPassword"
-            })
-        }
+  try {
+    const { email, oldPassword, newPassword, confirmPassword } = request.body;
 
-        const user = await UserModel.findOne({ email });
-        if (!user) {
-            return response.status(400).json({
-                message: "Email is not available",
-                error: true,
-                success: false
-            })
-        }
-
-        if (newPassword !== confirmPassword) {
-            return response.status(400).json({
-                message: "newPassword and confirmPassword must be same.",
-                error: true,
-                success: false,
-            })
-        }
-
-        const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(confirmPassword, salt);
-
-        user.password = hashPassword;
-        await user.save();
-
-
-        return response.json({
-            message: "password updated successfully.",
-            error: false,
-            success: true
-        })
-    } catch (error) {
-        return response.status(500).json({
-            message: error.message || error,
-            error: true,
-            success: false
-        })
+    if (!email || !oldPassword || !newPassword || !confirmPassword) {
+      return response.status(400).json({
+        error: true,
+        success: false,
+        message: "Provide required fields: email, oldPassword, newPassword, confirmPassword"
+      });
     }
+
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return response.status(400).json({
+        message: "Email is not available",
+        error: true,
+        success: false
+      });
+    }
+
+    if (!user.password) {
+      return response.status(400).json({
+        message: "No password found for this user.",
+        error: true,
+        success: false
+      });
+    }
+
+    const checkPassword = await bcrypt.compare(oldPassword, user.password);
+    if (!checkPassword) {
+      return response.status(400).json({
+        message: "Your old password is wrong",
+        error: true,
+        success: false,
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return response.status(400).json({
+        message: "New password and confirm password must be same.",
+        error: true,
+        success: false,
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(confirmPassword, salt);
+
+    user.password = hashPassword;
+    await user.save();
+
+    return response.json({
+      message: "Password updated successfully.",
+      error: false,
+      success: true
+    });
+  } catch (error) {
+    console.error("Reset Password Error:", error);
+    return response.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false
+    });
+  }
 }
 
 //refresh Token

@@ -14,7 +14,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ProductZoom from "./Components/ProductZoom/Index.jsx";
 import { IoClose } from "react-icons/io5";
 import ProductDetailsComponent from "./Components/ProductDetails/Index.jsx";
-import Login from "./Pages/Login/Index.jsx";
+import Login from "./Pages/Login/index.jsx";
 import Register from "./Pages/Register/index.jsx";
 import CartPage from "./Pages/Cart/Index.jsx";
 

@@ -114,7 +114,7 @@ const MyAccount = () => {
       .then((res) => {
         setIsLoading2(false);
         if (res?.error !== true) {
-          context.alertBox("success", res?.data?.message);
+          context.alertBox("success", res?.message);
           setChangePassword({
             email: formFields.email,
             oldPassword: "",
@@ -122,7 +122,7 @@ const MyAccount = () => {
             confirmPassword: "",
           });
         } else {
-          context.alertBox("error", res?.data?.message);
+          context.alertBox("error", res?.message);
         }
       })
       .catch(() => {
