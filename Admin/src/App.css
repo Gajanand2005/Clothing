@@ -47,3 +47,19 @@ body{
     height: 90vh;
     display: flex;
 }
+
+input[type=text]:disabled,input[type=email]:disabled{
+  pointer-events: none;
+  background: #f1f1f1 !important;
+}
+
+.react-international-phone-input{
+ width: 100% !important;
+}
+
+.react-international-phone-country-selector-button__button-content{
+    width: 55px !important;
+}
+.react-international-phone-input-container{
+   border: 1px solid rgba(0, 0, 0,0.1) !important;
+}

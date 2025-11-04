@@ -139,6 +139,7 @@ const Header = () => {
               </MenuItem>
 
               <Divider />
+              <Link to="/profile">
               <MenuItem
                 onClick={handleCloseMyAcc}
                 className="flex items-center gap-4"
@@ -146,6 +147,8 @@ const Header = () => {
                 <FaUser className="text-[16px]" />{" "}
                 <span className="text-[16px]">Profile</span>
               </MenuItem>
+              </Link>
+
               <MenuItem
                 onClick={handleCloseMyAcc}
                 className="flex items-center gap-3"

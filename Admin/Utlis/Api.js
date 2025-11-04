@@ -38,17 +38,11 @@ export const fetchDataFromApi = async (url)=>{
         }
 
         const {data} = await axios.get(apiUrl+ url,params )
-
+        
         return data;
     } catch (error) {
         console.log(error);
-        if (error.response) {
-            // Server responded with error status
-            return error.response.data;
-        } else {
-            // Network error or other issue
-            return { error: true, message: 'Network error or server unreachable' };
-        }
+        return error;
     }
 }
 

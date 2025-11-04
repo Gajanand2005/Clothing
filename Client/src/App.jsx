@@ -65,6 +65,7 @@ const App = () => {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             alertBox("error","Your session is closed please login again")
+            window.location.href="/login";
             setIsLogin(false);
           }
         } else {

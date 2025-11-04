@@ -31,6 +31,8 @@ import VerifyAccount from './pages/VerifyAccount/index.jsx';
 import ChangePassword from './pages/ChangePassword/index.jsx';
 import { fetchDataFromApi } from '../Utlis/Api.js';
 import { useEffect } from 'react';
+import Profile from './pages/Profile/index.jsx';
+import AddAdress from './pages/Adress/AddAdress.jsx';
 
 
 
@@ -482,7 +484,37 @@ function App() {
       ),
     },
 
-
+  {
+      path: "/profile",
+      exact: true,
+      element: (
+        <>
+          <section className="main">
+            <Header />
+            <div className="contentMain flex">
+              <div
+                className={`overflow-hidden sidebarWrapper ${
+                  isSidebarOpen === true
+                    ? "w-[23%] transition-all"
+                    : "w-[0%] opacity-0 transition-all"
+                }`}
+              >
+                <Sidebar />
+              </div>
+              <div
+                className={`contentRight py-4 px-5 ${
+                  isSidebarOpen
+                    ? "w-[77%] transition-all"
+                    : "w-[100%] transition-all"
+                }`}
+              >
+                <Profile />
+              </div>
+            </div>
+          </section>
+        </>
+      ),
+    },
   ]);
 
 useEffect(()=>{
@@ -497,7 +529,8 @@ useEffect(()=>{
              localStorage.removeItem('accessToken');
              localStorage.removeItem('refreshToken');
              alertBox("error","Your session is closed please login again")
-             setIsLogin(false);
+             window.location.href="/login";
+
            }
          } else {
            setUserData(res.data);
@@ -572,6 +605,9 @@ useEffect(()=>{
 
       {
           isOpenFullScreenPanel ?.model === "Add New Sub Category" && <AddSubCategory/>
+        }
+      {
+          isOpenFullScreenPanel ?.model === "Add New Address" && <AddAdress/>
         }
 
       </Dialog>
