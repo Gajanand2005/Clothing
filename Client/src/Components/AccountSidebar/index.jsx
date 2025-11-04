@@ -8,13 +8,24 @@ import { NavLink } from "react-router";
 import Button from "@mui/material/Button";
 import { MyContext } from '../../App';
 import CircularProgress from '@mui/material/CircularProgress';
-import { editData } from '../../Utlis/Api';
+import {  uploadImage } from '../../Utlis/Api';
 
 const AccountSidebar = () => {
 
 const [previews, setPreviews] = useState([]);
 const [uploading, setUploading] = useState(false);
 
+
+  const context = useContext(MyContext);
+
+  useEffect(()=>{
+    const userAvtar = [];
+    if(context?.userData?.avatar!=="" && context?.userData?.avatar!==undefined){
+        userAvtar.push(context?.userData?.avatar);
+    setPreviews(userAvtar)
+    }
+   
+  })
 
 
 let img_arr = [];
@@ -38,7 +49,7 @@ const onChangeFile = async (e, apiEndPoint) => {
        const file = files[i];
        selectedImages.push(file);
        formdata.append(`avatar`,file);
-       editData("/api/user/user-avatar",formdata).then((res)=>{
+       uploadImage("/api/user/user-avatar",formdata).then((res)=>{
      setUploading(false);
      let avatar =[];
      avatar.push(res?.data?.avatar);
@@ -65,22 +76,29 @@ const onChangeFile = async (e, apiEndPoint) => {
                    uploading === true ? <CircularProgress color='inherit' /> :
                    <>
                    {
-                    previews?.length!==0 && previews?.map((img,index)=>{
+                    previews?.length!==0 ? previews?.map((img,index)=>{
                      return (
                          <img
                     src={img}
-                    index={index}
+                    key={index}
                     alt=""
                     className="w-full h-full object-cover"
                   />
                      )
-                    })
+                    }) :
+                       <img
+                    src={'/user.png'}
+                
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
                    }
+                     
                    </>
                  
                    }
                  
-
+                  
                  
 
                   <div className="overlay w-[100%] h-[100%] absolute top-0 left-0 z-50 bg-[rgba(0,0,0,0.5)] flex items-center justify-center cursor-pointer opacity-0 transition-all group-hover:opacity-100 ">
@@ -97,8 +115,8 @@ const onChangeFile = async (e, apiEndPoint) => {
                   </div>
                 </div>
 
-                <h3 className="text-[18px] md:text-[20px] font-[600]">Gagan</h3>
-                <p className="text-[12px] md:text-[14px] font-[600]">smalcouture@gmail.com</p>
+                <h3 className="text-[18px] md:text-[20px] font-[600]">{context?.userData?.name}</h3>
+                <p className="text-[12px] md:text-[14px] font-[600]">{context?.userData?.email}</p>
               </div>
 
               <ul className="list-none pb-5 bg-[#f1f1f1] myAccountTabs">

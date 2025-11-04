@@ -103,8 +103,6 @@ export async function verifyEmailController(request, response) {
             await user.save();
             return response.status(200).json({ error: false, success: true, message: "Email verified successfully" });
         } else if (!isCodeValid) {
-
-            return response.status(400), json({ error: true, success: false, message: "Invalid OTP" });
             return response.status(400).json({ error: true, success: false, message: "Invalid OTP" });
         } else {
             return response.status(400).json({ error: true, success: false, message: "OTP Expired" });
@@ -115,7 +113,7 @@ export async function verifyEmailController(request, response) {
         return response.status(500).json({
             message: error.message || error,
             error: true,
-            success: true
+            success: false
         })
     }
 }
@@ -219,7 +217,7 @@ export async function logoutController(request, res) {
         })
     }
 }
-//image upload 
+//image upload
 var imagesArr = [];
 export async function userAvatarController(request, response) {
     try {
@@ -228,34 +226,34 @@ export async function userAvatarController(request, response) {
         const userId = request.userId; // auth middleware
         const image = request.files;
 
+        if (!image || image.length === 0) {
+            return response.status(400).json({
+                message: "No image file provided",
+                error: true,
+                success: false
+            });
+        }
+
         const user = await UserModel.findOne({ _id: userId });
         if (!user) {
-            return response.status(500).json({
+            return response.status(404).json({
                 message: "User not found",
                 error: true,
                 success: false
-            })
+            });
         }
 
-        // first remove image from cloudinary
-        const imgUrl = user.avatar;
+        // first remove image from cloudinary if exists
+        if (user.avatar) {
+            const imgUrl = user.avatar;
+            const urlArr = imgUrl.split("/");
+            const avatar_image = urlArr[urlArr.length - 1];
+            const imageName = avatar_image.split(".")[0];
 
-        const urlArr = imgUrl.split("/");
-        const avatar_image = urlArr[urlArr.length - 1];
-
-        const imageName = avatar_image.split(".")[0];
-
-
-        if (imageName) {
-            const res = await cloudinary.uploader.destroy(
-                imageName,
-                (error, result) => {
-                    // console.log(error,res)
-                }
-            );
+            if (imageName) {
+                await cloudinary.uploader.destroy(imageName);
+            }
         }
-
-
 
         const options = {
             use_filename: true,
@@ -263,18 +261,10 @@ export async function userAvatarController(request, response) {
             overwrite: false,
         };
 
-        for (let i = 0; i < image?.length; i++) {
-
-            const img = await cloudinary.uploader.upload(
-                image[i].path,
-                options,
-                function (error, result) {
-
-                    imagesArr.push(result.secure_url);
-                    fs.unlinkSync(`uploads/${request.files[i].filename}`);
-                    console.log(request.files[i].filename)
-                }
-            );
+        for (let i = 0; i < image.length; i++) {
+            const result = await cloudinary.uploader.upload(image[i].path, options);
+            imagesArr.push(result.secure_url);
+            fs.unlinkSync(image[i].path);
         }
 
         user.avatar = imagesArr[0];
@@ -290,7 +280,7 @@ export async function userAvatarController(request, response) {
             message: error.message || error,
             error: true,
             success: false
-        })
+        });
     }
 }
 
@@ -366,7 +356,14 @@ export async function updateUserDetails(request, response) {
             message: "User Updated successfully",
             error: false,
             success: true,
-            user: updateUser
+            user: {
+                name:updateUser?.name,
+                _id:updateUser?._id,
+                email:updateUser?.email,
+                mobile:updateUser?.mobile, 
+                avatar:updateUser?.avatar,
+                
+            }
         })
 
 
@@ -595,7 +592,7 @@ export async function userDetails(request, response) {
         const user = await UserModel.findById(userId).select('-password -refresh_token')
         return response.json({
             message: 'user details',
-            date: user,
+            data: user,
             error: false,
             success: true
         })

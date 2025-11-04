@@ -46,11 +46,25 @@ export const fetchDataFromApi = async (url)=>{
     }
 }
 
-export const editData= async (url, updatedData) => {
+export const uploadImage= async (url, updatedData) => {
        const params={
             headers: {
                 'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
                 'Content-Type' : 'multipart/form-data', //adjust the content type as needed
+            },
+        }
+        let response;
+    await axios.put(apiUrl + url , updatedData, params).then((res)=>{
+    response=res;
+    })
+    return response;
+}
+
+export const editData = async (url, updatedData) => {
+       const params={
+            headers: {
+                'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
+                'Content-Type' : 'application/json', //adjust the content type as needed
             },
         }
         let response;

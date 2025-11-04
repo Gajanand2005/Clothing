@@ -59,19 +59,26 @@ const App = () => {
       setIsLogin(true)
 
       fetchDataFromApi(`/api/user/user-details`).then((res)=>{
-        
-        setUserData(res.data);
-      }).catch((error)=>{
-        
-        setIsLogin(false);
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-      })
+
+        if(res?.error === true){
+          if(res?.message === "You have not login"){
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            alertBox("error","Your session is closed please login again")
+            setIsLogin(false);
+          }
+        } else {
+          setUserData(res.data);
+        }
+      }).catch((error) => {
+        console.error("Error fetching user details:", error);
+        alertBox("error", "Failed to fetch user details");
+      });
 
     }else{
       setIsLogin(false)
     }
-  },[isLogin])
+  },[]) // Remove [isLogin] to prevent infinite loop
 
   const alertBox = (status, msg)=>{
 
