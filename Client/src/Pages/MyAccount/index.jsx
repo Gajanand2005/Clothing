@@ -7,12 +7,16 @@ import { Collapse } from "react-collapse";
 import { MyContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 const MyAccount = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
   const [userId, setUserId] = useState("");
-  const [isChangePasswordFormShow, setisChangePasswordFormShow] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [isChangePasswordFormShow, setisChangePasswordFormShow] =
+    useState(false);
 
   const [formFields, setFormFields] = useState({
     name: "",
@@ -28,7 +32,6 @@ const MyAccount = () => {
   });
 
   const context = useContext(MyContext);
-  const history = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -43,7 +46,9 @@ const MyAccount = () => {
       setFormFields({
         name: context?.userData?.name || "",
         email: context?.userData?.email || "",
-        mobile: context?.userData?.mobile ? String(context?.userData?.mobile) : "",
+        mobile: context?.userData?.mobile
+          ? String(context?.userData?.mobile)
+          : "",
       });
       setChangePassword((prev) => ({
         ...prev,
@@ -185,17 +190,18 @@ const MyAccount = () => {
 
               <div className="flex items-center !mt-4 gap-5">
                 <div className="w-[50%]">
-                  <TextField
-                    type="number"
-                    label="Number"
-                    variant="outlined"
-                    size="small"
-                    className="w-full"
-                    name="mobile"
-                    value={formFields.mobile}
+                  <PhoneInput
+                    defaultCountry="in"
+                    value={formFields?.mobile}
                     disabled={isLoading}
-                    onChange={onchangeInput}
+                    onChange={(phone) => {
+                      setPhone(phone);
+                      setFormFields({
+                        mobile: phone,
+                      });
+                    }}
                   />
+               
                 </div>
               </div>
 
@@ -207,7 +213,11 @@ const MyAccount = () => {
                   type="submit"
                   disabled={!valideValue}
                 >
-                  {isLoading ? <CircularProgress color="inherit" /> : "Update Profile"}
+                  {isLoading ? (
+                    <CircularProgress color="inherit" />
+                  ) : (
+                    "Update Profile"
+                  )}
                 </Button>
               </div>
             </form>

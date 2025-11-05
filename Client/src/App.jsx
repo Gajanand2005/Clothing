@@ -21,7 +21,7 @@ import CartPage from "./Pages/Cart/Index.jsx";
 import toast, {Toaster} from 'react-hot-toast'; 
 import ForgotPassword from './Pages/ForgotPassword/Index.jsx'
 import CheckOut from "./Pages/CheckOut/Index.jsx";
-import MyAccount from "./Pages/MyAccount/Index.jsx";
+import MyAccount from "./Pages/MyAccount/index.jsx";
 import MyList from "./Pages/MyList/Index.jsx";
 import Order from "./Pages/Orders/Index.jsx";
 import Whataap from "./Components/Whataap/Index.jsx";
@@ -30,6 +30,7 @@ import HelpCenter from "./Pages/HelpCenter/Index.jsx";
 import OrderTracking from "./Pages/OrderTracking/Index.jsx";
 import { fetchDataFromApi } from "./Utlis/Api.js";
 import Verify from "./Pages/Verify/index.jsx";
+import Address from "./Pages/MyAccount/Address.jsx";
 
  
 
@@ -132,6 +133,7 @@ const App = () => {
               <Route path={"/my-order"} exact={true} element={<Order />} />
               <Route path={"/order-tracking"} exact={true} element={<OrderTracking />} />
                <Route path={"/help-center"} exact={true} element={<HelpCenter />} />
+               <Route path={"/address"} exact={true} element={<Address />} />
           </Routes>
           <Whataap/>
           <Footer />

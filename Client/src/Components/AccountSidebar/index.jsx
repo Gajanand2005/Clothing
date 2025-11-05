@@ -8,7 +8,8 @@ import { NavLink } from "react-router";
 import Button from "@mui/material/Button";
 import { MyContext } from '../../App';
 import CircularProgress from '@mui/material/CircularProgress';
-import {  uploadImage } from '../../Utlis/Api';
+import {  uploadImage } from '../../Utlis/Api.js';
+import { LuMapPinHouse } from "react-icons/lu";
 
 const AccountSidebar = () => {
 
@@ -129,6 +130,18 @@ const onChangeFile = async (e, apiEndPoint) => {
                     </Button>
                   </NavLink>
                 </li>
+
+                     <li className="w-full">
+                  <NavLink
+                    to="/address" exact={true} activeClassName="isActive">
+                    <Button className="flex w-full !px-4 md:!px-5 !justify-start !text-left !text-[rgba(0,0,0,0.7)] !rounded-none items-center gap-2 ">
+                      <LuMapPinHouse className="text-[18px] md:text-[20px]" />
+                      <span className="text-[14px] md:text-[16px]"> Address</span>{" "}
+                    </Button>
+                  </NavLink>
+                </li>
+                     
+
                 <li className="w-full">
                     <NavLink
                     to="/my-list" exact={true} activeClassName="isActive">

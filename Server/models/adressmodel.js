@@ -20,16 +20,23 @@ const addressSchema = mongoose.Schema({
         type: String,
     },
     mobile: {
-        type: Number,
-        default: null
+        type: String,
+        default: ""
     },
     status: {
         type: Boolean,
-        default: true
+        default: true,
+        required: true
+    },
+     selected: {
+        type: Boolean,
+        default: true,
+        required: true
     },
     userId: {
         type: mongoose.Schema.ObjectId,
-        default: ""
+        ref: 'User',
+        required: true
     }
 },
    {
