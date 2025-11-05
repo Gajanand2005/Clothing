@@ -15,6 +15,9 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import Radio from "@mui/material/Radio";
 
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
+
 const Profile = () => {
   const [previews, setPreviews] = useState([]);
   const [uploading, setUploading] = useState(false);

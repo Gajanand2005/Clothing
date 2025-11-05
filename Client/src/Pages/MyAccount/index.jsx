@@ -32,7 +32,7 @@ const MyAccount = () => {
   });
 
   const context = useContext(MyContext);
-
+const history =useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token === null) {

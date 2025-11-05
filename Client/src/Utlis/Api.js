@@ -73,3 +73,16 @@ export const editData = async (url, updatedData) => {
     })
     return response;
 }
+
+
+export const deleteData = async (url)=>{
+const params={
+            headers: {
+                'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
+                'Content-Type' : 'application/json', //adjust the content type as needed
+            },
+        }
+
+    const {res}= await axios.delete(apiUrl + url, params)
+    return res;
+}

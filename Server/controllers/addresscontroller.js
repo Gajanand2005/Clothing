@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import AddressModel from "../models/adressmodel.js";
 import UserModel from "../models/usermodel.js";
+// import Address from "../../Client/src/Pages/MyAccount/Address.jsx";
 
 
 
@@ -138,3 +139,45 @@ export async function getAddressController (request, response) {
 //             });
 //         }
 // }
+
+export const deleteAddressController = async (req,res)=>{
+    try {
+        const userId = req.userId;
+        const _id = req.params.id;
+
+        if(!_id){
+            return res.status(400).json({
+                message : "Provide_id",
+                error : true,
+                success: false
+            })
+        }
+
+        const deleteItem = await AddressModel.deleteOne({
+            _id : _id,
+            userId : userId
+        })
+
+        if(!deleteItem){
+          return res.status(404).json({
+              message :"The address is not found",
+            error : true,
+            success: false
+          })
+        }
+
+        return res.json({
+            message : "Address removed",
+            error : false,
+            success: true,
+            data : deleteItem
+        })
+
+    } catch (error) {
+       return res.status(500).json({
+        message: error.message || error,
+        error : true,
+        success: false
+       }) 
+    }
+}
