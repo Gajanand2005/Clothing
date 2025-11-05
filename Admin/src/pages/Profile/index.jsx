@@ -12,7 +12,7 @@ import 'react-international-phone/style.css';
 const Profile = () => {
     const [previews, setPreviews] = useState([]);
 const [uploading, setUploading] = useState(false);
-const [phone, setPhone] = useState(+911234567890);
+const [phone, setPhone] = useState("");
 
 
 
