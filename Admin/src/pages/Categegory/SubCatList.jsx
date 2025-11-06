@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { MyContext } from "../../App";
 import { FaAngleDown } from "react-icons/fa6";
 import EditCategory from "./editCategory";
+import EditSubCatBox from "./editCategory";
 
 const SubCatList = () => {
   const [isOpen, setIsOpen] = useState(0);
@@ -15,6 +16,8 @@ const SubCatList = () => {
       setIsOpen(index);
     }
   };
+
+
 
   return (
     <>

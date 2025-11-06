@@ -79,6 +79,11 @@ function App() {
    
     id : ""
   });
+   const [isOpenFullScreenPanel2 , setIsOpenFullScreenPanel2] = useState({
+    open: false,
+   
+    id : ""
+  });
   
 
   const [productRows, setProductRows] = useState([
@@ -560,6 +565,8 @@ useEffect(()=>{
     setProductRows,
     isOpenFullScreenPanel,
     setIsOpenFullScreenPanel,
+   isOpenFullScreenPanel2,
+ setIsOpenFullScreenPanel2,
     alertBox,
     setUserData,
     userData,
