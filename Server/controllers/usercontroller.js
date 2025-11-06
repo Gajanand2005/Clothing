@@ -558,7 +558,7 @@ export async function resetPassword(request, response) {
 export async function refreshToken(request, response) {
     try {
 
-        const refreshToken = request.cookies.refreshToken || request?.headers?.authorization?.split("")[1] // bear token
+        const refreshToken = request.cookies.refreshToken // bear token
 
         if (!refreshToken) {
             return response.status(401).json({
@@ -611,6 +611,12 @@ export async function userDetails(request, response) {
         const userId = request.userId
         console.log(userId)
         const user = await UserModel.findById(userId).select('-password -refresh_token')
+
+        // Prevent caching to avoid 304 responses
+        response.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        response.set('Pragma', 'no-cache');
+        response.set('Expires', '0');
+
         return response.json({
             message: 'user details',
             data: user,

@@ -61,17 +61,16 @@ const App = () => {
 
       fetchDataFromApi(`/api/user/user-details`).then((res)=>{
 
-        if(res?.error === true){
-          if(res?.message === "You have not login"){
+          if(res?.success){
+            setUserData(res?.data);
+          } else if(res?.message === "You have not login" || res?.message === "jwt expired" || res?.message === "Invalid token"){
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             alertBox("error","Your session is closed please login again")
             window.location.href="/login";
             setIsLogin(false);
           }
-        } else {
-          setUserData(res.data);
-        }
+
       }).catch((error) => {
         console.error("Error fetching user details:", error);
         alertBox("error", "Failed to fetch user details");

@@ -21,25 +21,34 @@ export async function uploadImages(request, response) {
             overwrite: false,
         };
 
-        for (let i = 0; i < image?.length; i++) {
-
-            const result = await cloudinary.uploader.upload(
-                image[i].path, 
-                options,
-                function (error, result) {
-                    // imagesArr.push(result.secure_url);
-
-                     // Push Cloudinary image URL
-                    if (result && result.secure_url) {
-                       imagesArr.push(result.secure_url);
-                    } else {
-                      console.error("Upload failed: no secure_url", result);
+        const uploadPromises = image.map(file => {
+            return new Promise((resolve, reject) => {
+                cloudinary.uploader.upload(
+                    file.path,
+                    options,
+                    (error, result) => {
+                        if (error) {
+                            reject(error);
+                        } else {
+                            if (result && result.secure_url) {
+                                imagesArr.push(result.secure_url);
+                            } else {
+                                console.error("Upload failed: no secure_url", result);
+                            }
+                            // Delete from local uploads folder
+                            try {
+                                fs.unlinkSync(file.path);
+                            } catch (unlinkError) {
+                                console.error("Error deleting file:", unlinkError);
+                            }
+                            resolve();
+                        }
                     }
-                     // Delete from local uploads folder
-                    fs.unlinkSync(`uploads/${request.files[i].filename}`);
-                }
-            );
-        }
+                );
+            });
+        });
+
+        await Promise.all(uploadPromises);
 
         return response.status(200).json({
             images: imagesArr
@@ -72,11 +81,11 @@ export async function createCategory(request, response) {
         })
     }
 
-    category =  await category.save(); 
+    category =  await category.save();
 
     imagesArr = [];
 
-    return response.status(500).json({
+    return response.status(201).json({
             message: "category created",
             error: false,
             success: true,
@@ -112,6 +121,7 @@ export async function getCategories(request, response) {
             }
         });
 
+        response.set('Cache-Control', 'no-store');
         return response.status(200).json({
             error: false,
             success: true,
@@ -213,24 +223,40 @@ export async function getCategory(request, response) {
 
 // Delete images
 export async function removeImageFromCloudinary(request, response) {
-    const imgUrl = request.query.img;
+    try {
+        const imgUrl = request.query.img;
 
-    const urlArr = imgUrl.split("/");
-    const image = urlArr[urlArr.length - 1];
+        const urlArr = imgUrl.split("/");
+        const image = urlArr[urlArr.length - 1];
 
-    const imageName = image.split(".")[0];
+        const imageName = image.split(".")[0];
 
-    if (imageName) {
-        const res = await cloudinary.uploader.destroy(
-            imageName,
-            (error, result) => {
-                // console.log(error,res)
+        if (imageName) {
+            const result = await cloudinary.uploader.destroy(imageName);
+
+            if (result.result === 'ok') {
+                return response.status(200).json({
+                    success: true,
+                    message: 'Image deleted successfully'
+                });
+            } else {
+                return response.status(400).json({
+                    success: false,
+                    message: 'Failed to delete image'
+                });
             }
-        );
-
-        if (res) {
-            response.status(200).send(res);
+        } else {
+            return response.status(400).json({
+                success: false,
+                message: 'Invalid image URL'
+            });
         }
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
     }
 }
 
@@ -292,14 +318,35 @@ export async function deleteCategory(request, response) {
 export async function updatedCategory(request, response) {
     // console.log(imagesArr);
 
+    const body = request.body || {};
+    const updateData = {};
+
+    if (body.name !== undefined) {
+        updateData.name = body.name;
+    }
+    if (imagesArr.length > 0) {
+        updateData.images = imagesArr;
+    } else if (body.images !== undefined) {
+        updateData.images = body.images;
+    }
+    if (body.parentId !== undefined) {
+        updateData.parentId = body.parentId;
+    }
+    if (body.parentCatName !== undefined) {
+        updateData.parentCatName = body.parentCatName;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+        return response.status(400).json({
+            message: "No valid fields provided for update",
+            error: true,
+            success: false
+        });
+    }
+
     const category = await CategoryModel.findByIdAndUpdate(
         request.params.id,
-        {
-            name: request.body.name,
-            images: imagesArr.length > 0 ? imagesArr[0] : request.body.images,
-            parentId: request.body.parentId,
-            parentCatName: request.body.parentCatName
-        },
+        updateData,
         { new: true }
     );
 

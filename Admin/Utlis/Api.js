@@ -47,18 +47,18 @@ export const fetchDataFromApi = async (url)=>{
 }
 
 export const uploadImage= async (url, updatedData) => {
-       const params={
-            headers: {
-                'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
-                'Content-Type' : 'multipart/form-data', //adjust the content type as needed
-            },
-        }
-        let response;
-    await axios.put(apiUrl + url , updatedData, params).then((res)=>{
-    response=res;
-    })
-    return response;
-}
+        const params={
+             headers: {
+                 'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
+                 'Content-Type' : 'multipart/form-data', //adjust the content type as needed
+             },
+         }
+         let response;
+     await axios.post(apiUrl + url , updatedData, params).then((res)=>{
+     response=res;
+     })
+     return response;
+ }
 
 export const editData = async (url, updatedData) => {
        const params={
@@ -72,4 +72,26 @@ export const editData = async (url, updatedData) => {
     response=res;
     })
     return response;
+}
+
+export const deleteImages = async (url)=>{
+    const params={
+             headers: {
+                 'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
+                 'Content-Type' : 'application/json', //adjust the content type as needed
+             },
+         }
+    const {data} = await axios.delete(apiUrl + url, params);
+    return data;
+}
+
+export const deleteData = async(url)=>{
+    const params={
+             headers: {
+                 'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
+                 'Content-Type' : 'application/json', //adjust the content type as needed
+             },
+         }
+    const {res} = await axios.delete(apiUrl + url,params)
+    return res;
 }

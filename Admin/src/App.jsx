@@ -1,4 +1,4 @@
-import React from 'react'
+ import React from 'react'
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard/Index.jsx";
@@ -33,6 +33,7 @@ import { fetchDataFromApi } from '../Utlis/Api.js';
 import { useEffect } from 'react';
 import Profile from './pages/Profile/index.jsx';
 import AddAdress from './pages/Adress/AddAdress.jsx';
+import EditCategory from './pages/Categegory/editCategory.jsx';
 
 
 
@@ -71,10 +72,12 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [userData, setUserData]= useState(null);
   const [address, setAddress]= useState([]);
+  const [catData, setCatData]= useState([]);
 
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
-    model : "",
+   
+    id : ""
   });
   
 
@@ -525,23 +528,27 @@ useEffect(()=>{
 
        fetchDataFromApi(`/api/user/user-details`).then((res)=>{
 
-         if(res?.error === true){
-           if(res?.message === "You have not login" || res?.message === "jwt expired" || res?.message === "Invalid token"){
+           if(res?.success){
+             setUserData(res?.data);
+           } else if(res?.message === "You have not login" || res?.message === "jwt expired" || res?.message === "Invalid token"){
              localStorage.removeItem('accessToken');
              localStorage.removeItem('refreshToken');
              alertBox("error","Your session is closed please login again")
              window.location.href="/login";
-
            }
-         } else {
-           setUserData(res.data);
-         }
+
        });
 
      }else{
        setIsLogin(false)
      }
-   },[]) // Remove [isLogin] to prevent infinite loop
+   },[])// Remove [isLogin] to prevent infinite loop
+
+    useEffect(()=>{
+      fetchDataFromApi("/api/category").then((res)=>{
+        setCatData(res?.data)
+      })
+    }, [])
 
 
   const values = {
@@ -558,6 +565,8 @@ useEffect(()=>{
     userData,
     address,
     setAddress,
+    setCatData,
+    catData,
   };
 
   return (
@@ -611,6 +620,10 @@ useEffect(()=>{
         }
       {
           isOpenFullScreenPanel ?.model === "Add New Address" && <AddAdress/>
+        }
+
+        {
+          isOpenFullScreenPanel ?.model === "Edit Category" && <EditCategory/>
         }
 
       </Dialog>

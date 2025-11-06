@@ -14,7 +14,7 @@ import { FaEyeSlash } from "react-icons/fa";
 import { useContext } from "react";
 import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
-import { postData } from "../../../Utlis/Api";
+import { postData, fetchDataFromApi } from "../../../Utlis/Api";
 
 
 
@@ -97,6 +97,13 @@ const Login = () => {
           localStorage.setItem("refreshToken", res?.data?.refreshToken);
 
           context.setIsLogin(true);
+
+          // Fetch user details after login
+          fetchDataFromApi("/api/user/user-details").then((userRes) => {
+            if (userRes?.success) {
+              context.setUserData(userRes?.data);
+            }
+          });
 
           history("/");
         } else {

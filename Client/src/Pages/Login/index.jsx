@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
-import { postData } from "../../Utlis/Api";
+import { postData, fetchDataFromApi } from "../../Utlis/Api";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -83,6 +83,13 @@ const Login = () => {
           localStorage.setItem("refreshToken", res?.data?.refreshToken);
 
           context.setIsLogin(true);
+
+          // Fetch user details after login
+          fetchDataFromApi("/api/user/user-details").then((userRes) => {
+            if (userRes?.success) {
+              context.setUserData(userRes?.data);
+            }
+          });
 
           history("/");
         } else {
