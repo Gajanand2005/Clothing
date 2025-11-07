@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import { IoMenuSharp } from "react-icons/io5";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
 import { PiBellFill } from "react-icons/pi";
 import profilePhoto from "../../assets/profilephoto.jpg";
 import Menu from "@mui/material/Menu";
@@ -13,8 +12,22 @@ import { IoMdSettings } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { MyContext } from "../../App";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchDataFromApi } from "../../../Utlis/Api";
+import AddProduct from "../../pages/Products/AddProduct";
+import AddHomeSlide from "../../pages/HomeSliderBanners/AddHomeSlide";
+import AddCategory from "../../pages/Categegory/AddCategory";
+import AddSubCategory from "../../pages/Categegory/AddSubCategory";
+import AddAdress from "../../pages/Adress/AddAdress";
+import EditCategory from './../../pages/Categegory/editCategory';
+import Dialog from '@mui/material/Dialog';
+import toast, {Toaster} from 'react-hot-toast'; 
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { FaDoorClosed } from "react-icons/fa6";
+import { Slide } from "@mui/material";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -25,23 +38,31 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
+
 const Header = () => {
   const [anchorMyAcc, setAnchorMyAcc] = useState(null);
   const openMyAcc = Boolean(anchorMyAcc);
+  const history = useNavigate();
 
+   const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+
+  
   const handleClickMyAcc = (event) => {
     setAnchorMyAcc(event.currentTarget);
   };
-
+  
   const handleCloseMyAcc = () => {
     setAnchorMyAcc(null);
   };
-
+  
   const context = useContext(MyContext);
 
   const logout = () => {
     setAnchorMyAcc(null);
-
+    
     fetchDataFromApi(
       `/api/user/logout?token=${localStorage.getItem("accessToken")}`,
       { withCredentials: true }
@@ -56,6 +77,7 @@ const Header = () => {
   };
 
   return (
+    <> 
     <header className="w-full h-[auto] py-2 shadow-md pr-7 bg-[#f1f1f1] flex items-center justify-between bg-white">
       <div
         className={`part1 ${
@@ -169,6 +191,61 @@ const Header = () => {
         )}
       </div>
     </header>
+
+    
+       <Dialog
+        fullScreen
+        open={context?.isOpenFullScreenPanel.open}
+        onClose={()=> context?.setIsOpenFullScreenPanel({
+          open: false,
+        })}
+        slots={{
+          transition: Transition,
+        }}
+      >
+        <AppBar sx={{ position: 'relative' }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={()=>context?.setIsOpenFullScreenPanel({
+                open: false,
+              })}
+              aria-label="close"
+            >
+              <FaDoorClosed   />
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              {context?.isOpenFullScreenPanel ?.model}
+            </Typography>
+         
+          </Toolbar>
+        </AppBar>
+       {
+          context?.isOpenFullScreenPanel ?.model === "Add Product" && <AddProduct/>
+        }
+
+        {
+          context?.isOpenFullScreenPanel ?.model === "Add Home Slide" && <AddHomeSlide/>
+        }
+
+         {
+          context?.isOpenFullScreenPanel ?.model === "Add New Category" && <AddCategory/>
+        }
+
+      {
+          context?.isOpenFullScreenPanel ?.model === "Add New Sub Category" && <AddSubCategory/>
+        }
+      {
+          context?.isOpenFullScreenPanel ?.model === "Add New Address" && <AddAdress/>
+        }
+
+        {
+          context?.isOpenFullScreenPanel ?.model === "Edit Category" && <EditCategory/>
+        }
+
+      </Dialog>
+  </>
   );
 };
 

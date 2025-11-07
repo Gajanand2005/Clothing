@@ -8,22 +8,13 @@ import { createContext, useState } from "react";
 import Login from "./pages/Login/index.jsx";
 import SignUp from "./pages/Signup/index.jsx";
 import Products from "./pages/Products/Index.jsx";
-import AddProduct from './pages/Products/AddProduct.jsx';
-import Dialog from '@mui/material/Dialog';
+
 import toast, {Toaster} from 'react-hot-toast'; 
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { FaDoorClosed } from "react-icons/fa6";
+
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
 import HomeSliderBanners from './Pages/HomeSliderBanners/Index.jsx';
-import AddHomeSlide from './pages/HomeSliderBanners/AddHomeSlide.jsx';
-import CategoryList from './pages/Categegory/Index.jsx';
-import AddCategory from './pages/Categegory/AddCategory.jsx';
-import SubCatList from './pages/Categegory/SubCatList.jsx';
-import AddSubCategory from './pages/Categegory/AddSubCategory.jsx';
+
 import Users from './pages/Users/Index.jsx';
 import Orders from './pages/Orders/Index.jsx';
 import ForgotPassword from './pages/ForgotPassword/index.jsx';
@@ -32,8 +23,9 @@ import ChangePassword from './pages/ChangePassword/index.jsx';
 import { fetchDataFromApi } from '../Utlis/Api.js';
 import { useEffect } from 'react';
 import Profile from './pages/Profile/index.jsx';
-import AddAdress from './pages/Adress/AddAdress.jsx';
-import EditCategory from './pages/Categegory/editCategory.jsx';
+import CategoryList from './pages/Categegory/Index';
+import SubCatList from './pages/Categegory/SubCatList';
+
 
 
 
@@ -581,59 +573,7 @@ useEffect(()=>{
       <MyContext.Provider value={values}>
         <RouterProvider router={router} />
 
-       <Dialog
-        fullScreen
-        open={isOpenFullScreenPanel.open}
-        onClose={()=>setIsOpenFullScreenPanel({
-          open: false,
-        })}
-        slots={{
-          transition: Transition,
-        }}
-      >
-        <AppBar sx={{ position: 'relative' }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={()=>setIsOpenFullScreenPanel({
-                open: false,
-              })}
-              aria-label="close"
-            >
-              <FaDoorClosed   />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {isOpenFullScreenPanel ?.model}
-            </Typography>
-         
-          </Toolbar>
-        </AppBar>
-     
-        {
-          isOpenFullScreenPanel ?.model === "Add Product" && <AddProduct/>
-        }
-
-        {
-          isOpenFullScreenPanel ?.model === "Add Home Slide" && <AddHomeSlide/>
-        }
-
-         {
-          isOpenFullScreenPanel ?.model === "Add New Category" && <AddCategory/>
-        }
-
-      {
-          isOpenFullScreenPanel ?.model === "Add New Sub Category" && <AddSubCategory/>
-        }
-      {
-          isOpenFullScreenPanel ?.model === "Add New Address" && <AddAdress/>
-        }
-
-        {
-          isOpenFullScreenPanel ?.model === "Edit Category" && <EditCategory/>
-        }
-
-      </Dialog>
+      
 
         <Toaster/>
 

@@ -11,6 +11,8 @@ import { IoClose } from "react-icons/io5";
 import { Button } from "@mui/material";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { MyContext } from "../../App";
+import { deleteImages, postData } from "../../../Utlis/Api";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
   const [formFields, setFormFields] = useState({
@@ -27,18 +29,19 @@ const AddProduct = () => {
     thirdsubCat: "",
     thirdsubCatId: "",
     countInStock: "",
-    rating: "",
     isFeatured: false,
     discount: "",
-    productRam: [],
     size: [],
-    productWeight: [],
   });
 
   const [productCat, setProductCat] = useState("");
   const [productSubCat, setProductSubCat] = useState("");
   const [productFeatured, setProductFeatured] = useState("");
-  const [productSize, setProductSize] = useState("");
+  const [productSize, setProductSize] = useState([]);
+  const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
+  const [previews, setPreviews] = useState([]);
+    const [isLoading, setIsLoading] = useState();
+  const history = useNavigate();
 
   const context = useContext(MyContext);
 
@@ -46,18 +49,42 @@ const AddProduct = () => {
     setProductCat(event.target.value);
     formFields.catId = event.target.value;
   };
+  const selectDatByName =(name)=> {
+   
+  formFields.catName = name;
+  }
 
   const handleChangeProductSubCat = (event) => {
     setProductSubCat(event.target.value);
     formFields.subCatId = event.target.value;
   };
 
+ const selectSubDatByName =(name)=> {
+   
+  formFields.subCat = name;
+  }
+
+const handleChangeProductThirdLavelCat =(event)=> {
+  setProductThirdLavelCat(event.target.value);
+    formFields.thirdsubCatId = event.target.value;
+}
+ const selectSubDatByThirdLavel =(name)=> {
+  formFields.thirdsubCat = name;
+  }
+
+
+
   const handleChangeProductFeatured = (event) => {
     setProductFeatured(event.target.value);
+    formFields.isFeatured=event.target.value
   };
 
   const handleChangeProductSize = (event) => {
-    setProductSize(event.target.value);
+    const {target:{value}} = event;
+    setProductSize(
+      typeof value === "string" ? value.split(","):value
+    );
+    formFields.size= value;
   };
 
   const onChangeInput = (e) => {
@@ -70,10 +97,48 @@ const AddProduct = () => {
     });
   };
 
+ const setPreviewsFun = (previewsArr) => {
+    setPreviews(previewsArr);
+    formFields.images = previewsArr;
+  };
+
+  const removeImg = (images, index) => {
+    var imageArr = [];
+    imageArr = previews;
+    deleteImages(`/api/product/deleteImage?img=${images}`).then((res) => {
+      imageArr.splice(index, 1);
+      setPreviews([]);
+      setTimeout(() => {
+        setPreviews(imageArr);
+        formFields.images = imageArr;
+      }, 100);
+    });
+  };
+
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  postData("/api/product/create", formFields).then((res) => {
+    if (res?.error === false) {
+      context.alertBox("error", res?.message);
+
+      setTimeout(() => {
+        setIsLoading(false);
+        context.setIsOpenFullScreenPanel({
+          open: false,
+        });
+        history("/products");
+      }, 1000);
+    }
+  });
+};
+
+
   return (
     <>
       <section className="p-5 bg-gray-50 ">
-        <form className="form py-3 p-8 ">
+        <form className="form py-3 p-8 " onSubmit={handleSubmit}>
           <div className="scroll max-h-72vh] overflow-y-scroll">
             <div className="grid grid-cols-1 mb-3">
               <div className="col">
@@ -119,7 +184,7 @@ const AddProduct = () => {
                     onChange={handleChangeProductCat}
                   >
                     {context?.catData.map((cat, index) => {
-                      return <MenuItem value={cat?._id}>{cat?.name}</MenuItem>;
+                      return <MenuItem value={cat?._id} onClick={()=>selectDatByName(cat?.name)}  >{cat?.name}</MenuItem>;
                     })}
                   </Select>
                 )}
@@ -137,13 +202,13 @@ const AddProduct = () => {
                     size="small"
                     value={productSubCat}
                     label="Category"
-                    onChange={handleChangeProductCat}
+                    onChange={handleChangeProductSubCat}
                   >
                     {context?.catData.map(
                       (cat, index) =>
                         cat?.children.length !== 0 &&
                         cat?.children.map((subCat, subIndex) => (
-                          <MenuItem key={subCat._id} value={subCat._id}>
+                          <MenuItem key={subCat._id} value={subCat._id}   onClick={()=>selectSubDatByName(cat?.name)}  >
                             {subCat.name}
                           </MenuItem>
                         ))
@@ -166,16 +231,16 @@ const AddProduct = () => {
                     id="productCatDrop"
                     className="w-full bg-[#fafafa]"
                     size="small"
-                    value={productSubCat}
+                    value={productThirdLavelCat}
                     label="Category"
-                    onChange={handleChangeProductCat}
+                    onChange={handleChangeProductThirdLavelCat}
                   >
                     {context?.catData.map(
                       (cat, index) =>
                         cat?.children.length !== 0 &&
                         cat?.children.map((subCat, subIndex) => (
                           subCat?.children?.length!==0  &&  subCat?.children?.map((thirdLavelCat,index)=>{
-                            return  <MenuItem key={thirdLavelCat._id} value={thirdLavelCat._id}>
+                            return  <MenuItem key={thirdLavelCat._id} value={thirdLavelCat._id} onClick={()=>selectSubDatByThirdLavel(thirdLavelCat.name)}    >
                             {thirdLavelCat.name}
                           </MenuItem>
                           })
@@ -218,8 +283,8 @@ const AddProduct = () => {
                   label="Category"
                   onChange={handleChangeProductFeatured}
                 >
-                  <MenuItem value={10}>True</MenuItem>
-                  <MenuItem value={20}>false</MenuItem>
+                  <MenuItem value={true}>True</MenuItem>
+                  <MenuItem value={false}>False</MenuItem>
                 </Select>
               </div>
               <div className="col">
@@ -257,6 +322,7 @@ const AddProduct = () => {
               <div className="col">
                 <h3 className="text-[14px] font-[500] !mb-2">Product Size </h3>
                 <Select
+                multiple
                   labelId="demo-simple-select-label"
                   id="productCatDrop"
                   className="w-full bg-[#fafafa]"
@@ -265,6 +331,7 @@ const AddProduct = () => {
                   label="Category"
                   onChange={handleChangeProductSize}
                 >
+                  
                   <MenuItem value={10}>XS</MenuItem>
                   <MenuItem value={20}>S</MenuItem>
                   <MenuItem value={30}>M</MenuItem>
@@ -281,71 +348,58 @@ const AddProduct = () => {
               <h3 className="font-[600] text-[22px] mb-2">Media & Images</h3>
 
               <div className="grid grid-cols-7 gap-20 ">
-                <div className="uploadBoxWrapper relative">
-                  <span className="absolute w-[20px] h-[20px] rounded-full overflow-hidden bg-red-700 -top-[5px] -right-[75px] flex items-center justify-center z-50 cursor-pointer">
-                    <IoClose className="text-white text-[17px]" />
-                  </span>
-                  <div className="uploadBox p-0 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.4)] h-[150px] w-[180px] bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
-                    <LazyLoadImage
-                      alt={"image"}
-                      effect="blur"
-                      wrapperProps={{
-                        // If you need to, you can tweak the effect transition using the wrapper style.
-                        style: { transitionDelay: "1s" },
-                      }}
-                      className="w-full h-full object-cover"
-                      src="https://ecme-react.themenate.net/img/products/product-6.jpg"
-                    />
-                  </div>
-                </div>
+              {previews?.length !== 0 &&
+                previews?.map((images, index) => {
+                  return (
+                    <div className="uploadBoxWrapper relative" key={index}>
+                      <span className="absolute w-[20px] h-[20px] rounded-full overflow-hidden bg-red-700 -top-[5px] -right-[50px] flex items-center justify-center z-50 cursor-pointer">
+                        <IoClose
+                          className="text-white text-[17px]"
+                          onClick={() => removeImg(images, index)}
+                        />
+                      </span>
 
-                <div className="uploadBoxWrapper relative">
-                  <span className="absolute w-[20px] h-[20px] rounded-full overflow-hidden bg-red-700 -top-[5px] -right-[75px] flex items-center justify-center z-50 cursor-pointer">
-                    <IoClose className="text-white text-[17px]" />
-                  </span>
-                  <div className="uploadBox p-0 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.4)] h-[150px] w-[180px] bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
-                    <LazyLoadImage
-                      alt={"image"}
-                      effect="blur"
-                      wrapperProps={{
-                        // If you need to, you can tweak the effect transition using the wrapper style.
-                        style: { transitionDelay: "1s" },
-                      }}
-                      className="w-full h-full object-cover"
-                      src="https://ecme-react.themenate.net/img/products/product-6.jpg"
-                    />
-                  </div>
-                </div>
+                      <div className="uploadBox p-0 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.4)] h-[150px] w-[180px] bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
+                        <LazyLoadImage
+                          alt={"image"}
+                          effect="blur"
+                          wrapperProps={{
+                            // If you need to, you can tweak the effect transition using the wrapper style.
+                            style: { transitionDelay: "1s" },
+                          }}
+                          className="w-full h-full object-cover"
+                          src={images}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
 
-                <div className="uploadBoxWrapper relative">
-                  <span className="absolute w-[20px] h-[20px] rounded-full overflow-hidden bg-red-700 -top-[5px] -right-[75px] flex items-center justify-center z-50 cursor-pointer">
-                    <IoClose className="text-white text-[17px]" />
-                  </span>
-                  <div className="uploadBox p-0 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.4)] h-[150px] w-[180px] bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
-                    <LazyLoadImage
-                      alt={"image"}
-                      effect="blur"
-                      wrapperProps={{
-                        // If you need to, you can tweak the effect transition using the wrapper style.
-                        style: { transitionDelay: "1s" },
-                      }}
-                      className="w-full h-full object-cover"
-                      src="https://ecme-react.themenate.net/img/products/product-6.jpg"
-                    />
-                  </div>
-                </div>
-
-                <UploadBox multiple={true} />
-              </div>
+              <UploadBox
+                multiple={true}
+                name="images"
+                url="/api/product/uploadImages"
+                setPreviews={setPreviewsFun}
+              />
+            </div>
             </div>
           </div>
 
           <hr />
           <br />
-          <Button type="button" className="btn-blue btn-lg w-full flex gap-4">
-            <FaCloudUploadAlt className="text-[25px]" />
-            Publish and View
-          </Button>
+           <Button
+                      type="submit"
+                      className="!bg-blue-600 !text-black btn-lg w-[250px] flex gap-4"
+                    >
+                      {isLoading === true ? (
+                        <CircularProgress color="inherit" />
+                      ) : (
+                        <>
+                          <FaCloudUploadAlt className="text-[25px]" />
+                          Publish and View
+                        </>
+                      )}
+                    </Button>
         </form>
       </section>
     </>

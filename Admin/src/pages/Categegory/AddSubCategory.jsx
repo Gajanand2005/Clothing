@@ -10,6 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
 import { postData } from "../../../Utlis/Api";
+import { useNavigate } from "react-router-dom";
 
 const AddSubCategory = () => {
   const [productSubCat, setProductSubCat] = useState("");
@@ -29,6 +30,7 @@ const AddSubCategory = () => {
     parentCatName: null,
     parentId: null,
   });
+      const history=useNavigate();
 
   const context = useContext(MyContext);
 
@@ -134,6 +136,7 @@ const AddSubCategory = () => {
           open: false,
         });
       }
+      history("/subCategory/list")
     });
   };
 

@@ -18,9 +18,9 @@ productRouter.get('/getAllProductsByPrice',  getAllProductsByPrice);
 productRouter.get('/getAllProductsByRating',  getAllProductsByRating);
 productRouter.get('/getAllProductsCount',  getAllProductsCount);
 productRouter.get('/getAllFeaturedProducts',  getAllFeaturedProducts);
+productRouter.delete('/deleteImage',auth, removeImageFromCloudinary);
 productRouter.delete('/:id',  deleteProduct);
 productRouter.get('/:id',  getProducts);
-productRouter.delete('/deleteImage',auth, removeImageFromCloudinary);
 productRouter.put('/updateProduct/ :id',auth, updateProduct);
 
 

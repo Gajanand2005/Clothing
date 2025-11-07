@@ -698,7 +698,7 @@ export async function deleteProduct(req,res){
     const deletedProduct = await ProductModel.findByIdAndDelete(req.params.id);
 
     if(!deletedProduct) {
-        res.status(404).jso({
+        res.status(404).json({
             message: "Product not deleted!",
             success: false,
             error: true
