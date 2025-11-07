@@ -11,11 +11,11 @@ import { IoClose } from "react-icons/io5";
 import { Button } from "@mui/material";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { MyContext } from "../../App";
-import { deleteImages, postData } from "../../../Utlis/Api";
-import { useNavigate } from "react-router-dom";
+import { deleteImages, fetchDataFromApi, postData } from "../../../Utlis/Api";
+import { useNavigate, useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const AddProduct = () => {
+const EditProduct = () => {
   const [formFields, setFormFields] = useState({
     name: "",
     description: "",
@@ -48,6 +48,22 @@ const AddProduct = () => {
   const context = useContext(MyContext);
 
  
+
+ useEffect(()=>{
+  if(context?.isOpenFullScreenPanel?.id){
+    fetchDataFromApi(`/api/product/${ context?.isOpenFullScreenPanel?.id}`).then((res)=>{
+      if(res?.error === false && res?.product){
+        setFormFields(res.product);
+        setProductCat(res.product.catId);
+        setProductSubCat(res.product.subCatId);
+        setProductThirdLavelCat(res.product.thirdsubCatId);
+        setProductFeatured(res.product.isFeatured);
+        setProductSize(res.product.size || []);
+        setPreviews(res.product.images || []);
+      }
+    })
+  }
+ }, [context?.isOpenFullScreenPanel?.id])
  
 
   const handleChangeProductCat = (event) => {
@@ -178,7 +194,7 @@ const handleSubmit = (e) => {
 
 
   setIsLoading(true);
-  postData("/api/product/create", formFields).then((res) => {
+  postData(`/api/product/${context?.isOpenFullScreenPanel?.id}`, formFields).then((res) => {
     if (res?.error === false) {
       context.alertBox("success", res?.message);
 
@@ -468,4 +484,4 @@ const handleSubmit = (e) => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

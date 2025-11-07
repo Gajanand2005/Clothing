@@ -1,0 +1,1 @@
+- [ ] Update getProducts function in Server/controllers/productcontroller.js to set stronger cache headers to prevent 304 responses

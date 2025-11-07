@@ -1,6 +1,8 @@
 import ProductModel from '../models/productmodel.js';
 import { v2 as cloudinary } from 'cloudinary';
+import { error } from 'console';
 import fs from 'fs';
+import { console } from 'inspector';
 
 cloudinary.config({
     cloud_name: process.env.cloudinary_Config_Cloud_Name,
@@ -51,7 +53,7 @@ export async function uploadImages(request, response) {
         return response.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -69,6 +71,7 @@ export async function createProduct(req, res) {
                 oldPrice: req.body.oldPrice,
                 catName: req.body.catName,
                 catId: req.body.catId,
+                category: req.body.category,
                 subCatId: req.body.subCatId,
                 subCat: req.body.subCat,
                 thirdsubCat: req.body.thirdsubCat,
@@ -87,7 +90,7 @@ export async function createProduct(req, res) {
            if (!product) {
                res.status(500).json({
                 error: true,
-                success: false,
+                successs: false,
                 message: "Product Not Created"
                });
            }
@@ -97,7 +100,7 @@ export async function createProduct(req, res) {
            res.status(200).json({
             message: "Product Created Successfully",
             error:false,
-            succes:true,
+            success:true,
             product:product
            })
 
@@ -105,7 +108,7 @@ export async function createProduct(req, res) {
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }    
@@ -116,34 +119,27 @@ export async function getAllProducts(req,res){
     try {
 
         const page = parseInt(req.query.page) || 1;
-        const perPage = parseInt(req.query.perPage) ;
+        const perPage = parseInt(req.query.perPage) || 10;
         const totalPosts = await ProductModel.countDocuments();
         const totalPages = Math.ceil(totalPosts/ perPage);
 
-        if(page > totalPages) {
+        if(totalPages > 0 && page > totalPages) {
             return res.status(404).json({
                 message: "Page not found",
-                success:false,
+                successs:false,
                 error:true
             });
         }
-     
+
         const products = await ProductModel.find().populate("category")
         .skip((page -1) * perPage)
         .limit(perPage)
         .exec();
 
-        if(!products){
-             res.status(500).json({
-                message:"No Products Found",
-                error:true,
-                success:false
-            });
-        }
-
+        res.set('Cache-Control', 'no-store');
         return res.status(200).json({
             error:false,
-            succes:true,
+            success:true,
             products: products,
             totalPages: totalPages,
             page:page
@@ -154,7 +150,7 @@ export async function getAllProducts(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -172,7 +168,7 @@ export async function getAllProductsByCatId(req,res){
         if(page > totalPages) {
             return res.status(404).json({
                 message: "Page not found",
-                success:false,
+                successs:false,
                 error:true
             });
         }
@@ -189,13 +185,13 @@ export async function getAllProductsByCatId(req,res){
              res.status(500).json({
                 message:"No Products Found",
                 error:true,
-                success:false
+                successs:false
             });
         }
 
         return res.status(200).json({
             error:false,
-            succes:true,
+            success:true,
             products: products,
             totalPages: totalPages,
             page:page
@@ -206,7 +202,7 @@ export async function getAllProductsByCatId(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -223,7 +219,7 @@ export async function getAllProductsByCatName(req,res){
         if(page > totalPages) {
             return res.status(404).json({
                 message: "Page not found",
-                success:false,
+                successs:false,
                 error:true
             });
         }
@@ -241,13 +237,13 @@ export async function getAllProductsByCatName(req,res){
              res.status(500).json({
                 message:"No Products Found",
                 error:true,
-                success:false
+                successs:false
             });
         }
 
         return res.status(200).json({
             error:false,
-            succes:true,
+            success:true,
             products: products,
             totalPages: totalPages,
             page:page
@@ -258,7 +254,7 @@ export async function getAllProductsByCatName(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -276,7 +272,7 @@ export async function getAllProductsBySubCatId(req,res){
         if(page > totalPages) {
             return res.status(404).json({
                 message: "Page not found",
-                success:false,
+                successs:false,
                 error:true
             });
         }
@@ -293,13 +289,13 @@ export async function getAllProductsBySubCatId(req,res){
              res.status(500).json({
                 message:"No Products Found",
                 error:true,
-                success:false
+                successs:false
             });
         }
 
         return res.status(200).json({
             error:false,
-            succes:true,
+            success:true,
             products: products,
             totalPages: totalPages,
             page:page
@@ -310,7 +306,7 @@ export async function getAllProductsBySubCatId(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -327,7 +323,7 @@ export async function getAllProductsBySubCatName(req,res){
         if(page > totalPages) {
             return res.status(404).json({
                 message: "Page not found",
-                success:false,
+                successs:false,
                 error:true
             });
         }
@@ -345,13 +341,13 @@ export async function getAllProductsBySubCatName(req,res){
              res.status(500).json({
                 message:"No Products Found",
                 error:true,
-                success:false
+                successs:false
             });
         }
 
         return res.status(200).json({
             error:false,
-            succes:true,
+            success:true,
             products: products,
             totalPages: totalPages,
             page:page
@@ -362,7 +358,7 @@ export async function getAllProductsBySubCatName(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -380,7 +376,7 @@ export async function getAllProductsByThirdLavelCatId(req,res){
         if(page > totalPages) {
             return res.status(404).json({
                 message: "Page not found",
-                success:false,
+                successs:false,
                 error:true
             });
         }
@@ -397,13 +393,13 @@ export async function getAllProductsByThirdLavelCatId(req,res){
              res.status(500).json({
                 message:"No Products Found",
                 error:true,
-                success:false
+                successs:false
             });
         }
 
         return res.status(200).json({
             error:false,
-            succes:true,
+            success:true,
             products: products,
             totalPages: totalPages,
             page:page
@@ -414,7 +410,7 @@ export async function getAllProductsByThirdLavelCatId(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -431,7 +427,7 @@ export async function getAllProductsByThirdLavelCatName(req,res){
         if(page > totalPages) {
             return res.status(404).json({
                 message: "Page not found",
-                success:false,
+                successs:false,
                 error:true
             });
         }
@@ -449,13 +445,13 @@ export async function getAllProductsByThirdLavelCatName(req,res){
              res.status(500).json({
                 message:"No Products Found",
                 error:true,
-                success:false
+                successs:false
             });
         }
 
         return res.status(200).json({
             error:false,
-            succes:true,
+            success:true,
             products: products,
             totalPages: totalPages,
             page:page
@@ -466,7 +462,7 @@ export async function getAllProductsByThirdLavelCatName(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -486,7 +482,7 @@ export async function getAllProductsByPrice(req,res){
     if(req.query.subCatId != "" && req.query.subCatId !== undefined){
         const productListArr = await ProductModel.find({
             subCatId: req.query.subCatId,
-        }).poplate("category");
+        }).populate("category");
         
         productList = productListArr ;
     }
@@ -494,7 +490,7 @@ export async function getAllProductsByPrice(req,res){
     if(req.query.thirdsubCatId != "" && req.query.thirdsubCatId !== undefined){
         const productListArr = await ProductModel.find({
             thirdsubCatId: req.query.thirdsubCatId,
-        }).poplate("category");
+        }).populate("category");
         
         productList = productListArr ;
     }
@@ -511,7 +507,7 @@ export async function getAllProductsByPrice(req,res){
 
     return res.status(200).json({
         error:false,
-        success: true,
+        successs: true,
         products: filteredProducts,
         totalPages: 0,
         page: 0,
@@ -531,7 +527,7 @@ export async function getAllProductsByRating(req,res){
         if(page > totalPages) {
             return res.status(404).json({
                 message: "Page not found",
-                success:false,
+                successs:false,
                 error:true
             });
         }
@@ -579,13 +575,13 @@ export async function getAllProductsByRating(req,res){
              res.status(500).json({
                 message:"No Products Found",
                 error:true,
-                success:false
+                successs:false
             });
         }
 
         return res.status(200).json({
             error:false,
-            succes:true,
+            success:true,
             products: products,
             totalPages: totalPages,
             page:page
@@ -596,7 +592,7 @@ export async function getAllProductsByRating(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -610,13 +606,13 @@ export async function getAllProductsCount(req,res) {
         if(!productsCount) {
             res.status(500).json ({
                 error:true,
-                success:false
+                successs:false
             })
         }
 
         return  res.status(200).json({
             error:false,
-            success:true,
+            successs:true,
             productCount: productsCount
         })
    
@@ -624,7 +620,7 @@ export async function getAllProductsCount(req,res) {
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -642,13 +638,13 @@ export async function getAllFeaturedProducts(req,res){
              res.status(500).json({
                 message:"No Products Found",
                 error:true,
-                success:false
+                successs:false
             });
         }
 
         return res.status(200).json({
             error:false,
-            succes:true,
+            success:true,
             products: products,
            })
 
@@ -657,7 +653,7 @@ export async function getAllFeaturedProducts(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 }
@@ -671,7 +667,7 @@ export async function deleteProduct(req,res){
         return res.status(404).json({
             message: "Product not found",
             error: true,
-            success: false
+            successs: false
         })
     }
 
@@ -700,16 +696,64 @@ export async function deleteProduct(req,res){
     if(!deletedProduct) {
         res.status(404).json({
             message: "Product not deleted!",
-            success: false,
+            successs: false,
             error: true
         });
     }
 
     return res.status(200).json({
-        message: "Product deleted successfully",
-        success: true,
+        message: "Product deleted successsfully",
+        successs: true,
         error: false
     });
+}
+
+// delete multiple product
+export async function deleteMultipleProduct(req,res){
+    const {ids} = req.body;
+    if(!ids || !Array.isArray(ids)){
+        return res.status(400).json({
+            error:true,
+            success: false,
+            message : "invalid input"
+        });
+    }
+    for(let i=0; i<ids?.length; i++){
+        const product = await ProductModel.findById(ids[i]);
+        const images = product.images;
+        let img ="";
+        for(img of images){
+            const imgUrl = img;
+            const urlArr = imgUrl.split("/")           ;
+            const image = urlArr[urlArr.length - 1];
+
+            const imageName = image.split(".")[0];
+
+            if(imageName){
+                cloudinary.uploader.destroy(imageName,(error,result)=>{
+
+                })
+            }
+
+        }
+    }
+
+    try {
+
+        await ProductModel.deleteMany({_id:{$in : ids}});
+        return res.status(200).json({
+            message: "Product delete successfully",
+            error: false,
+            success: true
+        })        
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
 }
 
 
@@ -722,13 +766,16 @@ export async function getProducts(req,res){
             return res.status(404).json({
                 message: "The product is not found",
                 error: true,
-                success: false
-            });    
+                successs: false
+            });
         }
 
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
         return res.status(200).json({
             error:false,
-            success:true,
+            successs:true,
             product: product
         });
 
@@ -736,10 +783,10 @@ export async function getProducts(req,res){
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
-    }   
-}      
+    }
+}
 
 
 // Delete images
@@ -765,6 +812,8 @@ export async function removeImageFromCloudinary(request, response) {
     }
 }
 
+
+
 // Update cproduct
 export async function updateProduct(request, response) {
     // console.log(imagesArr);
@@ -775,13 +824,13 @@ export async function updateProduct(request, response) {
             {
                 name: request.body.name,
                 description: request.body.description,
-                images: request.body.name,
+                images: imagesArr.length > 0 ? imagesArr : request.body.images,
                 brand: request.body.brand,
                 price: request.body.price,
                 oldPrice: request.body.oldPrice,
                 catId: request.body.catId,
                 catName: request.body.catName,
-                subcat: request.body.subcat,
+                subCat: request.body.subCat,
                 subCatId: request.body.subCatId,
                 category: request.body.category,
                 thirdsubCat: request.body.thirdsubCat,
@@ -791,10 +840,10 @@ export async function updateProduct(request, response) {
                 isFeatured: request.body.isFeatured,
                 productRam: request.body.productRam,
                 size: request.body.size,
-                productWeight: request.body.productWeight, 
+                productWeight: request.body.productWeight,
             },
             { new: true }
-        );  
+        );
         
         if(!product) {
             response.status(404).json({
@@ -808,14 +857,14 @@ export async function updateProduct(request, response) {
         return response.status(200).json({
             message: "The product is updated",
             error: false,
-            success: true
+            successs: true
         });
 
     } catch (error) {
         return res.status(500).json({
             message: error.message || error,
             error: true,
-            success: false
+            successs: false
         })
     }
 

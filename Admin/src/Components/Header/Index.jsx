@@ -28,6 +28,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { FaDoorClosed } from "react-icons/fa6";
 import { Slide } from "@mui/material";
+import EditProduct from "../../pages/Products/editProduct";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -242,6 +243,10 @@ const Header = () => {
 
         {
           context?.isOpenFullScreenPanel ?.model === "Edit Category" && <EditCategory/>
+        }
+
+        {
+          context?.isOpenFullScreenPanel ?.model === "Edit Product" && <EditProduct/>
         }
 
       </Dialog>

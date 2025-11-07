@@ -1,6 +1,5 @@
-import { Button } from '@mui/material'
-import React, { useState, useMemo, useContext } from 'react'
-import { MdOutlineAddAlarm } from "react-icons/md";
+import { Button } from "@mui/material";
+import React, { useState, useContext, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,19 +8,22 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import TooltipMUI from "@mui/material/Tooltip";
 import { PiExportBold } from "react-icons/pi";
 import { FaPlus } from "react-icons/fa6";
 import Checkbox from "@mui/material/Checkbox";
 import ProgressBar from "../../Components/ProgressBar";
-import SearchBox from '../../Components/SearchBox/Index';
-import { MyContext } from '../../App';
-import { Link } from 'react-router-dom';
+import SearchBox from "../../Components/SearchBox/Index";
+import { MyContext } from "../../App";
+import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { AiTwotoneDelete } from "react-icons/ai";
+import { deleteData, fetchDataFromApi } from "../../../Utlis/Api";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const columns = [
   { id: "id", label: "ID", minWidth: 50 },
@@ -33,7 +35,8 @@ const columns = [
   { id: "action", label: "Action", minWidth: 100 },
 ];
 
-function createData(id, product, category, subCategory, oldPrice, currentPrice, salesPercent) {
+function createData(product, index, deleteProduct, context) {
+  const salesPercent = 50; // Default sales percent; adjust if API provides this
   const sales = (
     <div className="flex items-center gap-3">
       <ProgressBar
@@ -42,8 +45,8 @@ function createData(id, product, category, subCategory, oldPrice, currentPrice, 
           salesPercent >= 70
             ? "success"
             : salesPercent >= 40
-              ? "warning"
-              : "error"
+            ? "warning"
+            : "error"
         }
       />
       <span className="text-gray-700 font-medium">{salesPercent}%</span>
@@ -51,9 +54,14 @@ function createData(id, product, category, subCategory, oldPrice, currentPrice, 
   );
 
   const action = (
+
     <div className="flex items-center gap-1">
       <TooltipMUI title="Edit Product" placement="top">
-        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
+        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]" onClick={()=>context.setIsOpenFullScreenPanel({
+          open: true,
+          model: 'Edit Product',
+          id:product?._id
+        })} >
           <FaEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
         </Button>
       </TooltipMUI>
@@ -63,7 +71,7 @@ function createData(id, product, category, subCategory, oldPrice, currentPrice, 
         </Button>
       </TooltipMUI>
       <TooltipMUI title="Remove Product" placement="top">
-        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
+        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]" onClick={() => deleteProduct(product?._id)}>
           <AiTwotoneDelete className="text-[rgba(0,0,0,0.7)] text-[25px]" />
         </Button>
       </TooltipMUI>
@@ -72,31 +80,48 @@ function createData(id, product, category, subCategory, oldPrice, currentPrice, 
 
   const priceColumn = (
     <div className="flex flex-col gap-1">
-      <span className="oldPrice line-through text-gray-500 text-[14px] font-[500]">{oldPrice}</span>
-      <span className="price text-blue-600 text-[14px] font-[600]">{currentPrice}</span>
+      <span className="oldPrice line-through text-gray-500 text-[14px] font-[500]">
+        ₹{product.oldPrice}
+      </span>
+      <span className="price text-blue-600 text-[14px] font-[600]">
+        ₹{product.price}
+      </span>
     </div>
   );
 
   const productName = (
     <div className="flex items-center gap-4 w-[220px]">
-      <Link to="/products/485789">
+      <Link to={`/products/${product._id}`}>
         <div className="img w-[55px] h-[55px] rounded-md overflow-hidden group">
-          <img
-            src="https://m.media-amazon.com/images/I/71i6Cc-hFQL._AC_SY200_.jpg"
-            className="w-full group-hover:scale-105 transition-all"
+          <LazyLoadImage
+            alt={"image"}
+            effect="blur"
+            wrapperProps={{
+              style: { transitionDelay: "1s" },
+            }}
+            className="w-full h-full object-cover group-hover:scale-105 transition-all"
+            src={product.images && product.images[0]}
           />
         </div>
       </Link>
       <div className="info w-[75%] text-[#696969]">
         <h3 className="font-[600] text-[12px] leading-4 hover:text-blue-600">
-          <Link to="/products/485789">{product}</Link>
+          <Link to={`/products/${product._id}`}>{product.name}</Link>
         </h3>
-        <span className="text-[11px]">Kitchen Appliances</span>
+        <span className="text-[11px]">{product.catName}</span>
       </div>
     </div>
   );
 
-  return { id, product: productName, category, subCategory, price: priceColumn, sales, action };
+  return {
+    id: index + 1,
+    product: productName,
+    category: product.catName,
+    subCategory: product.subCat,
+    price: priceColumn,
+    sales,
+    action,
+  };
 }
 
 const orderColumns = [
@@ -110,112 +135,37 @@ const orderColumns = [
 ];
 
 const Product = () => {
-    const [isOpenOrderProduct, setIsOpenOrderProduct]= useState(null);
-  
-  const isShowOrderdProduct =(index)=>{
-    if(isOpenOrderProduct===index){
-      setIsOpenOrderProduct(null);
-    }else{
-      setIsOpenOrderProduct(index);
-  
-    }
-  }
-
-  const [openRow, setOpenRow] = React.useState(null);
-  const [rows, setRows] = React.useState([
-    createData(1, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 85),
-    createData(2, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 35),
-    createData(3, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 75),
-    createData(4, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 55),
-    createData(5, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 15),
-    createData(6, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 5),
-    createData(7, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 40),
-    createData(8, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 20),
-    createData(9, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 90),
-    createData(10, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 70),
-    createData(11, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 40),
-    createData(12, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 39),
-    createData(13, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 69),
-  ]);
-
+  const context = useContext(MyContext);
+  const [productData, setProductData] = useState([]);
   const [page, setPage] = React.useState(0);
-
-  const [chart1Data, setChart1Data] = useState([
-    {
-      name: 'Jan',
-      Total_Users: 4000,
-      Total_Sales: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Feb',
-      Total_Users: 3000,
-      Total_Sales: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Mar',
-      Total_Users: 2000,
-      Total_Sales: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Apr',
-      Total_Users: 2780,
-      Total_Sales: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'May',
-      Total_Users: 1890,
-      Total_Sales: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Jun',
-      Total_Users: 2390,
-      Total_Sales: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Jul',
-      Total_Users: 7490,
-      Total_Sales: 4300,
-      amt: 2100,
-    },
-     {
-      name: 'Aug',
-      Total_Users: 4490,
-      Total_Sales: 8300,
-      amt: 2100,
-    },
-     {
-      name: 'Sep',
-      Total_Users: 3490,
-      Total_Sales: 6300,
-      amt: 2100,
-    },
-     {
-      name: 'Oct',
-      Total_Users: 5090,
-      Total_Sales: 3300,
-      amt: 2100,
-    },
-     {
-      name: 'Nov',
-      Total_Users: 0,
-      Total_Sales: 0,
-      amt: 0,
-    },
-     {
-      name: 'Dec',
-      Total_Users: 0,
-      Total_Sales: 0,
-      amt: 0,
-    },
-  ])
-
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rows, setRows] = React.useState([]);
+  const [categoryFilterValue, setcategoryFilterValue] = React.useState("");
+
+
+  const getProducts = async () => {
+    fetchDataFromApi("/api/product/getAllProducts").then((res) => {
+      if (res?.error === false) {
+        setProductData(res?.products);
+      }
+    });
+  };
+
+  const deleteProduct = (id) => {
+    deleteData(`/api/product/${id}`).then((res) => {
+      getProducts();
+      context.alertBox("success", "Product Delete");
+    });
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, [context?.isOpenFullScreenPanel]);
+
+  useEffect(() => {
+    setRows(productData.map(() => ({ isSelected: false })));
+  }, [productData]);
+
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -237,49 +187,13 @@ const Product = () => {
     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     .every((row) => row.isSelected);
 
-  const [orderRows, setOrderRows] = React.useState([
-    {
-      orderId: "67514d9914da0b327345f1e6",
-      paymentId: "pay_xxxxxxxxxxxx",
-      name: "John Doe",
-      amount: 498,
-      ph_no: "9876543210",
-      address: "123, Elm Street, Springfield",
-      date: "2025-10-28",
-      products: "Product 1, Product 2",
-      status: "Pending",
-      deliveryDate: "2025-11-01",
-      modified: "2025-10-28",
-    },
-    {
-      orderId: "67514d9914da0b327345f1e7",
-      paymentId: "pay_xxxxxxxxxxxx",
-      name: "Jane Smith",
-      amount: 799,
-      ph_no: "9876543211",
-      address: "456, Oak Street, Springfield",
-      date: "2025-10-27",
-      products: "Product 3, Product 4",
-      status: "Pending",
-      deliveryDate: "2025-11-02",
-      modified: "2025-10-27",
-    },
-  ]);
-
-  const [categoryFilterValue, setcategoryFilterValue] = React.useState('');
-
   const handleChangecatFilter = (event) => {
     setcategoryFilterValue(event.target.value);
-  }
-
-
-  const context =useContext(MyContext);
+  };
 
   return (
     <>
-    
-
-     <div className="card my-5 shadow-md sm:rounded-lg bg-white">
+      <div className="card my-5 shadow-md sm:rounded-lg bg-white">
         <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
           <h2 className="text-[18px] font-[600]">Products</h2>
           <div className="col w-[15%] ml-auto flex items-center gap-2">
@@ -289,20 +203,27 @@ const Product = () => {
               </Button>
             </TooltipMUI>
             <TooltipMUI title="Add Product" placement="top">
-              <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black hover:bg-black-300 hover:scale-105" onClick={()=>context.setIsOpenFullScreenPanel({
-                open: true,
-                 model: 'Add Product',
-              })}>
-                <span className="text-[18px]"><FaPlus /></span>
+              <Button
+                className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black hover:bg-black-300 hover:scale-105"
+                onClick={() =>
+                  context.setIsOpenFullScreenPanel({
+                    open: true,
+                    model: "Add Product",
+                  })
+                }
+              >
+                <span className="text-[18px]">
+                  <FaPlus />
+                </span>
               </Button>
             </TooltipMUI>
           </div>
         </div>
-          
+
         <div className="flex items-center w-full px-5 justify-between pr-5">
           <div className="col w-[25%]">
             <h4 className="font-[600] text-[13px] pl-3"> Category by </h4>
-            
+
             <Select
               className="w-full"
               size="small"
@@ -329,15 +250,13 @@ const Product = () => {
               <MenuItem value={120}>Summer Wear</MenuItem>
               <MenuItem value={130}>Western Co-ords</MenuItem>
               <MenuItem value={140}> Ethnic Co-ords</MenuItem>
-              
             </Select>
           </div>
           <br />
 
-           <div className="col w-[25%] ml-auto">
-            <SearchBox/>
-           </div>
-          
+          <div className="col w-[25%] ml-auto">
+            <SearchBox />
+          </div>
         </div>
 
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -346,10 +265,19 @@ const Product = () => {
               <TableHead>
                 <TableRow>
                   <TableCell padding="checkbox" sx={{ pl: 2 }}>
-                    <Checkbox checked={allPageRowsSelected} onChange={handleSelectAll} color="primary" />
+                    <Checkbox
+                      checked={allPageRowsSelected}
+                      onChange={handleSelectAll}
+                      color="primary"
+                    />
                   </TableCell>
                   {columns.map((column) => (
-                    <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }} sx={{ fontWeight: "bold" }}>
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                      sx={{ fontWeight: "bold" }}
+                    >
                       {column.label}
                     </TableCell>
                   ))}
@@ -357,28 +285,40 @@ const Product = () => {
               </TableHead>
 
               <TableBody>
-                {rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      <TableCell padding="checkbox" sx={{ pl: 2 }}>
-                        <Checkbox
-                          checked={row.isSelected || false}
-                          onChange={(e) => {
-                            const updatedRows = [...rows];
-                            updatedRows[page * rowsPerPage + index].isSelected = e.target.checked;
-                            setRows(updatedRows);
-                          }}
-                          color="primary"
-                        />
-                      </TableCell>
-                      {columns.map((column) => (
-                        <TableCell key={column.id} align={column.align}>
-                          {row[column.id]}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
+                {productData?.length !== 0 &&
+                  productData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((product, index) => {
+                      const row = createData(product, page * rowsPerPage + index, deleteProduct, context);
+                      return (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row.id}
+                        >
+                          <TableCell padding="checkbox" sx={{ pl: 2 }}>
+                            <Checkbox
+                              checked={row.isSelected || false}
+                              onChange={(e) => {
+                                const updatedRows = [...rows];
+                                updatedRows[page * rowsPerPage + index] = {
+                                  ...updatedRows[page * rowsPerPage + index],
+                                  isSelected: e.target.checked,
+                                };
+                                setRows(updatedRows);
+                              }}
+                              color="primary"
+                            />
+                          </TableCell>
+                          {columns.map((column) => (
+                            <TableCell key={column.id} align={column.align}>
+                              {row[column.id]}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      );
+                    })}
               </TableBody>
             </Table>
           </TableContainer>
@@ -386,7 +326,7 @@ const Product = () => {
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={rows.length}
+            count={productData?.length || 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -394,10 +334,8 @@ const Product = () => {
           />
         </Paper>
       </div>
-
-
     </>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;

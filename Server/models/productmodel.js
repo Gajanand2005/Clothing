@@ -72,6 +72,10 @@ const productSchema = mongoose.Schema({
         type:Number,
         default:0
     },
+    sale:{
+        type:Number,
+        default:0
+    },
     productRam:[
         {
            type:String,

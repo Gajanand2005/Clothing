@@ -17,14 +17,14 @@ cloudinary.config({
     secure: true,
 });
 //register User
-export async function registerUserController(request, response) {
+export async function registerUserController(req, res) {
   try {
     let user;
 
-    const { name, email, password } = request.body;
+    const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: "provide email, name, password",
         error: true,
         success: false,
@@ -34,7 +34,7 @@ export async function registerUserController(request, response) {
     user = await UserModel.findOne({ email: email });
 
     if (user) {
-      return response.json({
+      return res.json({
         message: "User already registered with this email!",
         error: true,
         success: false,
@@ -70,14 +70,14 @@ export async function registerUserController(request, response) {
       process.env.JSON_WEB_TOKEN_SECRET_KEY
     );
 
-    return response.status(200).json({
+    return res.status(200).json({
       success: true,
       error: false,
       message: "User Registered successfully! Please verify your email.",
       token: token, // Optional: include this if needed for verification.s
     });
   } catch (error) {
-    return response.status(500).json({
+    return res.status(500).json({
       message: error.message || error,
       error: true,
       success: false,
@@ -85,13 +85,13 @@ export async function registerUserController(request, response) {
   }
 }
 //verify email
-export async function verifyEmailController(request, response) {
+export async function verifyEmailController(req, res) {
     try {
-        const { email, otp } = request.body;
+        const { email, otp } = req.body;
 
         const user = await UserModel.findOne({ email: email });
         if (!user) {
-            return response.status(400).json({ error: true, success: false, message: "User not found" });
+            return res.status(400).json({ error: true, success: false, message: "User not found" });
         }
 
         const isCodeValid = user.otp === otp;
@@ -102,16 +102,16 @@ export async function verifyEmailController(request, response) {
             user.otp = null;
             user.otpExpires = null;
             await user.save();
-            return response.status(200).json({ error: false, success: true, message: "Email verified successfully" });
+            return res.status(200).json({ error: false, success: true, message: "Email verified successfully" });
         } else if (!isCodeValid) {
-            return response.status(400).json({ error: true, success: false, message: "Invalid OTP" });
+            return res.status(400).json({ error: true, success: false, message: "Invalid OTP" });
         } else {
-            return response.status(400).json({ error: true, success: false, message: "OTP Expired" });
+            return res.status(400).json({ error: true, success: false, message: "OTP Expired" });
         }
 
 
     } catch (error) {
-        return response.status(500).json({
+        return res.status(500).json({
             message: error.message || error,
             error: true,
             success: false
@@ -187,10 +187,10 @@ export async function loginUserController(req, res) {
     }
 }
 
-// logout controller 
-export async function logoutController(request, res) {
+// logout controller
+export async function logoutController(req, res) {
     try {
-        const userid = request.userId;  //middleware
+        const userid = req.userId;  //middleware
 
         const cokkiesOption = {
             httpOnly: true,
@@ -211,7 +211,7 @@ export async function logoutController(request, res) {
             success: true
         })
     } catch (error) {
-        return response.status(500).json({
+        return res.status(500).json({
             message: error.message || error,
             error: true,
             success: false
@@ -220,15 +220,15 @@ export async function logoutController(request, res) {
 }
 //image upload
 var imagesArr = [];
-export async function userAvatarController(request, response) {
+export async function userAvatarController(req, res) {
     try {
         imagesArr = [];
 
-        const userId = request.userId; // auth middleware
-        const image = request.files;
+        const userId = req.userId; // auth middleware
+        const image = req.files;
 
         if (!image || image.length === 0) {
-            return response.status(400).json({
+            return res.status(400).json({
                 message: "No image file provided",
                 error: true,
                 success: false
@@ -237,7 +237,7 @@ export async function userAvatarController(request, response) {
 
         const user = await UserModel.findOne({ _id: userId });
         if (!user) {
-            return response.status(404).json({
+            return res.status(404).json({
                 message: "User not found",
                 error: true,
                 success: false
@@ -271,13 +271,13 @@ export async function userAvatarController(request, response) {
         user.avatar = imagesArr[0];
         await user.save();
 
-        return response.status(200).json({
+        return res.status(200).json({
             _id: userId,
             avatar: imagesArr[0]
         });
 
     } catch (error) {
-        return response.status(500).json({
+        return res.status(500).json({
             message: error.message || error,
             error: true,
             success: false
@@ -286,35 +286,35 @@ export async function userAvatarController(request, response) {
 }
 
 // remove image
-export async function removeImageFromCloudinary(request, response) {
-    const imgUrl = request.query.img;
+export async function removeImageFromCloudinary(req, res) {
+    const imgUrl = req.query.img;
     const urlArr = imgUrl.split("/");
     const image = urlArr[urlArr.length - 1];
 
     const imageName = image.split(".")[0];
 
     if (imageName) {
-        const res = await cloudinary.uploader.destroy(
+        const result = await cloudinary.uploader.destroy(
             imageName,
             (error, result) => {
                 // console.log(error,res)
             }
         );
 
-        if (res) {
-            response.status(200).send(res);
+        if (result) {
+            res.status(200).send(result);
         }
     }
 }
 
 // update user details
-export async function updateUserDetails(request, response) {
+export async function updateUserDetails(req, res) {
     try {
-        const userId = request.userId //auth middleware 
-        const { name, email, mobile, password } = request.body;
+        const userId = req.userId //auth middleware 
+        const { name, email, mobile, password } = req.body;
         const userExist = await UserModel.findById(userId);
         if (!userExist)
-            return response.status(400).send('The user cannot be Updated!');
+            return res.status(400).send('The user cannot be Updated!');
 
         let verifyCode = "";
         if (email !== userExist.email) {
@@ -353,7 +353,7 @@ export async function updateUserDetails(request, response) {
             })
         }
 
-        return response.json({
+        return res.json({
             message: "User Updated successfully",
             error: false,
             success: true,
@@ -369,23 +369,22 @@ export async function updateUserDetails(request, response) {
 
 
     } catch (error) {
-        return response.status(500).json({
+        return res.status(500).json({
             message: error.message || error,
             error: true,
             success: false
         })
-
     }
 }
 
 //forgot password
-export async function forgotPasswordController(request, response) {
+export async function forgotPasswordController(req, res) {
     try {
-        const { email } = request.body
+        const { email } = req.body
         const user = await UserModel.findOne({ email: email })
 
         if (!user) {
-            return response.status(400).json({
+            return res.status(400).json({
                 message: "Email not available",
                 error: true,
                 success: false
@@ -403,14 +402,12 @@ export async function forgotPasswordController(request, response) {
 
             await sendEmailFun({
                 sendTo: email,
-
-                subject: "Verify email from SmalCouture ",
                 subject: "Verify OTP from SmalCouture ",
                 text: "",
                 html: VerificationEmail(user.name, verifyCode)
             })
 
-            return response.json({
+            return res.json({
                 message: "Otp sent to  your email",
                 error: false,
                 success: true
@@ -426,12 +423,12 @@ export async function forgotPasswordController(request, response) {
 }
 
 //verify forgot password
-export async function verifyForgotPasswordOtp(request, response) {
+export async function verifyForgotPasswordOtp(req, res) {
     try {
-        const { email, otp } = request.body;
+        const { email, otp } = req.body;
 
         if (!email || !otp) {
-            return response.status(400).json({
+            return res.status(400).json({
                 message: "Provide required fields: email, otp.",
                 error: true,
                 success: false
@@ -441,7 +438,7 @@ export async function verifyForgotPasswordOtp(request, response) {
         const user = await UserModel.findOne({ email: email });
 
         if (!user) {
-            return response.status(400).json({
+            return res.status(400).json({
                 message: "Email not available",
                 error: true,
                 success: false
@@ -449,7 +446,7 @@ export async function verifyForgotPasswordOtp(request, response) {
         }
 
         if (otp !== user.otp) {
-            return response.status(400).json({
+            return res.status(400).json({
                 message: "Invalid OTP",
                 error: true,
                 success: false
@@ -458,7 +455,7 @@ export async function verifyForgotPasswordOtp(request, response) {
 
         const currentTime = new Date();
         if (user.otpExpires < currentTime) {
-            return response.status(400).json({
+            return res.status(400).json({
                 message: "OTP is expired",
                 error: true,
                 success: false
@@ -471,14 +468,14 @@ export async function verifyForgotPasswordOtp(request, response) {
 
         await user.save();
 
-        return response.status(200).json({
+        return res.status(200).json({
             message: "Verify OTP successfully",
             error: false,
             success: true
         });
 
     } catch (error) {
-        return response.status(500).json({
+        return res.status(500).json({
             message: error.message || error,
             error: true,
             success: false
@@ -487,12 +484,12 @@ export async function verifyForgotPasswordOtp(request, response) {
 }
 
 // reset password
-export async function resetPassword(request, response) {
+export async function resetPassword(req, res) {
   try {
-    const { email, oldPassword, newPassword, confirmPassword } = request.body;
+    const { email, oldPassword, newPassword, confirmPassword } = req.body;
 
     if (!email || !oldPassword || !newPassword || !confirmPassword) {
-      return response.status(400).json({
+      return res.status(400).json({
         error: true,
         success: false,
         message: "Provide required fields: email, oldPassword, newPassword, confirmPassword"
@@ -501,7 +498,7 @@ export async function resetPassword(request, response) {
 
     const user = await UserModel.findOne({ email });
     if (!user) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: "Email is not available",
         error: true,
         success: false
@@ -509,7 +506,7 @@ export async function resetPassword(request, response) {
     }
 
     if (!user.password) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: "No password found for this user.",
         error: true,
         success: false
@@ -518,7 +515,7 @@ export async function resetPassword(request, response) {
 
     const checkPassword = await bcrypt.compare(oldPassword, user.password);
     if (!checkPassword) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: "Your old password is wrong",
         error: true,
         success: false,
@@ -526,7 +523,7 @@ export async function resetPassword(request, response) {
     }
 
     if (newPassword !== confirmPassword) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: "New password and confirm password must be same.",
         error: true,
         success: false,
@@ -539,14 +536,14 @@ export async function resetPassword(request, response) {
     user.password = hashPassword;
     await user.save();
 
-    return response.json({
+    return res.json({
       message: "Password updated successfully.",
       error: false,
       success: true
     });
   } catch (error) {
     console.error("Reset Password Error:", error);
-    return response.status(500).json({
+    return res.status(500).json({
       message: error.message || error,
       error: true,
       success: false
@@ -555,13 +552,13 @@ export async function resetPassword(request, response) {
 }
 
 //refresh Token
-export async function refreshToken(request, response) {
+export async function refreshToken(req, res) {
     try {
 
-        const refreshToken = request.cookies.refreshToken // bear token
+        const refreshToken = req.cookies.refreshToken // bear token
 
         if (!refreshToken) {
-            return response.status(401).json({
+            return res.status(401).json({
                 message: "Invalid token",
                 error: true,
                 success: false
@@ -570,14 +567,14 @@ export async function refreshToken(request, response) {
 
         const verifyToken = await jwt.verify(refreshToken, process.env.SECRET_KEY_REFRESH_TOKEN)
         if (!verifyToken) {
-            return response.status(401).json({
+            return res.status(401).json({
                 message: "Token is expired",
                 error: true,
                 success: false
             })
         }
 
-        const userId = verifyToken?._id
+        const userId = verifyToken.id
         const newAccessToken = await generatedAccessToken(userId)
 
         const cookiesOption = {
@@ -586,9 +583,9 @@ export async function refreshToken(request, response) {
             sameSite: "None"
         }
 
-        response.cookie('accessToken', newAccessToken, cookiesOption)
+        res.cookie('accessToken', newAccessToken, cookiesOption)
 
-        return response.json({
+        return res.json({
             message: "New Access token generated",
             error: false,
             success: true,
@@ -597,7 +594,7 @@ export async function refreshToken(request, response) {
             }
         })
     } catch (error) {
-        return response.status(500).json({
+        return res.status(500).json({
             message: error.message || error,
             error: true,
             success: false
@@ -606,25 +603,25 @@ export async function refreshToken(request, response) {
 }
 
 // get login user details
-export async function userDetails(request, response) {
+export async function userDetails(req, res) {
     try {
-        const userId = request.userId
+        const userId = req.userId
         console.log(userId)
         const user = await UserModel.findById(userId).select('-password -refresh_token')
 
         // Prevent caching to avoid 304 responses
-        response.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-        response.set('Pragma', 'no-cache');
-        response.set('Expires', '0');
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
 
-        return response.json({
+        return res.json({
             message: 'user details',
             data: user,
             error: false,
             success: true
         })
     } catch (error) {
-        return response.status(500).json({
+        return res.status(500).json({
             message: "Something is wrong",
             error: true,
             success: false

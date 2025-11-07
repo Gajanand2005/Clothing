@@ -51,7 +51,10 @@ const UploadBox = (props) => {
     <>
       <div className="uploadBox p-3 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.4)] h-[150px] w-[180px] bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
         {
-          uploading === true ? <CircularProgress/> :
+          uploading === true ? <>
+            <CircularProgress/>
+            <h4 className="text-center">Uploading....</h4>
+          </>:
           <>
             <IoIosImages className="text-[50px] opacity-50 pointer-events-none " />
         <h4 className="text-[14px] pointer-events-none">Image Upload</h4>
