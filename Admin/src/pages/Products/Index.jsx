@@ -66,10 +66,13 @@ function createData(product, index, deleteProduct, context) {
         </Button>
       </TooltipMUI>
       <TooltipMUI title="View Product Details" placement="top">
+        <Link to={`/product/${product?._id}`} >
         <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
           <IoEyeOutline className="text-[rgba(0,0,0,0.7)] text-[24px]" />
         </Button>
+        </Link>
       </TooltipMUI>
+      
       <TooltipMUI title="Remove Product" placement="top">
         <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]" onClick={() => deleteProduct(product?._id)}>
           <AiTwotoneDelete className="text-[rgba(0,0,0,0.7)] text-[25px]" />
@@ -137,10 +140,46 @@ const orderColumns = [
 const Product = () => {
   const context = useContext(MyContext);
   const [productData, setProductData] = useState([]);
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [rows, setRows] = React.useState([]);
-  const [categoryFilterValue, setcategoryFilterValue] = React.useState("");
+  const [rows, setRows] = useState([]);
+  const [productCat, setProductCat] = useState("");
+  const [productSubCat, setProductSubCat] = useState("");
+   const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
+
+
+    const handleChangeProductCat = (event) => {
+    setProductCat(event.target.value);
+
+
+fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).then((res)=>{
+ if (res?.error === false) {
+        setProductData(res?.products);
+      }
+})
+
+  };
+
+ const handleChangeProductSubCat = (event) => {
+    setProductSubCat(event.target.value);
+
+    fetchDataFromApi(`/api/product/getAllProductsBySubCatId/${event.target.value}`).then((res)=>{
+ if (res?.error === false) {
+        setProductData(res?.products);
+      }
+})
+  };
+
+  const handleChangeProductThirdLavelCat =(event)=> {
+  setProductThirdLavelCat(event.target.value);
+
+  fetchDataFromApi(`/api/product/getAllProductsByThirdLavelCatId/${event.target.value}`).then((res)=>{
+ if (res?.error === false) {
+        setProductData(res?.products);
+      }
+})
+
+}
 
 
   const getProducts = async () => {
@@ -187,9 +226,6 @@ const Product = () => {
     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     .every((row) => row.isSelected);
 
-  const handleChangecatFilter = (event) => {
-    setcategoryFilterValue(event.target.value);
-  };
 
   return (
     <>
@@ -220,39 +256,83 @@ const Product = () => {
           </div>
         </div>
 
-        <div className="flex items-center w-full px-5 justify-between pr-5">
-          <div className="col w-[25%]">
+        <div className="flex items-center w-full px-5 justify-between pr-5 gap-4">
+          <div className="col w-[15%]">
             <h4 className="font-[600] text-[13px] pl-3"> Category by </h4>
 
-            <Select
-              className="w-full"
-              size="small"
-              labelId="Category"
-              id="Category"
-              value={categoryFilterValue}
-              onChange={handleChangecatFilter}
-              label="Category"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Organza</MenuItem>
-              <MenuItem value={20}>Georgette</MenuItem>
-              <MenuItem value={30}>Silk</MenuItem>
-              <MenuItem value={40}>Banarsi</MenuItem>
-              <MenuItem value={50}>Cotton</MenuItem>
-              <MenuItem value={60}>Chinnon</MenuItem>
-              <MenuItem value={70}>Woollen</MenuItem>
-              <MenuItem value={80}>Lucknowi</MenuItem>
-              <MenuItem value={90}>Crepe</MenuItem>
-              <MenuItem value={100}>Net</MenuItem>
-              <MenuItem value={110}>Winter Wear</MenuItem>
-              <MenuItem value={120}>Summer Wear</MenuItem>
-              <MenuItem value={130}>Western Co-ords</MenuItem>
-              <MenuItem value={140}> Ethnic Co-ords</MenuItem>
-            </Select>
+              {context?.catData.length !== 0 && (
+                              <Select
+                              style={{zoom:"80%"}}
+                                labelId="demo-simple-select-label"
+                                id="productCatDrop"
+                                className="w-full bg-[#fafafa]"
+                                size="small"
+                                value={productCat}
+                                label="Category"
+                                onChange={handleChangeProductCat}
+                              >
+                                {context?.catData.map((cat, index) => {
+                                  return <MenuItem value={cat?._id} >{cat?.name}</MenuItem>;
+                                })}
+                              </Select>
+                            )}
           </div>
-          <br />
+
+
+            <div className="col w-[15%]">
+            <h4 className="font-[600] text-[13px] pl-3">Sub Category by </h4>
+                {context?.catData.length !== 0 && (
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="productCatDrop"
+                    className="w-full bg-[#fafafa]"
+                    size="small"
+                    value={productSubCat}
+                    label="Category"
+                    onChange={handleChangeProductSubCat}
+                  >
+                    {context?.catData.map(
+                      (cat, index) =>
+                        cat?.children.length !== 0 &&
+                        cat?.children.map((subCat, subIndex) => (
+                          <MenuItem key={subCat._id} value={subCat._id}   >
+                            {subCat.name}
+                          </MenuItem>
+                        ))
+                    )}
+                  </Select>
+                )}
+          </div>
+
+
+
+            <div className="col w-[15%]">
+            <h4 className="font-[600] text-[13px] pl-3">ThirdLevel Category </h4>
+              {context?.catData.length !== 0 && (
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="productCatDrop"
+                    className="w-full bg-[#fafafa]"
+                    size="small"
+                    value={productThirdLavelCat}
+                    label="Category"
+                    onChange={handleChangeProductThirdLavelCat}
+                  >
+                    {context?.catData.map(
+                      (cat, index) =>
+                        cat?.children.length !== 0 &&
+                        cat?.children.map((subCat, subIndex) => (
+                          subCat?.children?.length!==0  &&  subCat?.children?.map((thirdLavelCat,index)=>{
+                            return  <MenuItem key={thirdLavelCat._id} value={thirdLavelCat._id}    >
+                            {thirdLavelCat.name}
+                          </MenuItem>
+                          })
+                         
+                        ))
+                    )}
+                  </Select>
+                )}
+          </div> 
 
           <div className="col w-[25%] ml-auto">
             <SearchBox />

@@ -25,6 +25,7 @@ import { useEffect } from 'react';
 import Profile from './pages/Profile/index.jsx';
 import CategoryList from './pages/Categegory/Index';
 import SubCatList from './pages/Categegory/SubCatList';
+import ProductDetails from './pages/Products/productDetails.jsx';
 
 
 
@@ -516,6 +517,39 @@ function App() {
         </>
       ),
     },
+
+ {
+      path: "/product/:id",
+      exact: true,
+      element: (
+        <>
+          <section className="main">
+            <Header />
+            <div className="contentMain flex">
+              <div
+                className={`overflow-hidden sidebarWrapper ${
+                  isSidebarOpen === true
+                    ? "w-[23%] transition-all"
+                    : "w-[0%] opacity-0 transition-all"
+                }`}
+              >
+                <Sidebar />
+              </div>
+              <div
+                className={`contentRight py-4 px-5 ${
+                  isSidebarOpen
+                    ? "w-[77%] transition-all"
+                    : "w-[100%] transition-all"
+                }`}
+              >
+                <ProductDetails />
+              </div>
+            </div>
+          </section>
+        </>
+      ),
+    },
+
   ]);
 
 useEffect(()=>{

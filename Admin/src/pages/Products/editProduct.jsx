@@ -11,7 +11,7 @@ import { IoClose } from "react-icons/io5";
 import { Button } from "@mui/material";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { MyContext } from "../../App";
-import { deleteImages, fetchDataFromApi, postData } from "../../../Utlis/Api";
+import { deleteImages, editData, fetchDataFromApi, postData } from "../../../Utlis/Api";
 import { useNavigate, useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -52,15 +52,33 @@ const EditProduct = () => {
  useEffect(()=>{
   if(context?.isOpenFullScreenPanel?.id){
     fetchDataFromApi(`/api/product/${ context?.isOpenFullScreenPanel?.id}`).then((res)=>{
-      if(res?.error === false && res?.product){
-        setFormFields(res.product);
-        setProductCat(res.product.catId);
-        setProductSubCat(res.product.subCatId);
-        setProductThirdLavelCat(res.product.thirdsubCatId);
-        setProductFeatured(res.product.isFeatured);
-        setProductSize(res.product.size || []);
-        setPreviews(res.product.images || []);
-      }
+    setFormFields({ 
+  name: res?.product?.name, 
+  description: res?.product?.description, 
+  images: res?.product?.images, 
+  brand: res?.product?.brand, 
+  price: res?.product?.price, 
+  oldPrice: res?.product?.oldPrice, 
+  category: res?.product?.category, 
+  catName: res?.product?.catName, 
+  catId: res?.product?.catId, 
+  subCatId: res?.product?.subCatId, 
+  subCat: res?.product?.subCat, 
+  thirdsubCat: res?.product?.thirdsubCat, 
+  thirdsubCatId: res?.product?.thirdsubCatId, 
+  countInStock: res?.product?.countInStock, 
+  isFeatured: res?.product?.isFeatured, 
+  discount: res?.product?.discount, 
+  size: res?.product?.size, 
+})
+
+  setProductCat(res?.product?.catId);
+setProductSubCat(res?.product?.subCatId);
+setProductThirdLavelCat(res?.product?.thirdsubCatId);
+setProductFeatured(res?.product?.isFeatured)
+setProductSize(res?.product?.size)
+
+setPreviews(res?.product?.images)
     })
   }
  }, [context?.isOpenFullScreenPanel?.id])
@@ -120,8 +138,19 @@ const handleChangeProductThirdLavelCat =(event)=> {
   };
 
  const setPreviewsFun = (previewsArr) => {
-    setPreviews(previewsArr);
-    formFields.images = previewsArr;
+    // setPreviews(previewsArr);
+    // formFields.images = previewsArr;
+
+
+    const imgArr = previews;
+    for(let i=0; i<previewsArr.length ,i++ ){
+      imgArr.push(previewsArr[i])
+    }
+    setPreviews([]);
+    setTimeout(() => {
+      setPreviews(imgArr)
+      formFields.images= imgArr;
+    }, 10);
   };
 
   const removeImg = (images, index) => {
@@ -194,9 +223,9 @@ const handleSubmit = (e) => {
 
 
   setIsLoading(true);
-  postData(`/api/product/${context?.isOpenFullScreenPanel?.id}`, formFields).then((res) => {
+  editData(`/api/product/updateProduct/${context?.isOpenFullScreenPanel?.id}`, formFields).then((res) => {
     if (res?.error === false) {
-      context.alertBox("success", res?.message);
+      context.alertBox("success", res?.data?.message);
 
       setTimeout(() => {
         setIsLoading(false);
@@ -207,7 +236,7 @@ const handleSubmit = (e) => {
       }, 1000);
     }else{
       setIsLoading(false)
-      context.alertBox("error",res?.message);
+      context.alertBox("error",res?.data?.message);
     }
   });
 };
@@ -262,7 +291,7 @@ const handleSubmit = (e) => {
                     onChange={handleChangeProductCat}
                   >
                     {context?.catData.map((cat, index) => {
-                      return <MenuItem value={cat?._id} onClick={()=>selectDatByName(cat?.name)}  >{cat?.name}</MenuItem>;
+                      return <MenuItem value={cat?._id} key={index} onClick={()=>selectDatByName(cat?.name)}  >{cat?.name}</MenuItem>;
                     })}
                   </Select>
                 )}
