@@ -95,3 +95,15 @@ export const deleteData = async(url)=>{
     const {res} = await axios.delete(apiUrl + url,params)
     return res;
 }
+
+export const deleteWithData = async (url, data) => {
+    const params = {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+            'Content-Type': 'application/json',
+        },
+        data: data
+    };
+    const response = await axios.delete(apiUrl + url, params);
+    return response;
+}

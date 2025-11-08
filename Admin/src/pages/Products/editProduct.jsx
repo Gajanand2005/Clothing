@@ -143,7 +143,7 @@ const handleChangeProductThirdLavelCat =(event)=> {
 
 
     const imgArr = previews;
-    for(let i=0; i<previewsArr.length ,i++ ){
+    for(let i=0; i<previewsArr.length;i++){
       imgArr.push(previewsArr[i])
     }
     setPreviews([]);

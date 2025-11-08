@@ -26,6 +26,7 @@ import Profile from './pages/Profile/index.jsx';
 import CategoryList from './pages/Categegory/Index';
 import SubCatList from './pages/Categegory/SubCatList';
 import ProductDetails from './pages/Products/productDetails.jsx';
+import AddRams from './pages/Products/addRams.jsx';
 
 
 
@@ -550,6 +551,38 @@ function App() {
       ),
     },
 
+     {
+      path: "/product/addRams",
+      exact: true,
+      element: (
+        <>
+          <section className="main">
+            <Header />
+            <div className="contentMain flex">
+              <div
+                className={`overflow-hidden sidebarWrapper ${
+                  isSidebarOpen === true
+                    ? "w-[23%] transition-all"
+                    : "w-[0%] opacity-0 transition-all"
+                }`}
+              >
+                <Sidebar />
+              </div>
+              <div
+                className={`contentRight py-4 px-5 ${
+                  isSidebarOpen
+                    ? "w-[77%] transition-all"
+                    : "w-[100%] transition-all"
+                }`}
+              >
+                <AddRams />
+              </div>
+            </div>
+          </section>
+        </>
+      ),
+    },
+
   ]);
 
 useEffect(()=>{
@@ -564,6 +597,7 @@ useEffect(()=>{
            } else if(res?.message === "You have not login" || res?.message === "jwt expired" || res?.message === "Invalid token"){
              localStorage.removeItem('accessToken');
              localStorage.removeItem('refreshToken');
+             setUserData(null);
              alertBox("error","Your session is closed please login again")
              window.location.href="/login";
            }
@@ -572,6 +606,7 @@ useEffect(()=>{
 
      }else{
        setIsLogin(false)
+       setUserData(null);
      }
    },[])// Remove [isLogin] to prevent infinite loop
 

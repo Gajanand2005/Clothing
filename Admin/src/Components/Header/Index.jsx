@@ -63,17 +63,27 @@ const Header = () => {
 
   const logout = () => {
     setAnchorMyAcc(null);
-    
+
+    // Immediately clear client-side state and localStorage
+    context.setIsLogin(false);
+    context.setUserData(null);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    history("/");
+
+    // Asynchronously call the logout API to clear server-side session
     fetchDataFromApi(
       `/api/user/logout?token=${localStorage.getItem("accessToken")}`,
       { withCredentials: true }
     ).then((res) => {
+      // Optional: Handle API response if needed, but session is already ended on client
       if (res?.error === false) {
-        context.setIsLogin(false);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        history("/");
+        console.log("Server-side logout successful");
+      } else {
+        console.log("Server-side logout failed, but client session ended");
       }
+    }).catch((error) => {
+      console.log("Logout API call failed, but client session ended");
     });
   };
 

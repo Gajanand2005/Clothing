@@ -17,13 +17,14 @@ import Checkbox from "@mui/material/Checkbox";
 import ProgressBar from "../../Components/ProgressBar";
 import SearchBox from "../../Components/SearchBox/Index";
 import { MyContext } from "../../App";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { AiTwotoneDelete } from "react-icons/ai";
-import { deleteData, fetchDataFromApi } from "../../../Utlis/Api";
+import { deleteData, fetchDataFromApi, deleteWithData } from "../../../Utlis/Api";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const columns = [
   { id: "id", label: "ID", minWidth: 50 },
@@ -54,27 +55,34 @@ function createData(product, index, deleteProduct, context) {
   );
 
   const action = (
-
     <div className="flex items-center gap-1">
       <TooltipMUI title="Edit Product" placement="top">
-        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]" onClick={()=>context.setIsOpenFullScreenPanel({
-          open: true,
-          model: 'Edit Product',
-          id:product?._id
-        })} >
+        <Button
+          className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]"
+          onClick={() =>
+            context.setIsOpenFullScreenPanel({
+              open: true,
+              model: "Edit Product",
+              id: product?._id,
+            })
+          }
+        >
           <FaEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
         </Button>
       </TooltipMUI>
       <TooltipMUI title="View Product Details" placement="top">
-        <Link to={`/product/${product?._id}`} >
-        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
-          <IoEyeOutline className="text-[rgba(0,0,0,0.7)] text-[24px]" />
-        </Button>
+        <Link to={`/product/${product?._id}`}>
+          <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
+            <IoEyeOutline className="text-[rgba(0,0,0,0.7)] text-[24px]" />
+          </Button>
         </Link>
       </TooltipMUI>
-      
+
       <TooltipMUI title="Remove Product" placement="top">
-        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]" onClick={() => deleteProduct(product?._id)}>
+        <Button
+          className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]"
+          onClick={() => deleteProduct(product?._id)}
+        >
           <AiTwotoneDelete className="text-[rgba(0,0,0,0.7)] text-[25px]" />
         </Button>
       </TooltipMUI>
@@ -145,47 +153,77 @@ const Product = () => {
   const [rows, setRows] = useState([]);
   const [productCat, setProductCat] = useState("");
   const [productSubCat, setProductSubCat] = useState("");
-   const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
+  const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
+  const [sortedIds, setSortedIds] = useState([]);
+  const [isLoading, setIsLoading]= useState(false);
 
-
-    const handleChangeProductCat = (event) => {
+  const handleChangeProductCat = (event) => {
+    setIsLoading(true)
     setProductCat(event.target.value);
-
-
-fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).then((res)=>{
- if (res?.error === false) {
-        setProductData(res?.products);
-      }
-})
-
-  };
-
- const handleChangeProductSubCat = (event) => {
-    setProductSubCat(event.target.value);
-
-    fetchDataFromApi(`/api/product/getAllProductsBySubCatId/${event.target.value}`).then((res)=>{
- if (res?.error === false) {
-        setProductData(res?.products);
-      }
-})
-  };
-
-  const handleChangeProductThirdLavelCat =(event)=> {
-  setProductThirdLavelCat(event.target.value);
-
-  fetchDataFromApi(`/api/product/getAllProductsByThirdLavelCatId/${event.target.value}`).then((res)=>{
- if (res?.error === false) {
-        setProductData(res?.products);
-      }
-})
-
-}
-
-
-  const getProducts = async () => {
-    fetchDataFromApi("/api/product/getAllProducts").then((res) => {
+      setProductSubCat('');
+      setProductThirdLavelCat('');
+    fetchDataFromApi(
+      `/api/product/getAllProductsByCatId/${event.target.value}`
+    ).then((res) => {
       if (res?.error === false) {
         setProductData(res?.products);
+        setTimeout(() => {
+          setIsLoading(false)
+        }, 500);
+      }
+    });
+  };
+
+  const handleChangeProductSubCat = (event) => {
+    setProductSubCat(event.target.value);
+    setProductCat('');
+      setProductThirdLavelCat('');
+    setIsLoading(true)
+    fetchDataFromApi(
+      `/api/product/getAllProductsBySubCatId/${event.target.value}`
+    ).then((res) => {
+      if (res?.error === false) {
+        setProductData(res?.products);
+         setTimeout(() => {
+          setIsLoading(false)
+        }, 500);
+      
+      }
+    });
+  };
+
+  const handleChangeProductThirdLavelCat = (event) => {
+    setProductThirdLavelCat(event.target.value);
+    setProductCat('');
+      setProductSubCat('');
+      
+    setIsLoading(true)
+    fetchDataFromApi(
+      `/api/product/getAllProductsByThirdLavelCatId/${event.target.value}`
+    ).then((res) => {
+      if (res?.error === false) {
+        setProductData(res?.products);
+         setTimeout(() => {
+          setIsLoading(false)
+        }, 500);
+      
+      }
+    });
+  };
+
+  const getProducts = async () => {
+    setIsLoading(true)
+    fetchDataFromApi("/api/product/getAllProducts").then((res) => {
+      let productArr = [];
+      if (res?.error === false) {
+        for (let i = 0; i < res?.products?.length; i++) {
+          productArr[i] = res?.products[i];
+          productArr[i].checked = false;
+        }
+       setTimeout(() =>{
+         setProductData(productArr);
+         setIsLoading(false)
+       },500)
       }
     });
   };
@@ -197,6 +235,23 @@ fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).the
     });
   };
 
+
+  const deleteMultipleProduct = () =>{
+    if(sortedIds.length === 0){
+      context.alertBox('error', 'Please select items to delete');
+      return;
+    }
+
+    try {
+      deleteWithData(`/api/product/deleteMultiple`, {ids: sortedIds}).then((res)=>{
+        getProducts();
+        context.alertBox("success","Product Deleted");
+      })
+    } catch (error) {
+      context.alertBox('error',"error deleting items.");
+    }
+  }
+
   useEffect(() => {
     getProducts();
   }, [context?.isOpenFullScreenPanel]);
@@ -207,16 +262,43 @@ fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).the
 
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
+   
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
+  const handleCheckboxChange = (e, id, index) => {
+    const updatedItems = productData.map((item) =>
+      item._id === id ? { ...item, checked: !item.checked } : item
+    );
+    setProductData(updatedItems);
+
+    const selectedIds = updatedItems
+      .filter((item) => item.checked)
+      .map((item) => item._id)
+      .sort((a, b) => a - b);
+    setSortedIds(selectedIds);
+  };
+
   const handleSelectAll = (event) => {
-    const checked = event.target.checked;
+    const isChecked = event.target.checked;
+    const updatedItems = productData.map((item) => ({
+      ...item,
+      checked: isChecked,
+    }));
+    setProductData(updatedItems);
+
+    if (isChecked) {
+      const ids = updatedItems.map((item) => item._id).sort((a, b) => a - b);
+      setSortedIds(ids);
+    } else {
+      setSortedIds([]);
+    }
+
     const start = page * rowsPerPage;
     const end = start + rowsPerPage;
     const updatedRows = rows.map((row, index) => {
-      if (index >= start && index < end) return { ...row, isSelected: checked };
+      if (index >= start && index < end) return { ...row, isSelected: isChecked };
       return row;
     });
     setRows(updatedRows);
@@ -226,13 +308,15 @@ fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).the
     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     .every((row) => row.isSelected);
 
-
   return (
     <>
       <div className="card my-5 shadow-md sm:rounded-lg bg-white">
         <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
           <h2 className="text-[18px] font-[600]">Products</h2>
-          <div className="col w-[15%] ml-auto flex items-center gap-2">
+          <div className="col w-[35%] ml-auto flex items-center justify-end gap-3">
+            {
+              sortedIds?.length !==0 && <Button className="btn-sm" size="small" color="error" onClick={deleteMultipleProduct}>Delete</Button>
+            }
             <TooltipMUI title="Export" placement="top">
               <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black !hover:bg-black-300 hover:scale-105">
                 <PiExportBold />
@@ -260,79 +344,84 @@ fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).the
           <div className="col w-[15%]">
             <h4 className="font-[600] text-[13px] pl-3"> Category by </h4>
 
-              {context?.catData.length !== 0 && (
-                              <Select
-                              style={{zoom:"80%"}}
-                                labelId="demo-simple-select-label"
-                                id="productCatDrop"
-                                className="w-full bg-[#fafafa]"
-                                size="small"
-                                value={productCat}
-                                label="Category"
-                                onChange={handleChangeProductCat}
-                              >
-                                {context?.catData.map((cat, index) => {
-                                  return <MenuItem value={cat?._id} >{cat?.name}</MenuItem>;
-                                })}
-                              </Select>
-                            )}
+            {context?.catData.length !== 0 && (
+              <Select
+                style={{ zoom: "80%" }}
+                labelId="demo-simple-select-label"
+                id="productCatDrop"
+                className="w-full bg-[#fafafa]"
+                size="small"
+                value={productCat}
+                label="Category"
+                onChange={handleChangeProductCat}
+              >
+                {context?.catData.map((cat, index) => {
+                  return <MenuItem value={cat?._id}>{cat?.name}</MenuItem>;
+                })}
+              </Select>
+            )}
           </div>
 
-
-            <div className="col w-[15%]">
+          <div className="col w-[15%]">
             <h4 className="font-[600] text-[13px] pl-3">Sub Category by </h4>
-                {context?.catData.length !== 0 && (
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="productCatDrop"
-                    className="w-full bg-[#fafafa]"
-                    size="small"
-                    value={productSubCat}
-                    label="Category"
-                    onChange={handleChangeProductSubCat}
-                  >
-                    {context?.catData.map(
-                      (cat, index) =>
-                        cat?.children.length !== 0 &&
-                        cat?.children.map((subCat, subIndex) => (
-                          <MenuItem key={subCat._id} value={subCat._id}   >
-                            {subCat.name}
-                          </MenuItem>
-                        ))
-                    )}
-                  </Select>
+            {context?.catData.length !== 0 && (
+              <Select
+                labelId="demo-simple-select-label"
+                id="productCatDrop"
+                className="w-full bg-[#fafafa]"
+                size="small"
+                value={productSubCat}
+                label="Category"
+                onChange={handleChangeProductSubCat}
+              >
+                {context?.catData.map(
+                  (cat, index) =>
+                    cat?.children.length !== 0 &&
+                    cat?.children.map((subCat, subIndex) => (
+                      <MenuItem key={subCat._id} value={subCat._id}>
+                        {subCat.name}
+                      </MenuItem>
+                    ))
                 )}
+              </Select>
+            )}
           </div>
 
-
-
-            <div className="col w-[15%]">
-            <h4 className="font-[600] text-[13px] pl-3">ThirdLevel Category </h4>
-              {context?.catData.length !== 0 && (
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="productCatDrop"
-                    className="w-full bg-[#fafafa]"
-                    size="small"
-                    value={productThirdLavelCat}
-                    label="Category"
-                    onChange={handleChangeProductThirdLavelCat}
-                  >
-                    {context?.catData.map(
-                      (cat, index) =>
-                        cat?.children.length !== 0 &&
-                        cat?.children.map((subCat, subIndex) => (
-                          subCat?.children?.length!==0  &&  subCat?.children?.map((thirdLavelCat,index)=>{
-                            return  <MenuItem key={thirdLavelCat._id} value={thirdLavelCat._id}    >
-                            {thirdLavelCat.name}
-                          </MenuItem>
-                          })
-                         
-                        ))
-                    )}
-                  </Select>
+          <div className="col w-[15%]">
+            <h4 className="font-[600] text-[13px] pl-3">
+              ThirdLevel Category{" "}
+            </h4>
+            {context?.catData.length !== 0 && (
+              <Select
+                labelId="demo-simple-select-label"
+                id="productCatDrop"
+                className="w-full bg-[#fafafa]"
+                size="small"
+                value={productThirdLavelCat}
+                label="Category"
+                onChange={handleChangeProductThirdLavelCat}
+              >
+                {context?.catData.map(
+                  (cat, index) =>
+                    cat?.children.length !== 0 &&
+                    cat?.children.map(
+                      (subCat, subIndex) =>
+                        subCat?.children?.length !== 0 &&
+                        subCat?.children?.map((thirdLavelCat, index) => {
+                          return (
+                            <MenuItem
+                              key={thirdLavelCat._id}
+                              value={thirdLavelCat._id}
+                            >
+                              {thirdLavelCat.name}
+                            </MenuItem>
+                          );
+                        })
+                    )
                 )}
-          </div> 
+              </Select>
+            )}
+          </div>
 
           <div className="col w-[25%] ml-auto">
             <SearchBox />
@@ -346,7 +435,11 @@ fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).the
                 <TableRow>
                   <TableCell padding="checkbox" sx={{ pl: 2 }}>
                     <Checkbox
-                      checked={allPageRowsSelected}
+                      checked={
+                        productData?.length > 0
+                          ? productData.every((item) => item.checked)
+                          : false
+                      }
                       onChange={handleSelectAll}
                       color="primary"
                     />
@@ -365,11 +458,16 @@ fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).the
               </TableHead>
 
               <TableBody>
-                {productData?.length !== 0 &&
-                  productData
+                {
+                 isLoading ===false ? productData?.length !==0 && productData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((product, index) => {
-                      const row = createData(product, page * rowsPerPage + index, deleteProduct, context);
+                      const row = createData(
+                        product,
+                        page * rowsPerPage + index,
+                        deleteProduct,
+                        context
+                      );
                       return (
                         <TableRow
                           hover
@@ -379,16 +477,10 @@ fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).the
                         >
                           <TableCell padding="checkbox" sx={{ pl: 2 }}>
                             <Checkbox
-                              checked={row.isSelected || false}
-                              onChange={(e) => {
-                                const updatedRows = [...rows];
-                                updatedRows[page * rowsPerPage + index] = {
-                                  ...updatedRows[page * rowsPerPage + index],
-                                  isSelected: e.target.checked,
-                                };
-                                setRows(updatedRows);
-                              }}
-                              color="primary"
+                              checked={product.checked === true ? true : false}
+                              onChange={(e) =>
+                                handleCheckboxChange(e, product._id, index)
+                              }
                             />
                           </TableCell>
                           {columns.map((column) => (
@@ -398,7 +490,21 @@ fetchDataFromApi(`/api/product/getAllProductsByCatId/${event.target.value}`).the
                           ))}
                         </TableRow>
                       );
-                    })}
+                    })
+                   
+                    : 
+                     <>
+                     <TableRow>
+                      <TableCell colSpan={8}>
+                        <div className="flex items-center justify-center w-full min-h-[400px]"><CircularProgress color="inherit" /></div>
+                      </TableCell>
+                     </TableRow>
+                     </>
+                    
+                  }
+                    
+               
+               
               </TableBody>
             </Table>
           </TableContainer>
