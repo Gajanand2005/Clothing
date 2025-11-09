@@ -59,6 +59,17 @@ const UploadBox = (props) => {
             <CircularProgress />
             <h4 className="text-center">Uploading....</h4>
           </>
+        ) : previews.length > 0 ? (
+          <div className="w-full h-full flex flex-wrap gap-1 overflow-hidden">
+            {previews.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt={`Uploaded ${index + 1}`}
+                className="w-full h-full object-cover rounded"
+              />
+            ))}
+          </div>
         ) : (
           <>
             <IoIosImages className="text-[50px] opacity-50 pointer-events-none" />

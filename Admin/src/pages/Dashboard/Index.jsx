@@ -18,8 +18,6 @@ import { FaEdit } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { AiTwotoneDelete } from "react-icons/ai";
 import TooltipMUI from "@mui/material/Tooltip";
-import { IconButton } from "@mui/material";
-import { Collapse, Box, Typography } from "@mui/material";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -32,7 +30,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  Area,
+  ResponsiveContainer,
 } from "recharts";
 import Badge from "../../Components/Badge/Index.jsx";
 import { MyContext } from "../../App.jsx";
@@ -158,8 +156,6 @@ const Dashboard = () => {
   const [productCat, setProductCat] = useState("");
   const [productSubCat, setProductSubCat] = useState("");
   const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
-
-    const [rows, setRows] = useState([]);
 
   const handleChangeProductCat = (event) => {
     setIsLoading(true);
@@ -334,7 +330,7 @@ const Dashboard = () => {
 
 
   const deleteMultipleProduct = () =>{
-    if(sortedIds.length === 0){
+    if(sortedIds?.length === 0){
       context.alertBox('error', 'Please select items to delete');
       return;
     }
@@ -353,18 +349,16 @@ const Dashboard = () => {
     getProducts();
   }, [context?.isOpenFullScreenPanel]);
 
-  useEffect(() => {
-    setRows(productData.map(() => ({ isSelected: false })));
-  }, [productData]);
-
   const handleCheckboxChange = (e, id, index) => {
+    if (!Array.isArray(productData) || !id) return;
+
     const updatedItems = productData.map((item) =>
-      item._id === id ? { ...item, checked: !item.checked } : item
+      item && item._id === id ? { ...item, checked: !item.checked } : item
     );
     setProductData(updatedItems);
 
     const selectedIds = updatedItems
-      .filter((item) => item.checked)
+      .filter((item) => item && item.checked)
       .map((item) => item._id)
       .sort((a, b) => a - b);
     setSortedIds(selectedIds);
@@ -372,6 +366,8 @@ const Dashboard = () => {
 
   const handleSelectAll = (event) => {
     const isChecked = event.target.checked;
+    if (!Array.isArray(productData)) return;
+
     const updatedItems = productData.map((item) => ({
       ...item,
       checked: isChecked,
@@ -379,24 +375,15 @@ const Dashboard = () => {
     setProductData(updatedItems);
 
     if (isChecked) {
-      const ids = updatedItems.map((item) => item._id).sort((a, b) => a - b);
+      const ids = updatedItems
+        .filter(item => item && item._id)
+        .map((item) => item._id)
+        .sort((a, b) => a - b);
       setSortedIds(ids);
     } else {
       setSortedIds([]);
     }
-
-    const start = page * rowsPerPage;
-    const end = start + rowsPerPage;
-    const updatedRows = rows.map((row, index) => {
-      if (index >= start && index < end) return { ...row, isSelected: isChecked };
-      return row;
-    });
-    setRows(updatedRows);
   };
-
-  const allPageRowsSelected = rows
-    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .every((row) => row.isSelected);
 
   const [orderRows, setOrderRows] = React.useState([
     {
@@ -498,7 +485,7 @@ const Dashboard = () => {
           <div className="col w-[15%]">
             <h4 className="font-[600] text-[13px] pl-3"> Category by </h4>
 
-            {context?.catData.length !== 0 && (
+            {context?.catData && context?.catData?.length !== 0 && (
               <Select
                 style={{ zoom: "80%" }}
                 labelId="demo-simple-select-label"
@@ -509,7 +496,7 @@ const Dashboard = () => {
                 label="Category"
                 onChange={handleChangeProductCat}
               >
-                {context?.catData.map((cat, index) => {
+                {context.catData.map((cat, index) => {
                   return <MenuItem value={cat?._id}>{cat?.name}</MenuItem>;
                 })}
               </Select>
@@ -518,7 +505,7 @@ const Dashboard = () => {
 
           <div className="col w-[15%]">
             <h4 className="font-[600] text-[13px] pl-3">Sub Category by </h4>
-            {context?.catData.length !== 0 && (
+            {context?.catData && context?.catData?.length !== 0 && (
               <Select
                 labelId="demo-simple-select-label"
                 id="productCatDrop"
@@ -528,10 +515,10 @@ const Dashboard = () => {
                 label="Category"
                 onChange={handleChangeProductSubCat}
               >
-                {context?.catData.map(
+                {context.catData.map(
                   (cat, index) =>
-                    cat?.children.length !== 0 &&
-                    cat?.children.map((subCat, subIndex) => (
+                    cat?.children && cat?.children?.length !== 0 &&
+                    cat?.children?.map((subCat, subIndex) => (
                       <MenuItem key={subCat._id} value={subCat._id}>
                         {subCat.name}
                       </MenuItem>
@@ -545,7 +532,7 @@ const Dashboard = () => {
             <h4 className="font-[600] text-[13px] pl-3">
               ThirdLevel Category{" "}
             </h4>
-            {context?.catData.length !== 0 && (
+            {context?.catData && context?.catData?.length !== 0 && (
               <Select
                 labelId="demo-simple-select-label"
                 id="productCatDrop"
@@ -555,12 +542,12 @@ const Dashboard = () => {
                 label="Category"
                 onChange={handleChangeProductThirdLavelCat}
               >
-                {context?.catData.map(
+                {context.catData.map(
                   (cat, index) =>
-                    cat?.children.length !== 0 &&
-                    cat?.children.map(
+                    cat?.children && cat?.children?.length !== 0 &&
+                    cat?.children?.map(
                       (subCat, subIndex) =>
-                        subCat?.children?.length !== 0 &&
+                        subCat?.children && subCat?.children?.length !== 0 &&
                         subCat?.children?.map((thirdLavelCat, index) => {
                           return (
                             <MenuItem
@@ -612,40 +599,39 @@ const Dashboard = () => {
               </TableHead>
 
               <TableBody>
-                {isLoading === false ? (
-                  productData?.length !== 0 &&
+                {isLoading === false && productData && productData?.length > 0 ? (
                   productData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((product, index) => {
-                      const row = createData(
-                        product,
-                        page * rowsPerPage + index,
-                        deleteProduct,
-                        context
-                      );
-                      return (
-                        <TableRow
-                          hover
-                          role="checkbox"
-                          tabIndex={-1}
-                          key={row.id}
-                        >
-                          <TableCell padding="checkbox" sx={{ pl: 2 }}>
-                            <Checkbox
-                              checked={product.checked === true ? true : false}
-                              onChange={(e) =>
-                                handleCheckboxChange(e, product._id, index)
-                              }
-                            />
+                    const row = createData(
+                      product,
+                      page * rowsPerPage + index,
+                      deleteProduct,
+                      context
+                    );
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.id}
+                      >
+                        <TableCell padding="checkbox" sx={{ pl: 2 }}>
+                          <Checkbox
+                            checked={product.checked === true ? true : false}
+                            onChange={(e) =>
+                              handleCheckboxChange(e, product._id, index)
+                            }
+                          />
+                        </TableCell>
+                        {columns.map((column) => (
+                          <TableCell key={column.id} align={column.align}>
+                            {row[column.id]}
                           </TableCell>
-                          {columns.map((column) => (
-                            <TableCell key={column.id} align={column.align}>
-                              {row[column.id]}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      );
-                    })
+                        ))}
+                      </TableRow>
+                    );
+                  })
                 ) : (
                   <>
                     <TableRow>
@@ -860,42 +846,36 @@ const Dashboard = () => {
           </span>
         </div>
 
-        <LineChart
-          style={{
-            width: "100%",
-            maxWidth: "900px",
-            height: "100%",
-            maxHeight: "200vh",
-            aspectRatio: 1.618,
-          }}
-          responsive
-          data={chart1Data}
-          margin={{
-            top: 5,
-            right: 0,
-            left: 20,
-            bottom: 10,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="none" />
-          <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-          <YAxis width="auto" tick={{ fontSize: 12 }} />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="Total_Sales"
-            stroke="#0045d0ff"
-            strokeWidth={3}
-            activeDot={{ r: 8 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="Total_Users"
-            stroke="#00b309ff"
-            strokeWidth={3}
-          />
-        </LineChart>
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart
+            data={chart1Data}
+            margin={{
+              top: 5,
+              right: 0,
+              left: 20,
+              bottom: 10,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="none" />
+            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+            <YAxis width="auto" tick={{ fontSize: 12 }} />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="Total_Sales"
+              stroke="#0045d0ff"
+              strokeWidth={3}
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="Total_Users"
+              stroke="#00b309ff"
+              strokeWidth={3}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </>
   );

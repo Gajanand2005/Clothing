@@ -344,7 +344,7 @@ const Product = () => {
           <div className="col w-[15%]">
             <h4 className="font-[600] text-[13px] pl-3"> Category by </h4>
 
-            {context?.catData.length !== 0 && (
+            {context?.catData?.length !== 0 && (
               <Select
                 style={{ zoom: "80%" }}
                 labelId="demo-simple-select-label"
@@ -364,7 +364,7 @@ const Product = () => {
 
           <div className="col w-[15%]">
             <h4 className="font-[600] text-[13px] pl-3">Sub Category by </h4>
-            {context?.catData.length !== 0 && (
+            {context?.catData?.length !== 0 && (
               <Select
                 labelId="demo-simple-select-label"
                 id="productCatDrop"
@@ -374,9 +374,9 @@ const Product = () => {
                 label="Category"
                 onChange={handleChangeProductSubCat}
               >
-                {context?.catData.map(
+                {context?.catData?.map(
                   (cat, index) =>
-                    cat?.children.length !== 0 &&
+                    cat?.children && cat?.children.length !== 0 &&
                     cat?.children.map((subCat, subIndex) => (
                       <MenuItem key={subCat._id} value={subCat._id}>
                         {subCat.name}
@@ -391,7 +391,7 @@ const Product = () => {
             <h4 className="font-[600] text-[13px] pl-3">
               ThirdLevel Category{" "}
             </h4>
-            {context?.catData.length !== 0 && (
+            {context?.catData?.length !== 0 && (
               <Select
                 labelId="demo-simple-select-label"
                 id="productCatDrop"
@@ -401,10 +401,10 @@ const Product = () => {
                 label="Category"
                 onChange={handleChangeProductThirdLavelCat}
               >
-                {context?.catData.map(
+                {context?.catData?.map(
                   (cat, index) =>
-                    cat?.children.length !== 0 &&
-                    cat?.children.map(
+                    cat?.children?.length !== 0 &&
+                    cat?.children?.map(
                       (subCat, subIndex) =>
                         subCat?.children?.length !== 0 &&
                         subCat?.children?.map((thirdLavelCat, index) => {
