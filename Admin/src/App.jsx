@@ -26,7 +26,8 @@ import Profile from './pages/Profile/index.jsx';
 import CategoryList from './pages/Categegory/Index';
 import SubCatList from './pages/Categegory/SubCatList';
 import ProductDetails from './pages/Products/productDetails.jsx';
-import AddRams from './pages/Products/addRams.jsx';
+
+import AddSize from './pages/Products/addSize.jsx';
 
 
 
@@ -552,7 +553,7 @@ function App() {
     },
 
      {
-      path: "/product/addRams",
+      path: "/product/addSize",
       exact: true,
       element: (
         <>
@@ -575,7 +576,7 @@ function App() {
                     : "w-[100%] transition-all"
                 }`}
               >
-                <AddRams />
+                <AddSize />
               </div>
             </div>
           </section>

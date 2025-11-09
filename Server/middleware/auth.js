@@ -84,8 +84,8 @@ const auth = async(req,res,next) => {
                 });
             }
         } else {
-            return res.status(500).json({
-                message: "You have not login",  //error.message || error,
+            return res.status(401).json({
+                message: "Invalid token",
                 error : true,
                 success : false
             })

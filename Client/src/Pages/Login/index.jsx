@@ -88,7 +88,13 @@ const Login = () => {
           fetchDataFromApi("/api/user/user-details").then((userRes) => {
             if (userRes?.success) {
               context.setUserData(userRes?.data);
+            } else {
+              // If fetching user details fails, alert but keep login state
+              context.alertBox("error", "Failed to fetch user details.");
             }
+          }).catch((error) => {
+            // If fetching user details fails, alert but keep login state
+            context.alertBox("error", "Failed to fetch user details.");
           });
 
           history("/");

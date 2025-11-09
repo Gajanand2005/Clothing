@@ -40,6 +40,7 @@ const EditProduct = () => {
   const [productSubCat, setProductSubCat] = useState("");
   const [productFeatured, setProductFeatured] = useState("");
   const [productSize, setProductSize] = useState([]);
+   const [productSizeData, setProductSizeData] = useState([])
   const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
   const [previews, setPreviews] = useState([]);
     const [isLoading, setIsLoading] = useState();
@@ -50,6 +51,13 @@ const EditProduct = () => {
  
 
  useEffect(()=>{
+
+   fetchDataFromApi("/api/product/productSize/get").then((res)=>{
+      if(res?.error===false){
+        setProductSizeData(res?.data);
+      }
+     })
+
   if(context?.isOpenFullScreenPanel?.id){
     fetchDataFromApi(`/api/product/${ context?.isOpenFullScreenPanel?.id}`).then((res)=>{
     setFormFields({ 
@@ -428,7 +436,8 @@ const handleSubmit = (e) => {
               </div>
               <div className="col">
                 <h3 className="text-[14px] font-[500] !mb-2">Product Size </h3>
-                <Select
+                {
+                  productSizeData ?.length!==0 &&   <Select
                 multiple
                   labelId="demo-simple-select-label"
                   id="productCatDrop"
@@ -438,17 +447,17 @@ const handleSubmit = (e) => {
                   label="Category"
                   onChange={handleChangeProductSize}
                 >
+                  {
+                    productSizeData?.map((item, index)=>{
+                      return<MenuItem key={index} value={item.name}>{item.name}</MenuItem>
+                    })
+                  }
                   
-                  <MenuItem value={10}>XS</MenuItem>
-                  <MenuItem value={20}>S</MenuItem>
-                  <MenuItem value={30}>M</MenuItem>
-                  <MenuItem value={40}>L</MenuItem>
-                  <MenuItem value={50}>XL</MenuItem>
-                  <MenuItem value={60}>2XL</MenuItem>
-                  <MenuItem value={70}>3XL</MenuItem>
-                  <MenuItem value={80}>4XL</MenuItem>
-                  <MenuItem value={90}>5XL</MenuItem>
+                  
+                
                 </Select>
+                }
+               
               </div>
             </div>
             <div className="col w-full px-0 p-5">

@@ -1,5 +1,1 @@
-- [x] Analyze the 401 error on GET /api/user/user-details
-- [x] Identify that auth middleware requires token in cookies or headers, but query fallback was commented out
-- [x] Uncomment the query token fallback in Server/middleware/auth.js
-- [ ] Restart the server to apply changes
-- [ ] Test the endpoint with token in query parameter (e.g., /api/user/user-details?token=<token>)
+- [x] Update Admin/Utlis/Api.js to use Authorization header and withCredentials for uploadImage and deleteImages functions

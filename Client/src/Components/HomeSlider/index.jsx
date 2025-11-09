@@ -9,7 +9,7 @@ import banner2 from "../../assets/ban2.jpg";
 import banner3 from "../../assets/ban3.jpg";
 import banner4 from "../../assets/ban4.jpg";
 
-const HomeSlider = () => {
+const HomeSlider = (props) => {
   const banners = [banner1, banner2, banner3, banner4];
 
   return (
@@ -32,7 +32,11 @@ const HomeSlider = () => {
           }}
           className="sliderHome"
         >
-          {banners.map((banner, index) => (
+          {
+            props?.data?.length!==0 && props?.data?.map((item, index)=>{
+              return(
+                <>
+                {banners.map((banner, index) => (
             <SwiperSlide key={index}>
               <div className="item rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out">
                 <img
@@ -43,6 +47,11 @@ const HomeSlider = () => {
               </div>
             </SwiperSlide>
           ))}
+                </>
+              )
+            })
+          }
+          
         </Swiper>
       </div>
     </div>

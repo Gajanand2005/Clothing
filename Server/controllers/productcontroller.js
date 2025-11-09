@@ -1,7 +1,8 @@
 import ProductModel from '../models/productmodel.js';
+import ProductSizeModel from '../models/productSize.js';
 import { v2 as cloudinary } from 'cloudinary';
 import { error } from 'console';
-import fs from 'fs';
+import fs, { fdatasync } from 'fs';
 import { console } from 'inspector';
 
 cloudinary.config({
@@ -13,37 +14,53 @@ cloudinary.config({
 
 
 //image upload
-var imagesArr = [];
 export async function uploadImages(request, response) {
     try {
-        imagesArr = [];
+        const imagesArr = [];
 
-        const image = request.files;
+        if (!request.files || !request.files.images || !Array.isArray(request.files.images) || request.files.images.length === 0) {
+            return response.status(400).json({
+                message: "No images uploaded",
+                error: true,
+                success: false,
+            });
+        }
+
+        const image = request.files.images;
         const options = {
             use_filename: true,
             unique_filename: false,
             overwrite: false,
         };
 
-        for (let i = 0; i < image?.length; i++) {
-
-            const result = await cloudinary.uploader.upload(
-                image[i].path, 
-                options,
-                function (error, result) {
-                    // imagesArr.push(result.secure_url);
-
-                     // Push Cloudinary image URL
-                    if (result && result.secure_url) {
-                       imagesArr.push(result.secure_url);
-                    } else {
-                      console.error("Upload failed: no secure_url", result);
+        const uploadPromises = image.map(file => {
+            return new Promise((resolve, reject) => {
+                cloudinary.uploader.upload(
+                    file.path,
+                    options,
+                    (error, result) => {
+                        if (error) {
+                            reject(error);
+                        } else {
+                            if (result && result.secure_url) {
+                                imagesArr.push(result.secure_url);
+                            } else {
+                                console.error("Upload failed: no secure_url", result);
+                            }
+                            // Delete from local uploads folder
+                            try {
+                                fs.unlinkSync(file.path);
+                            } catch (unlinkError) {
+                                console.error("Error deleting file:", unlinkError);
+                            }
+                            resolve();
+                        }
                     }
-                     // Delete from local uploads folder
-                    fs.unlinkSync(`uploads/${request.files[i].filename}`);
-                }
-            );
-        }
+                );
+            });
+        });
+
+        await Promise.all(uploadPromises);
 
         return response.status(200).json({
             images: imagesArr
@@ -53,7 +70,7 @@ export async function uploadImages(request, response) {
         return response.status(500).json({
             message: error.message || error,
             error: true,
-            successs: false
+            success: false
         })
     }
 }
@@ -61,11 +78,11 @@ export async function uploadImages(request, response) {
 
 // create product
 export async function createProduct(req, res) {
-    try { 
+    try {
            let product = new ProductModel({
                 name: req.body.name,
                 description: req.body.description,
-                images: imagesArr,
+                images: req.body.images,
                 brand: req.body.brand,
                 price: req.body.price,
                 oldPrice: req.body.oldPrice,
@@ -95,8 +112,6 @@ export async function createProduct(req, res) {
                });
            }
 
-           imagesArr = [];
-
            res.status(200).json({
             message: "Product Created Successfully",
             error:false,
@@ -111,7 +126,7 @@ export async function createProduct(req, res) {
             successs: false
         })
     }
-}    
+}
         
 
 // get all products
@@ -816,15 +831,13 @@ export async function removeImageFromCloudinary(request, response) {
 
 // Update cproduct
 export async function updateProduct(request, response) {
-    // console.log(imagesArr);
-
     try {
         const product = await ProductModel.findByIdAndUpdate(
             request.params.id,
             {
                 name: request.body.name,
                 description: request.body.description,
-                images: imagesArr.length > 0 ? imagesArr : request.body.images,
+                images: request.body.images,
                 brand: request.body.brand,
                 price: request.body.price,
                 oldPrice: request.body.oldPrice,
@@ -844,15 +857,13 @@ export async function updateProduct(request, response) {
             },
             { new: true }
         );
-        
+
         if(!product) {
             response.status(404).json({
                 message:"The product can not be updated",
                 status: false
             });
         }
-
-        imagesArr = [];
 
         return response.status(200).json({
             message: "The product is updated",
@@ -868,4 +879,175 @@ export async function updateProduct(request, response) {
         })
     }
 
+}
+
+
+//createProductSize
+export async function createProductSize(request, response) {
+    try {
+        let productSize = new ProductSizeModel({
+            name:request.body.name
+        })
+        productSize = await productSize.save();
+
+        if(!productSize){
+            response.status(500).json({
+                error: true,
+                success: false,
+                message: "Product size Not Created"
+            })
+        }
+
+        return response.status(200).json({
+            message: "Product size Created successfully",
+            error: false,
+            success: true,
+            product: productSize
+        })
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+             success: false
+        })
+    }
+}
+
+//deleteProductSize
+export async function deleteProductSize(request,response) {
+    const productSize = await ProductSizeModel.findById(request.params.id);
+
+    if(!productSize){
+        return response.status(404).json({
+            message: "Item not found",
+            error: true,
+            success: false
+        })
+    }
+
+    const deleteProductSize = await ProductSizeModel.findByIdAndDelete(request.params.id);
+    if(!deleteProductSize){
+        response.status(404).json({
+            message: "item not deleted!",
+            success: false,
+            error: true
+        })
+    }
+    return response.status(200).json({
+        success: true,
+        error: false,
+         message : "Product size Deleted !"
+    })
+
+}
+
+//deleteMultipleProductSize
+export async function deleteMultipleProductSize(request,response) {
+    const {ids} = request.body;
+    if(!ids || !Array.isArray(ids)){
+        return res.status(400).json({
+            error: true,
+            success: false,
+             message: "Invalid input"
+        })
+    }
+    try {
+        await ProductSizeModel.deleteMany({_id: {$in: ids}});
+        return response.status(200).json({
+            message: "Product size delete successfully",
+            error: false,
+             success: true
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+//updateProductSize
+export async function updateProductSize(request,response) {
+try {
+    const productSize = await ProductSizeModel.findByIdAndUpdate(
+        request.params.id,
+        {
+            name: request.body.name,
+        },{
+            new: true
+        }
+    );
+     if(!productSize){
+        return response.status(404).json({
+            message:"the product size can not be updated!",
+            error: true,
+            success: false,
+        });
+     }
+       return response.status(200).json({
+        message: "The product size is updated",
+        error: false,
+         success: true
+       })
+} catch (error) {
+    return response.status(500).json({
+        message: error.message || error,
+        error: true,
+        success: false
+    })
+}
+}
+//getProductSize
+export async function getProductSize(request,response) {
+    try {
+        const productSize = await ProductSizeModel.find();
+
+        if(!productSize){
+            return response.status(500).json({
+                error: true,
+                 success: false
+            })
+        }
+        response.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        response.set('Pragma', 'no-cache');
+        response.set('Expires', '0');
+        response.set('Last-Modified', new Date().toUTCString());
+        return response.status(200).json({
+            error: false,
+             success: true,
+             data: productSize
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+//getProductSizeById
+export async function getProductSizeById(request,response) {
+    try {
+        const productSize = await ProductSizeModel.findById(request.params.id);
+        if(!productSize){
+            return response.status(500).json({
+                error: true,
+                success: false
+            })
+        }
+
+        return response.status(200).json({
+            error: false,
+            success: true,
+            data: productSize
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
 }

@@ -9,7 +9,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { IoMdGitCompare } from "react-icons/io";
 import { GiTechnoHeart } from "react-icons/gi";
 import Tooltip from "@mui/material/Tooltip";
-import Navigation from "./Navigation/Index";
+import Navigation from "./Navigation/index.jsx";
 import { MyContext } from "../../App";
 import Button from "@mui/material/Button";
 import { FaUserAstronaut } from "react-icons/fa";
@@ -48,17 +48,23 @@ const Header = () => {
   const logout = () => {
     setAnchorEl(null);
 
+    // Always remove tokens from localStorage to ensure logout on client side
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    context.setIsLogin(false);
+    context.setUserData(null);
+
     fetchDataFromApi(
       `/api/user/logout?token=${localStorage.getItem("accessToken")}`,
       { withCredentials: true }
     ).then((res) => {
-      if (res?.error === false) {
-        context.setIsLogin(false);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        history("/");
-      }
+      // Logout request sent, but client-side logout is already done
+      // This ensures logout works even if server returns 401
+    }).catch(() => {
+      // Ignore errors, client-side logout is complete
     });
+
+    history("/");
   };
 
   return (

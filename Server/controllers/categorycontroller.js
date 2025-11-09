@@ -9,12 +9,11 @@ cloudinary.config({
     secure: true, 
 });
 
-var imagesArr = [];
 export async function uploadImages(request, response) {
     try {
-        imagesArr = [];
+        const imagesArr = [];
 
-        const image = request.files;
+        const image = request.files.images;
         const options = {
             use_filename: true,
             unique_filename: false,
@@ -68,7 +67,7 @@ export async function createCategory(request, response) {
     try {
         let category = new CategoryModel ({
             name : request.body.name,
-            images : imagesArr,
+            images : request.body.images,
             parentId : request.body.parentId,
             parentCatName : request.body.parentCatName,
         });
@@ -82,8 +81,6 @@ export async function createCategory(request, response) {
     }
 
     category =  await category.save();
-
-    imagesArr = [];
 
     return response.status(201).json({
             message: "category created",
@@ -263,70 +260,96 @@ export async function removeImageFromCloudinary(request, response) {
 
 // Delete category
 export async function deleteCategory(request, response) {
-    const category = await CategoryModel.findById(request.params.id);
-    const images = category.images;
-    let img = "";
-    for (img of images) {
-        const imgUrl = img;
-        const urlArr = imgUrl.split("/");
-        const image = urlArr[urlArr.length - 1];
-
-        const imageName = image.split(".")[0];
-
-        if(imageName) {
-            cloudinary.uploader.destroy(imageName, (error, result) => {
-            //console.log (error, result);
-        });
-        }  
-    }
-    
-    const subCategory = await CategoryModel.find({
-        parentId : request.params.id
-    });
-
-    for (let i = 0; i < subCategory.length; i++) {
-        // console.log(subCategory[i]._id);
-
-        const thirdSubCategory = await CategoryModel.find({
-            parentId : subCategory[i]._id
-        });
-
-        for (let i = 0; i < thirdSubCategory.length; i++) {
-            const deletedThirdSubCat = await CategoryModel.findByIdAndDelete(thirdSubCategory[i]._id);
+    try {
+        const category = await CategoryModel.findById(request.params.id);
+        if (!category) {
+            return response.status(404).json({
+                message: "Category not found!",
+                success: false,
+                error: true
+            });
         }
-        const deletedSubCat = await CategoryModel.findByIdAndDelete(subCategory[i]._id);
-    }
 
-    const deletedCat = await CategoryModel.findByIdAndDelete(request.params.id);
-    if (!deletedCat) {
-        response.status(404).json({
-            message : "Category not found!",
-            success : false,
-            error : true
+        // Delete images for main category
+        const images = category.images;
+        for (let img of images) {
+            const imgUrl = img;
+            const urlArr = imgUrl.split("/");
+            const image = urlArr[urlArr.length - 1];
+            const imageName = image.split(".")[0];
+            if (imageName) {
+                cloudinary.uploader.destroy(imageName, (error, result) => {
+                    // console.log(error, result);
+                });
+            }
+        }
+
+        const subCategory = await CategoryModel.find({
+            parentId: request.params.id
+        });
+
+        for (let i = 0; i < subCategory.length; i++) {
+            // Delete images for subcategory
+            const subImages = subCategory[i].images;
+            for (let img of subImages) {
+                const urlArr = img.split("/");
+                const image = urlArr[urlArr.length - 1];
+                const imageName = image.split(".")[0];
+                if (imageName) {
+                    cloudinary.uploader.destroy(imageName, (error, result) => {
+                        // console.log(error, result);
+                    });
+                }
+            }
+
+            const thirdSubCategory = await CategoryModel.find({
+                parentId: subCategory[i]._id
+            });
+
+            for (let j = 0; j < thirdSubCategory.length; j++) {
+                // Delete images for third subcategory
+                const thirdImages = thirdSubCategory[j].images;
+                for (let img of thirdImages) {
+                    const urlArr = img.split("/");
+                    const image = urlArr[urlArr.length - 1];
+                    const imageName = image.split(".")[0];
+                    if (imageName) {
+                        cloudinary.uploader.destroy(imageName, (error, result) => {
+                            // console.log(error, result);
+                        });
+                    }
+                }
+                await CategoryModel.findByIdAndDelete(thirdSubCategory[j]._id);
+            }
+            await CategoryModel.findByIdAndDelete(subCategory[i]._id);
+        }
+
+        await CategoryModel.findByIdAndDelete(request.params.id);
+
+        response.status(200).json({
+            success: true,
+            error: false,
+            message: "Category deleted!",
+        });
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
         });
     }
-
-    response.status(200).json({
-        success : true,
-        error : false,
-        message : "Category deleted!",
-    })
 }
 
 
 // Update category
 export async function updatedCategory(request, response) {
-    // console.log(imagesArr);
-
     const body = request.body || {};
     const updateData = {};
 
     if (body.name !== undefined) {
         updateData.name = body.name;
     }
-    if (imagesArr.length > 0) {
-        updateData.images = imagesArr;
-    } else if (body.images !== undefined) {
+    if (body.images !== undefined) {
         updateData.images = body.images;
     }
     if (body.parentId !== undefined) {
@@ -357,8 +380,6 @@ export async function updatedCategory(request, response) {
             error: true
         });
     }
-
-    imagesArr = [];
 
     response.status(200).json({
         error: false,

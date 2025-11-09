@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import HomeSlider from '../../Components/HomeSlider/Index.jsx'
 import HomeCatSlider from '../../Components/HomeCatSlider/Index.jsx'
 
@@ -7,16 +7,28 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import ProductSlider from '../../Components/ProductSlider/Index';
+import { fetchDataFromApi } from '../../Utlis/Api.js';
 const Home = () => {
  const [value, setValue] = React.useState(0);
+ const [homeSlidesData, setHomeSlidesData]= useState([]);
+
+ useEffect(()=>{
+  fetchDataFromApi("/api/homeSlides").then((res)=>{
+    setHomeSlidesData(res?.data)
+  })
+ },[])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   }; 
   return (
     <div>
+      {
+        homeSlidesData?.length!==0 &&  <HomeSlider data={homeSlidesData} />
+      }
+
       <HomeCatSlider />
-      <HomeSlider />
+     
 
 
       <section className='bg-white py-8'>

@@ -199,7 +199,7 @@ const Login = () => {
               <h4 className="text-[14px] font-[600] mb-1">Password</h4>
               <div className="w-full relative">
                 <input
-                  type={setShowPassword === false ? "password" : "text"}
+                  type={showPassword === false ? "password" : "text"}
                   className="w-full h-[45px] border-2  border-[rgba(0,0,0,0.1)] rounded-md  focus:border-[rgba(0,0,0,0.7)] focus:outline-none px-3 mt-2"
                   name="password"
                   value={formFields.password}
@@ -239,7 +239,7 @@ const Login = () => {
               {isLoading === true ? (
                 <CircularProgress color="inherit" />
               ) : (
-                "Sign-Up"
+                "Login"
               )}
             </Button>
           </form>

@@ -11,8 +11,8 @@ import { IoClose } from "react-icons/io5";
 import { Button } from "@mui/material";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { MyContext } from "../../App";
-import { deleteImages, postData } from "../../../Utlis/Api";
-import { useNavigate } from "react-router-dom";
+import { deleteImages, fetchDataFromApi, postData } from "../../../Utlis/Api";
+import { data, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const AddProduct = () => {
@@ -40,6 +40,7 @@ const AddProduct = () => {
   const [productSubCat, setProductSubCat] = useState("");
   const [productFeatured, setProductFeatured] = useState("");
   const [productSize, setProductSize] = useState([]);
+  const [productSizeData, setProductSizeData] = useState([]);
   const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
   const [previews, setPreviews] = useState([]);
     const [isLoading, setIsLoading] = useState();
@@ -48,7 +49,13 @@ const AddProduct = () => {
   const context = useContext(MyContext);
 
  
- 
+ useEffect(()=>{
+   fetchDataFromApi("/api/product/productSize/get").then((res)=>{
+    if(res?.error===false){
+      setProductSizeData(res?.data);
+    }
+   })
+ }, [])
 
   const handleChangeProductCat = (event) => {
     setProductCat(event.target.value);
@@ -383,7 +390,8 @@ const handleSubmit = (e) => {
               </div>
               <div className="col">
                 <h3 className="text-[14px] font-[500] !mb-2">Product Size </h3>
-                <Select
+                {
+                  productSizeData ?.length!==0 &&   <Select
                 multiple
                   labelId="demo-simple-select-label"
                   id="productCatDrop"
@@ -393,17 +401,17 @@ const handleSubmit = (e) => {
                   label="Category"
                   onChange={handleChangeProductSize}
                 >
+                  {
+                    productSizeData?.map((item, index)=>{
+                      return<MenuItem key={index} value={item.name}>{item.name}</MenuItem>
+                    })
+                  }
                   
-                  <MenuItem value={10}>XS</MenuItem>
-                  <MenuItem value={20}>S</MenuItem>
-                  <MenuItem value={30}>M</MenuItem>
-                  <MenuItem value={40}>L</MenuItem>
-                  <MenuItem value={50}>XL</MenuItem>
-                  <MenuItem value={60}>2XL</MenuItem>
-                  <MenuItem value={70}>3XL</MenuItem>
-                  <MenuItem value={80}>4XL</MenuItem>
-                  <MenuItem value={90}>5XL</MenuItem>
+                  
+                
                 </Select>
+                }
+               
               </div>
             </div>
             <div className="col w-full px-0 p-5">
