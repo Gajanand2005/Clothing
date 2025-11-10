@@ -20,7 +20,10 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(helmet({

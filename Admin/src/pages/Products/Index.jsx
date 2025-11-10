@@ -282,14 +282,14 @@ const Product = () => {
 
   const handleSelectAll = (event) => {
     const isChecked = event.target.checked;
-    const updatedItems = productData.map((item) => ({
+    const updatedItems = productData?.map((item) => ({
       ...item,
       checked: isChecked,
     }));
     setProductData(updatedItems);
 
     if (isChecked) {
-      const ids = updatedItems.map((item) => item._id).sort((a, b) => a - b);
+      const ids = updatedItems?.map((item) => item._id).sort((a, b) => a - b);
       setSortedIds(ids);
     } else {
       setSortedIds([]);
@@ -297,7 +297,7 @@ const Product = () => {
 
     const start = page * rowsPerPage;
     const end = start + rowsPerPage;
-    const updatedRows = rows.map((row, index) => {
+    const updatedRows = rows?.map((row, index) => {
       if (index >= start && index < end) return { ...row, isSelected: isChecked };
       return row;
     });
@@ -355,7 +355,7 @@ const Product = () => {
                 label="Category"
                 onChange={handleChangeProductCat}
               >
-                {context?.catData.map((cat, index) => {
+                {context?.catData?.map((cat, index) => {
                   return <MenuItem value={cat?._id}>{cat?.name}</MenuItem>;
                 })}
               </Select>
@@ -377,7 +377,7 @@ const Product = () => {
                 {context?.catData?.map(
                   (cat, index) =>
                     cat?.children && cat?.children.length !== 0 &&
-                    cat?.children.map((subCat, subIndex) => (
+                    cat?.children?.map((subCat, subIndex) => (
                       <MenuItem key={subCat._id} value={subCat._id}>
                         {subCat.name}
                       </MenuItem>
@@ -444,7 +444,7 @@ const Product = () => {
                       color="primary"
                     />
                   </TableCell>
-                  {columns.map((column) => (
+                  {columns?.map((column) => (
                     <TableCell
                       key={column.id}
                       align={column.align}
@@ -461,7 +461,7 @@ const Product = () => {
                 {
                  isLoading ===false ? productData?.length !==0 && productData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((product, index) => {
+                    ?.map((product, index) => {
                       const row = createData(
                         product,
                         page * rowsPerPage + index,
@@ -483,7 +483,7 @@ const Product = () => {
                               }
                             />
                           </TableCell>
-                          {columns.map((column) => (
+                          {columns?.map((column) => (
                             <TableCell key={column.id} align={column.align}>
                               {row[column.id]}
                             </TableCell>

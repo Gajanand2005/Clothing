@@ -47,17 +47,19 @@ export const fetchDataFromApi = async (url)=>{
 }
 
 export const uploadImage= async (url, updatedData) => {
-       const params={
+    try {
+        const params={
             headers: {
                 'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
                 'Content-Type' : 'multipart/form-data', //adjust the content type as needed
             },
         }
-        let response;
-    await axios.put(apiUrl + url , updatedData, params).then((res)=>{
-    response=res;
-    })
-    return response;
+        const response = await axios.post(apiUrl + url , updatedData, params);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return error.response ? error.response.data : error;
+    }
 }
 
 export const editData = async (url, updatedData) => {

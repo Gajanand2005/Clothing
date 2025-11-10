@@ -5,7 +5,18 @@ import {createProduct, getAllProducts, getAllProductsByCatId, uploadImages,getAl
 
 const productRouter = Router();
 
-productRouter.post('/uploadImages', auth,upload.array('images'),uploadImages);
+productRouter.post('/uploadImages', auth, (req, res, next) => {
+    upload.array('images')(req, res, function(err) {
+        if (err) {
+            return res.status(400).json({
+                message: err.message || 'File upload error',
+                error: true,
+                success: false
+            });
+        }
+        next();
+    });
+}, uploadImages);
 productRouter.post('/create', auth, createProduct);
 productRouter.get('/getAllProducts',  getAllProducts);
 productRouter.get('/getAllProductsByCatId/:id',  getAllProductsByCatId);

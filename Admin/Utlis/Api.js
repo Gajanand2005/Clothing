@@ -33,15 +33,20 @@ export const fetchDataFromApi = async (url) => {
 };
 
 export const uploadImage = async (url, updatedData) => {
-    const token = localStorage.getItem('accessToken');
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-        },
-        withCredentials: true,
-    };
-    const response = await axios.post(apiUrl + url, updatedData, config);
-    return response.data;
+    try {
+        const token = localStorage.getItem('accessToken');
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+            withCredentials: true,
+        };
+        const response = await axios.post(apiUrl + url, updatedData, config);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return error.response ? error.response.data : error;
+    }
 };
 
 export const editData = async (url, updatedData) => {

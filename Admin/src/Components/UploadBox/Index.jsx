@@ -14,6 +14,11 @@ const UploadBox = (props) => {
     try {
       setPreviews([]);
       const files = e.target.files;
+
+      if (files.length === 0) {
+        return;
+      }
+
       setUploading(true);
 
       const formdata = new FormData();
@@ -38,7 +43,7 @@ const UploadBox = (props) => {
       const res = await uploadImage(apiEndPoint, formdata);
       setUploading(false);
 
-      if (res && res.images) {
+      if (res && res.images && res.images.length > 0) {
         props.setPreviews(res.images);
         setPreviews(res.images);
       } else {

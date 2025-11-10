@@ -8,7 +8,18 @@ userRouter.post('/register', registerUserController)
 userRouter.post('/verifyEmail', verifyEmailController)
 userRouter.post('/login', loginUserController)
 userRouter.get('/logout', auth, logoutController);
-userRouter.put('/user-avatar',upload.array('avatar'), auth, userAvatarController); 
+userRouter.put('/user-avatar', auth, (req, res, next) => {
+    upload.array('avatar')(req, res, function(err) {
+        if (err) {
+            return res.status(400).json({
+                message: err.message || 'File upload error',
+                error: true,
+                success: false
+            });
+        }
+        next();
+    });
+}, userAvatarController);
 userRouter.delete('/deleteImage', auth, removeImageFromCloudinary);
 userRouter.put('/:id', auth, updateUserDetails);
 userRouter.post('/forgot-password', forgotPasswordController);

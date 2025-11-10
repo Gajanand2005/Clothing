@@ -1,4 +1,5 @@
 import CategoryModel from './../models/categorymodel.js';
+import mongoose from 'mongoose';
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
 
@@ -11,8 +12,15 @@ cloudinary.config({
 
 export async function uploadImages(request, response) {
     try {
-        const imagesArr = [];
+        if (!request.files || !request.files.images || request.files.images.length === 0) {
+            return response.status(400).json({
+                message: "No images provided",
+                error: true,
+                success: false
+            });
+        }
 
+        const imagesArr = [];
         const image = request.files.images;
         const options = {
             use_filename: true,
@@ -21,27 +29,27 @@ export async function uploadImages(request, response) {
         };
 
         const uploadPromises = image.map(file => {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 cloudinary.uploader.upload(
                     file.path,
                     options,
                     (error, result) => {
                         if (error) {
-                            reject(error);
+                            console.error("Upload error for file:", file.originalname, error);
                         } else {
                             if (result && result.secure_url) {
                                 imagesArr.push(result.secure_url);
                             } else {
                                 console.error("Upload failed: no secure_url", result);
                             }
-                            // Delete from local uploads folder
-                            try {
-                                fs.unlinkSync(file.path);
-                            } catch (unlinkError) {
-                                console.error("Error deleting file:", unlinkError);
-                            }
-                            resolve();
                         }
+                        // Delete from local uploads folder
+                        try {
+                            fs.unlinkSync(file.path);
+                        } catch (unlinkError) {
+                            console.error("Error deleting file:", unlinkError);
+                        }
+                        resolve();
                     }
                 );
             });
@@ -49,8 +57,18 @@ export async function uploadImages(request, response) {
 
         await Promise.all(uploadPromises);
 
+        if (imagesArr.length === 0) {
+            return response.status(500).json({
+                message: "Failed to upload any images",
+                error: true,
+                success: false
+            });
+        }
+
         return response.status(200).json({
-            images: imagesArr
+            images: imagesArr,
+            success: true,
+            error: false
         });
 
     } catch (error) {
@@ -188,32 +206,36 @@ export async function getSubCategoriesCount(request, response) {
 //get single category
 export async function getCategory(request, response) {
     try {
+        if (!mongoose.Types.ObjectId.isValid(request.params.id)) {
+            return response.status(400).json({
+                message: "Invalid category ID format",
+                error: true,
+                success: false
+            });
+        }
+
         const category = await CategoryModel.findById(request.params.id);
 
         if (!category) {
-            response.status(500)
-                .json(
-                    { 
-                        message : "The category with the given ID was not found.",
-                        error : true,
-                        success : false
-                    }
-                );
+            return response.status(404).json({
+                message: "The category with the given ID was not found.",
+                error: true,
+                success: false
+            });
         }
 
-        return response.status(200).json ({
-            error : false,
-            success : true,
-            category : category
-        })
-
+        return response.status(200).json({
+            error: false,
+            success: true,
+            category: category
+        });
 
     } catch (error) {
-         return response.status(500).json({
+        return response.status(500).json({
             message: error.message || error,
             error: true,
             success: false
-        })
+        });
     }
 }
 

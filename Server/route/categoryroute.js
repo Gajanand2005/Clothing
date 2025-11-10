@@ -4,7 +4,18 @@ import upload from '../middleware/multer.js';
 import { createCategory, deleteCategory, getCategories, getCategoriesCount, getCategory, getSubCategoriesCount, removeImageFromCloudinary, updatedCategory, uploadImages } from '../controllers/categorycontroller.js';
 const categoryRouter = Router();
 
-categoryRouter.post('/uploadImages', auth,upload.array('images'),uploadImages);
+categoryRouter.post('/uploadImages', auth, (req, res, next) => {
+    upload.array('images')(req, res, function(err) {
+        if (err) {
+            return res.status(400).json({
+                message: err.message || 'File upload error',
+                error: true,
+                success: false
+            });
+        }
+        next();
+    });
+}, uploadImages);
 categoryRouter.post('/create', auth,createCategory);
 categoryRouter.get('/', getCategories);
 categoryRouter.get('/get/count', getCategoriesCount);
