@@ -1,4 +1,0 @@
-- [x] Add error handling to productroute.js for /uploadImages
-- [x] Add error handling to homeSlidesroutes.js for /uploadImages
-- [x] Add error handling to userroute.js for /user-avatar
-- [ ] Test image upload functionality

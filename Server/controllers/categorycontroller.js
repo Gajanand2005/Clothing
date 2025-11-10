@@ -12,7 +12,17 @@ cloudinary.config({
 
 export async function uploadImages(request, response) {
     try {
-        if (!request.files || !request.files.images || request.files.images.length === 0) {
+        let files = [];
+
+        if (Array.isArray(request.files)) {
+            files = request.files;
+        } else if (Array.isArray(request.files?.images)) {
+            files = request.files.images;
+        } else if (request.files?.images) {
+            files = [request.files.images];
+        }
+
+        if (!files.length) {
             return response.status(400).json({
                 message: "No images provided",
                 error: true,
@@ -21,14 +31,13 @@ export async function uploadImages(request, response) {
         }
 
         const imagesArr = [];
-        const image = request.files.images;
         const options = {
             use_filename: true,
             unique_filename: false,
             overwrite: false,
         };
 
-        const uploadPromises = image.map(file => {
+        const uploadPromises = files.map(file => {
             return new Promise((resolve) => {
                 cloudinary.uploader.upload(
                     file.path,

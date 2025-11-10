@@ -554,36 +554,42 @@ export async function resetPassword(req, res) {
 //refresh Token
 export async function refreshToken(req, res) {
     try {
+        const headerToken = req.headers['x-refresh-token'] || req.headers?.authorization?.split(' ')[1];
+        const bodyToken = req.body?.refreshToken;
 
-        const refreshToken = req.cookies.refreshToken // bear token
+        const refreshToken =
+            req.cookies.refreshToken ||
+            headerToken ||
+            bodyToken ||
+            req.query?.token;
 
         if (!refreshToken) {
             return res.status(401).json({
                 message: "Invalid token",
                 error: true,
                 success: false
-            })
+            });
         }
 
-        const verifyToken = await jwt.verify(refreshToken, process.env.SECRET_KEY_REFRESH_TOKEN)
+        const verifyToken = await jwt.verify(refreshToken, process.env.SECRET_KEY_REFRESH_TOKEN);
         if (!verifyToken) {
             return res.status(401).json({
                 message: "Token is expired",
                 error: true,
                 success: false
-            })
+            });
         }
 
-        const userId = verifyToken.id
-        const newAccessToken = await generatedAccessToken(userId)
+        const userId = verifyToken.id;
+        const newAccessToken = await generatedAccessToken(userId);
 
         const cookiesOption = {
             httpOnly: true,
             secure: true,
             sameSite: "None"
-        }
+        };
 
-        res.cookie('accessToken', newAccessToken, cookiesOption)
+        res.cookie('accessToken', newAccessToken, cookiesOption);
 
         return res.json({
             message: "New Access token generated",
@@ -592,13 +598,13 @@ export async function refreshToken(req, res) {
             data: {
                 accessToken: newAccessToken
             }
-        })
+        });
     } catch (error) {
         return res.status(500).json({
             message: error.message || error,
             error: true,
             success: false
-        })
+        });
     }
 }
 

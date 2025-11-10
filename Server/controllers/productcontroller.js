@@ -18,7 +18,17 @@ export async function uploadImages(request, response) {
     try {
         const imagesArr = [];
 
-        if (!request.files || !request.files.images || !Array.isArray(request.files.images) || request.files.images.length === 0) {
+        // Normalize multer payload: multer.array('images') sets req.files to an array
+        let files = [];
+        if (Array.isArray(request.files)) {
+            files = request.files;
+        } else if (Array.isArray(request.files?.images)) {
+            files = request.files.images;
+        } else if (request.files?.images) {
+            files = [request.files.images];
+        }
+
+        if (!files.length) {
             return response.status(400).json({
                 message: "No images uploaded",
                 error: true,
@@ -26,21 +36,23 @@ export async function uploadImages(request, response) {
             });
         }
 
-        const image = request.files.images;
         const options = {
             use_filename: true,
             unique_filename: false,
             overwrite: false,
         };
 
-        const uploadPromises = image.map(file => {
+        const uploadPromises = files.map(file => {
             return new Promise((resolve, reject) => {
                 cloudinary.uploader.upload(
                     file.path,
                     options,
                     (error, result) => {
                         if (error) {
-                            reject(error);
+                            try {
+                                fs.unlinkSync(file.path);
+                            } catch {}
+                            return reject(error);
                         } else {
                             if (result && result.secure_url) {
                                 imagesArr.push(result.secure_url);
@@ -62,8 +74,18 @@ export async function uploadImages(request, response) {
 
         await Promise.all(uploadPromises);
 
+        if (!imagesArr.length) {
+            return response.status(500).json({
+                message: "Failed to upload any images",
+                error: true,
+                success: false
+            });
+        }
+
         return response.status(200).json({
-            images: imagesArr
+            images: imagesArr,
+            success: true,
+            error: false
         });
 
     } catch (error) {

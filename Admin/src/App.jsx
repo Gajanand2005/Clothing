@@ -23,8 +23,8 @@ import ChangePassword from './pages/ChangePassword/index.jsx';
 import { fetchDataFromApi } from '../Utlis/Api.js';
 import { useEffect } from 'react';
 import Profile from './pages/Profile/index.jsx';
-import CategoryList from './pages/Categegory/Index';
-import SubCatList from './pages/Categegory/SubCatList';
+import CategoryList from './pages/Categegory/Index.jsx';
+import SubCatList from './pages/Categegory/SubCatList.jsx';
 import ProductDetails from './pages/Products/productDetails.jsx';
 
 import AddSize from './pages/Products/addSize.jsx';

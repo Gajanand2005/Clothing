@@ -3,32 +3,38 @@ import generatedAccessToken from '../utils/generatedAcessToken.js';
 import generatedRefreshToken from '../utils/generatedRefresToken.js';
 import UserModel from '../models/usermodel.js';
 
-const auth = async(req,res,next) => {
-    try{
+const auth = async (req, res, next) => {
+    try {
+        let token =
+            req.cookies.accessToken ||
+            req?.headers?.authorization?.split(" ")[1] ||
+            req.headers['x-access-token'];
 
-        const token = req.cookies.accessToken || req?.headers?.authorization?.split(" ")[1]
-
-        if(!token){
+        if (!token && req.query?.token) {
             token = req.query.token;
         }
 
-        if(!token) {
-            return res.status(401).json({
-                message : "Provide token"
-            })
+        if (!token && req.body?.token) {
+            token = req.body.token;
         }
 
-        const decode = await jwt.verify(token,process.env.SECRET_KEY_ACCESS_TOKEN)
-        if(!decode) {
+        if (!token) {
             return res.status(401).json({
-                message : "Unauthorized access",
-                error : true,
+                message: "Provide token"
+            });
+        }
+
+        const decode = await jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
+        if (!decode) {
+            return res.status(401).json({
+                message: "Unauthorized access",
+                error: true,
                 success : false
-            })
+            });
         }
 
-        req.userId = decode.id
-        next()
+        req.userId = decode.id;
+        next();
 
 
     } catch (error) {

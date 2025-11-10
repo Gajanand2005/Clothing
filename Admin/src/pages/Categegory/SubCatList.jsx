@@ -2,8 +2,7 @@ import React, { useContext, useState } from "react";
 import { Button } from "@mui/material";
 import { MyContext } from "../../App";
 import { FaAngleDown } from "react-icons/fa6";
-import EditCategory from "./editCategory";
-import EditSubCatBox from "./editCategory";
+
 
 const SubCatList = () => {
   const [isOpen, setIsOpen] = useState(0);
@@ -57,29 +56,54 @@ const SubCatList = () => {
 
                   {isOpen === index && (
                     <>
-                      {firstLavelCat?.children?.length !== 0 && (
+                      {Array.isArray(firstLavelCat?.children) && firstLavelCat.children.length > 0 && (
                         <ul className="w-full">
                           {firstLavelCat?.children?.map((subCat, index_) => {
                             return (
                               <li className="w-full py-1" key={index_}>
-                                <EditCategory
-                                  name={subCat?.name}
-                                  id={subCat?._id}
-                                  catData={context?.catData}
-                                  index={index_}
-                                  selectedCat={subCat?.parentId}
-                                  selectedCatName={subCat?.parentCatName}
-                                />
+                                <div className="w-full flex items-center gap-3 p-2">
+                                  <span className="text-[14px] font-[500]">{subCat?.name}</span>
+                                  <div className="ml-auto flex items-center gap-2">
+                                    <Button
+                                      className="!min-w-[35px] !w-[35px] !h-[30px] !rounded-full !text-black !bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)]"
+                                      onClick={() =>
+                                        context.setIsOpenFullScreenPanel({
+                                          open: true,
+                                          model: "Edit Category",
+                                          id: subCat?._id
+                                        })
+                                      }
+                                    >
+                                      Edit
+                                    </Button>
+                                  </div>
+                                </div>
 
                               {
-                                subCat?.children?.length!== 0 &&
+                                Array.isArray(subCat?.children) && subCat.children.length > 0 &&
                                 <ul className="pl-4">
                                   {
-                                    subCat?.children?.map(
+                                    subCat?.children.map(
                                       (thirdLevel, index_)=>{
                                         return(
-                                          <li key={index_} className="w-full hover:bg-[#f1f1f1]">
-                                            <EditSubCatBox name={thirdLevel.name} catData={firstLavelCat?.children} index={index_} selectedCat={thirdLevel?.parentId} selectedCatName={thirdLevel?.parentCatName} id={thirdLevel?._id}></EditSubCatBox>
+                                          <li key={index_} className="w-full hover:bg-[#f1f1f1] py-1">
+                                            <div className="w-full flex items-center gap-3 p-2">
+                                              <span className="text-[14px]">{thirdLevel?.name}</span>
+                                              <div className="ml-auto flex items-center gap-2">
+                                                <Button
+                                                  className="!min-w-[35px] !w-[35px] !h-[30px] !rounded-full !text-black !bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)]"
+                                                  onClick={() =>
+                                                    context.setIsOpenFullScreenPanel({
+                                                      open: true,
+                                                      model: "Edit Category",
+                                                      id: thirdLevel?._id
+                                                    })
+                                                  }
+                                                >
+                                                  Edit
+                                                </Button>
+                                              </div>
+                                            </div>
                                           </li>
                                         )
                                       }

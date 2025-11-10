@@ -1,90 +1,218 @@
 import axios from 'axios';
-import { GiToken } from 'react-icons/gi';
-const apiUrl = import.meta.env.VITE_API_URL;
 
-export const postData = async (url, formData)=>{
-    try {
-        const res= await fetch(apiUrl + url,{
-            method : 'POST',
-             headers: {
-                'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
-                'Content-Type' : 'application/json', //adjust the content type as needed
-            },
-            body: JSON.stringify(formData)
-        });
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-        if(res.ok){
-            const data = await res.json();
-            return data;
-        }else{
-            const errorData = await res.json();
-            return errorData;
-        }
+const getAccessToken = () => localStorage.getItem('accessToken');
+const getRefreshToken = () => localStorage.getItem('refreshToken');
 
-    } catch (error) {
-         console.log(error)
+const clearStoredTokens = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+};
+
+const mergeConfig = (config = {}, defaultHeaders = {}) => {
+    const { headers, ...rest } = config;
+    return {
+        headers: {
+            ...defaultHeaders,
+            ...(headers || {})
+        },
+        ...rest
+    };
+};
+
+const normalizeError = (error) => {
+    if (!error) {
+        return { message: 'Unknown error', error: true, success: false };
     }
-}
 
+    if (error?.error !== undefined) {
+        return error;
+    }
 
-export const fetchDataFromApi = async (url)=>{
-    try {
+    if (error?.message) {
+        return {
+            message: error.message,
+            error: true,
+            success: false
+        };
+    }
 
-        const params={
+    return {
+        message: 'Request failed',
+        error: true,
+        success: false
+    };
+};
+
+const apiClient = axios.create({
+    baseURL: apiUrl,
+    withCredentials: true
+});
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+    failedQueue.forEach(({ resolve, reject }) => {
+        if (error) {
+            reject(error);
+        } else {
+            resolve(token);
+        }
+    });
+    failedQueue = [];
+};
+
+const refreshAccessToken = async () => {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) {
+        throw new Error('Missing refresh token');
+    }
+
+    const response = await axios.post(
+        `${apiUrl}/api/user/refresh-token`,
+        {},
+        {
             headers: {
-                'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
-                'Content-Type' : 'application/json', //adjust the content type as needed
+                'Content-Type': 'application/json',
+                'x-refresh-token': refreshToken
+            },
+            withCredentials: true
+        }
+    );
+
+    const newToken = response?.data?.data?.accessToken;
+
+    if (!newToken) {
+        throw new Error('Unable to refresh access token');
+    }
+
+    localStorage.setItem('accessToken', newToken);
+    return newToken;
+};
+
+apiClient.interceptors.request.use(
+    (config) => {
+        const token = getAccessToken();
+        if (token) {
+            config.headers = config.headers || {};
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+apiClient.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config || {};
+        const status = error?.response?.status;
+
+        if (
+            status === 401 &&
+            !originalRequest._retry &&
+            !originalRequest.url?.includes('/api/user/login') &&
+            !originalRequest.url?.includes('/api/user/register')
+        ) {
+            if (isRefreshing) {
+                return new Promise((resolve, reject) => {
+                    failedQueue.push({ resolve, reject });
+                })
+                    .then((token) => {
+                        if (token) {
+                            originalRequest.headers.Authorization = `Bearer ${token}`;
+                        } else {
+                            delete originalRequest.headers.Authorization;
+                        }
+                        return apiClient(originalRequest);
+                    })
+                    .catch((queueError) => Promise.reject(queueError));
+            }
+
+            originalRequest._retry = true;
+            isRefreshing = true;
+
+            try {
+                const newToken = await refreshAccessToken();
+                processQueue(null, newToken);
+                originalRequest.headers = originalRequest.headers || {};
+                originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                return apiClient(originalRequest);
+            } catch (refreshError) {
+                processQueue(refreshError, null);
+                clearStoredTokens();
+                return Promise.reject(
+                    refreshError?.response?.data ? refreshError.response.data : refreshError
+                );
+            } finally {
+                isRefreshing = false;
             }
         }
 
-        const {data} = await axios.get(apiUrl+ url,params )
-        
+        return Promise.reject(error?.response?.data ? error.response.data : error);
+    }
+);
+
+export const postData = async (url, payload, config = {}) => {
+    try {
+        const response = await apiClient.post(
+            url,
+            payload,
+            mergeConfig(config, { 'Content-Type': 'application/json' })
+        );
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return normalizeError(error);
+    }
+};
+
+export const fetchDataFromApi = async (url, config = {}) => {
+    try {
+        const { data } = await apiClient.get(url, config);
         return data;
     } catch (error) {
         console.log(error);
-        return error;
+        return normalizeError(error);
     }
-}
+};
 
-export const uploadImage= async (url, updatedData) => {
+export const uploadImage = async (url, formData, config = {}) => {
     try {
-        const params={
-            headers: {
-                'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
-                'Content-Type' : 'multipart/form-data', //adjust the content type as needed
-            },
-        }
-        const response = await axios.post(apiUrl + url , updatedData, params);
-        return response;
+        const response = await apiClient.post(
+            url,
+            formData,
+            mergeConfig(config, { 'Content-Type': 'multipart/form-data' })
+        );
+        return response.data;
     } catch (error) {
         console.log(error);
-        return error.response ? error.response.data : error;
+        return normalizeError(error);
     }
-}
+};
 
-export const editData = async (url, updatedData) => {
-       const params={
-            headers: {
-                'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
-                'Content-Type' : 'application/json', //adjust the content type as needed
-            },
-        }
-        let response;
-    await axios.put(apiUrl + url , updatedData, params).then((res)=>{
-    response=res;
-    })
-    return response;
-}
+export const editData = async (url, updatedData, config = {}) => {
+    try {
+        const response = await apiClient.put(
+            url,
+            updatedData,
+            mergeConfig(config, { 'Content-Type': 'application/json' })
+        );
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return normalizeError(error);
+    }
+};
 
-
-export const deleteData = async (url)=>{
-const params={
-            headers: {
-                'Authorization' : `Bearer ${localStorage.getItem('accessToken')}`, //include your api key in the Authorization header
-                'Content-Type' : 'application/json', //adjust the content type as needed
-            },
-        }
-
-    const {res}= await axios.delete(apiUrl + url, params)
-    return res;
-}
+export const deleteData = async (url, config = {}) => {
+    try {
+        const { data } = await apiClient.delete(url, config);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return normalizeError(error);
+    }
+};
