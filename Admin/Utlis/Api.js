@@ -168,19 +168,35 @@ export const fetchDataFromApi = async (url, config = {}) => {
     }
 };
 
+// export const uploadImage = async (url, formData, config = {}) => {
+//     try {
+//         const response = await apiClient.post(
+//             url,
+//             formData,
+//             mergeConfig(config, { 'Content-Type': 'multipart/form-data' })
+//         );
+//         return response.data;
+//     } catch (error) {
+//         console.log(error);
+//         return normalizeError(error);
+//     }
+// };
+
+
 export const uploadImage = async (url, formData, config = {}) => {
-    try {
-        const response = await apiClient.post(
-            url,
-            formData,
-            mergeConfig(config, { 'Content-Type': 'multipart/form-data' })
-        );
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        return normalizeError(error);
-    }
+  try {
+    const response = await apiClient.post(
+      url,
+      formData,
+      mergeConfig(config) // ← yahan se Content-Type hata do
+    );
+    return response.data;
+  } catch (error) {
+    console.log("UPLOAD ERROR:", error?.response?.data || error?.message);
+    return normalizeError(error);
+  }
 };
+
 
 export const editData = async (url, updatedData, config = {}) => {
     try {

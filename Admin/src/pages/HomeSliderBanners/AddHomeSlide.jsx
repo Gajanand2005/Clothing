@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import UploadBox from '../../Components/UploadBox/Index'
 import { IoClose } from "react-icons/io5";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { useState } from 'react';
 import { useContext } from 'react';
@@ -13,12 +13,18 @@ import { deleteImages, postData } from '../../../Utlis/Api';
 const AddHomeSlide = () => {
 
   const [formFields, setFormFields]= useState({
+  
 
     images : [],
   })
+ 
 
   const [previews, setPreviews]= useState([]);
+    const [isLoading, setIsLoading] = useState(false);
   const context = useContext(MyContext);
+
+
+
 
    const setPreviewsFun = (previewsArr) => {
       setPreviews(previewsArr);
@@ -36,22 +42,28 @@ const AddHomeSlide = () => {
       }
     };
 
-    const handleSubmit = async () => {
-      try {
-        // Placeholder for publishing logic
-        const response = await postData('/api/homeSlides/publish', formFields);
-        console.log('Published:', response);
-        // Handle success, e.g., navigate or show message
-      } catch (error) {
-        console.error('Error publishing:', error);
-      }
-    };
+    const handleSubmit = (e) => {
+       e.preventDefault();
+       setIsLoading(true);
+   
+       if (previews?.length === 0) {
+         context.alertBox("error", "please enter Banner  image ");
+         setIsLoading(false);
+         return false;
+       }
+       postData("/api/homeSlides/add", formFields).then((res) => {
+         setIsLoading(false);
+         context.setIsOpenFullScreenPanel({
+           open: false,
+         });
+       });
+     };
   
 
   return (
     <>
      <section className="p-5 bg-gray-50 mt-3 ">
-        <form className="form py-3 p-8 ">
+        <form className="form py-3 p-8 "  onSubmit={handleSubmit}>
           <div className="scroll max-h-72vh] ">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6 lg:gap-8">
               {previews?.length !== 0 &&
@@ -92,7 +104,19 @@ const AddHomeSlide = () => {
 
            <hr />
          <br />
-        <Button type="button" onClick={handleSubmit} className="btn-blue btn-lg w-[250px] flex gap-4"><FaCloudUploadAlt className="text-[25px]" />Publish and View</Button>
+      <Button
+                  type="submit"
+                  className="!bg-blue-600 !text-black btn-lg w-[250px] flex gap-4"
+                >
+                  {isLoading === true ? (
+                    <CircularProgress color="inherit" />
+                  ) : (
+                    <>
+                      <FaCloudUploadAlt className="text-[25px]" />
+                      Publish and View
+                    </>
+                  )}
+                </Button>
 
           </form>
           </section>

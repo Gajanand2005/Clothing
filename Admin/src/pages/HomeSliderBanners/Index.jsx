@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom';
 import { FaEdit } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { AiTwotoneDelete } from "react-icons/ai";
+import { fetchDataFromApi } from '../../../Utlis/Api';
 
 const columns = [
   { id: "id", label: "ID", minWidth: 50 },
@@ -117,7 +118,7 @@ const HomeSliderBanner = () => {
     createData(1, "Vegetable Steamer for Cooking", "Kitchen Appliances", "Steamers", "₹499", "₹299", 85),
  
   ]);
-
+ const [slideData, setSlideData]= useState([]);
   const [page, setPage] = React.useState(0);
 
   const [chart1Data, setChart1Data] = useState([
@@ -246,7 +247,7 @@ const HomeSliderBanner = () => {
     },
   ]);
 
-  const [categoryFilterValue, setcategoryFilterValue] = React.useState('');
+  const [categoryFilterValue, setcategoryFilterValue] = useState('');
 
   const handleChangecatFilter = (event) => {
     setcategoryFilterValue(event.target.value);
@@ -254,6 +255,14 @@ const HomeSliderBanner = () => {
 
 
   const context =useContext(MyContext);
+
+  useEffect(() => {
+  
+fetchDataFromApi("/api/homeSlides").then(()=>{
+    setSlideData(res?.images)
+})
+ 
+}, [context?.isOpenFullScreenPanel])
 
   return (
     <>

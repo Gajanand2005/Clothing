@@ -11,11 +11,67 @@ cloudinary.config({
 });
 
 //image upload
+// export async function uploadImages(request, response) {
+//   try {
+//     const imagesArr = [];
+
+//     if (!request.files || !request.files.images || !Array.isArray(request.files.images) || request.files.images.length === 0) {
+//       return response.status(400).json({
+//         message: "No images uploaded",
+//         error: true,
+//         success: false,
+//       });
+//     }
+
+//     const images = request.files.images;
+//     const options = {
+//       use_filename: true,
+//       unique_filename: false,
+//       overwrite: false,
+//     };
+
+//     const uploadPromises = images.map((file) => {
+//       return new Promise((resolve, reject) => {
+//         cloudinary.uploader.upload(file.path, options, (error, result) => {
+//           if (error) {
+//             reject(error);
+//           } else {
+//             if (result && result.secure_url) {
+//               imagesArr.push(result.secure_url);
+//             } else {
+//               console.error("Upload failed: no secure_url", result);
+//             }
+//             // Delete from local uploads folder
+//             try {
+//               fs.unlinkSync(file.path);
+//             } catch (unlinkError) {
+//               console.error("Error deleting file:", unlinkError);
+//             }
+//             resolve();
+//           }
+//         });
+//       });
+//     });
+
+//     await Promise.all(uploadPromises);
+
+//     return response.status(200).json({
+//       images: imagesArr,
+//     });
+//   } catch (error) {
+//     return response.status(500).json({
+//       message: error.message || error,
+//       error: true,
+//       success: false,
+//     });
+//   }
+// }
 export async function uploadImages(request, response) {
   try {
     const imagesArr = [];
 
-    if (!request.files || !request.files.images || !Array.isArray(request.files.images) || request.files.images.length === 0) {
+    // ✅ Fixed condition
+    if (!request.files || !Array.isArray(request.files) || request.files.length === 0) {
       return response.status(400).json({
         message: "No images uploaded",
         error: true,
@@ -23,7 +79,7 @@ export async function uploadImages(request, response) {
       });
     }
 
-    const images = request.files.images;
+    const images = request.files; // ✅ not request.files.images
     const options = {
       use_filename: true,
       unique_filename: false,
@@ -41,7 +97,7 @@ export async function uploadImages(request, response) {
             } else {
               console.error("Upload failed: no secure_url", result);
             }
-            // Delete from local uploads folder
+            // delete temp file
             try {
               fs.unlinkSync(file.path);
             } catch (unlinkError) {
@@ -57,6 +113,7 @@ export async function uploadImages(request, response) {
 
     return response.status(200).json({
       images: imagesArr,
+      success: true,
     });
   } catch (error) {
     return response.status(500).json({
@@ -67,12 +124,15 @@ export async function uploadImages(request, response) {
   }
 }
 
+
 export async function addHomeSlide(request, response) {
   try {
     let slide = new HomeSliderModel({
       images: request.body.images,
     });
-
+  if (!request.body.images || !Array.isArray(request.body.images) || request.body.images.length === 0) {
+  return response.status(400).json({ message: "No images provided" });
+}
     if (!slide) {
       return response.status(500).json({
         message: "slide not created",
