@@ -155,13 +155,9 @@ export async function addHomeSlide(request, response) {
     if (!request.body.images || !Array.isArray(request.body.images) || request.body.images.length === 0) {
       return response.status(400).json({ message: "No images provided" });
     }
-    if (!request.body.title || typeof request.body.title !== 'string' || request.body.title.trim() === '') {
-      return response.status(400).json({ message: "Title is required" });
-    }
 
     let slide = new HomeSliderModel({
       images: request.body.images,
-      title: request.body.title.trim(),
     });
 
     if (!slide) {
@@ -284,15 +280,11 @@ export async function updateSlide(request, response) {
     if (!request.body.images || !Array.isArray(request.body.images) || request.body.images.length === 0) {
       return response.status(400).json({ message: "No images provided" });
     }
-    if (!request.body.title || typeof request.body.title !== 'string' || request.body.title.trim() === '') {
-      return response.status(400).json({ message: "Title is required" });
-    }
 
     const slide = await HomeSliderModel.findByIdAndUpdate(
       request.params.id,
       {
         images: request.body.images,
-        title: request.body.title.trim(),
       },
       { new: true }
     );

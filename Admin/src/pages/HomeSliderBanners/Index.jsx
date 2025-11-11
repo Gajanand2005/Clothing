@@ -21,39 +21,10 @@ import { deleteData, fetchDataFromApi } from '../../../Utlis/Api';
 const columns = [
   { id: "id", label: "ID", minWidth: 50 },
   { id: "image", label: "Image", minWidth: 100 },
-  { id: "title", label: "Title", minWidth: 150 },
   { id: "action", label: "Action", minWidth: 100 },
 ];
 
-function createSlideRow(slide) {
-  const action = (
-    <div className="flex items-center gap-1">
-      <TooltipMUI title="Edit Slide" placement="top">
-        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
-          <FaEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
-        </Button>
-      </TooltipMUI>
 
-      <TooltipMUI title="Remove Slide" placement="top">
-        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]" onClick={() => deleteSlide(slide._id)}>
-          <AiTwotoneDelete className="text-[rgba(0,0,0,0.7)] text-[25px]" />
-        </Button>
-      </TooltipMUI>
-    </div>
-  );
-
-  const imageCell = (
-    <div className="img w-[80px] h-[50px] rounded-md overflow-hidden">
-      <img
-        src={slide.images[0]}
-        alt={slide.title}
-        className="w-full h-full object-cover"
-      />
-    </div>
-  );
-
-  return { id: slide._id, image: imageCell, title: slide.title, action };
-}
 
 const HomeSliderBanner = () => {
   const [slideData, setSlideData] = useState([]);
@@ -148,7 +119,34 @@ const HomeSliderBanner = () => {
 
               <TableBody>
                 {currentPageSlides.map((slide, index) => {
-                  const row = createSlideRow(slide);
+                  const action = (
+                    <div className="flex items-center gap-1">
+                      <TooltipMUI title="Edit Slide" placement="top">
+                        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
+                          <FaEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                        </Button>
+                      </TooltipMUI>
+
+                      <TooltipMUI title="Remove Slide" placement="top">
+                        <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]" onClick={() => deleteSlide(slide._id)}>
+                          <AiTwotoneDelete className="text-[rgba(0,0,0,0.7)] text-[25px]" />
+                        </Button>
+                      </TooltipMUI>
+                    </div>
+                  );
+
+                  const imageCell = (
+                    <div className="img w-[80px] h-[50px] rounded-md overflow-hidden">
+                      <img
+                        src={slide.images[0]}
+                        alt="Banner"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  );
+
+                  const row = { id: slide._id, image: imageCell, action };
+
                   return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={slide._id}>
                       <TableCell padding="checkbox" sx={{ pl: 2 }}>

@@ -13,7 +13,7 @@ import { deleteImages, postData } from '../../../Utlis/Api';
 const AddHomeSlide = () => {
 
   const [formFields, setFormFields]= useState({
-  
+
 
     images : [],
   })
@@ -45,7 +45,7 @@ const AddHomeSlide = () => {
     const handleSubmit = (e) => {
        e.preventDefault();
        setIsLoading(true);
-   
+
        if (previews?.length === 0) {
          context.alertBox("error", "please enter Banner  image ");
          setIsLoading(false);
@@ -64,7 +64,7 @@ const AddHomeSlide = () => {
     <>
      <section className="p-5 bg-gray-50 mt-3 ">
         <form className="form py-3 p-8 "  onSubmit={handleSubmit}>
-          <div className="scroll max-h-72vh] ">
+          <div className="scroll max-h-[72vh]">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6 lg:gap-8">
               {previews?.length !== 0 &&
                 previews?.map((images, index) => {

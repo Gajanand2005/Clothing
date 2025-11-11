@@ -32,7 +32,7 @@ const HomeSlider = (props) => {
                   <div className="item rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out">
                     <img
                       src={image}
-                      alt={item.title || `Banner ${index + 1}`}
+                      alt={`Banner ${index + 1}`}
                       className="w-full h-[300px] xs:h-[300px] sm:h-[350px] md:h-[300px] lg:h-[350px] xl:h-[400px] object-cover"
                     />
                   </div>
