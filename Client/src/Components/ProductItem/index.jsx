@@ -49,7 +49,7 @@ function ProductItem(props) {
 
       <div className='info p-2 md:p-3 py-3 '>
         <h6 className='text-[11px] sm:text-[12px] md:text-[14px]'><span  className='link transition-all'>{props?.item?.brand}</span></h6>
-         <h3 className='text-[13px] sm:text-[14px] md:text-[16px] title mt-1 font-[500] text-[#000]' ><Link to={`/products/${props?.item?._id}`} className='link transition-all'>{props?.item?.name}</Link></h3>
+         <h3 className='text-[13px] sm:text-[14px] md:text-[16px] title mt-1 font-[500] text-[#000]' ><Link to={`/products/${props?.item?._id}`} className='link transition-all'>{props?.item?.name?.substr(0,30)+'....'}</Link></h3>
         <div className='py-1'>
         
         </div>
