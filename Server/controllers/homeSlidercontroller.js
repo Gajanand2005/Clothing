@@ -70,8 +70,17 @@ export async function uploadImages(request, response) {
   try {
     const imagesArr = [];
 
-    // ✅ Fixed condition
-    if (!request.files || !Array.isArray(request.files) || request.files.length === 0) {
+    // Normalize multer payload: multer.array('images') sets req.files to an array
+    let files = [];
+    if (Array.isArray(request.files)) {
+      files = request.files;
+    } else if (Array.isArray(request.files?.images)) {
+      files = request.files.images;
+    } else if (request.files?.images) {
+      files = [request.files.images];
+    }
+
+    if (!files.length) {
       return response.status(400).json({
         message: "No images uploaded",
         error: true,
@@ -79,60 +88,82 @@ export async function uploadImages(request, response) {
       });
     }
 
-    const images = request.files; // ✅ not request.files.images
     const options = {
       use_filename: true,
       unique_filename: false,
       overwrite: false,
     };
 
-    const uploadPromises = images.map((file) => {
+    const uploadPromises = files.map(file => {
       return new Promise((resolve, reject) => {
-        cloudinary.uploader.upload(file.path, options, (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            if (result && result.secure_url) {
-              imagesArr.push(result.secure_url);
+        cloudinary.uploader.upload(
+          file.path,
+          options,
+          (error, result) => {
+            if (error) {
+              try {
+                fs.unlinkSync(file.path);
+              } catch {}
+              return reject(error);
             } else {
-              console.error("Upload failed: no secure_url", result);
+              if (result && result.secure_url) {
+                imagesArr.push(result.secure_url);
+              } else {
+                console.error("Upload failed: no secure_url", result);
+              }
+              // Delete from local uploads folder
+              try {
+                fs.unlinkSync(file.path);
+              } catch (unlinkError) {
+                console.error("Error deleting file:", unlinkError);
+              }
+              resolve();
             }
-            // delete temp file
-            try {
-              fs.unlinkSync(file.path);
-            } catch (unlinkError) {
-              console.error("Error deleting file:", unlinkError);
-            }
-            resolve();
           }
-        });
+        );
       });
     });
 
     await Promise.all(uploadPromises);
 
+    if (!imagesArr.length) {
+      return response.status(500).json({
+        message: "Failed to upload any images",
+        error: true,
+        success: false
+      });
+    }
+
     return response.status(200).json({
       images: imagesArr,
       success: true,
+      error: false
     });
+
   } catch (error) {
     return response.status(500).json({
       message: error.message || error,
       error: true,
-      success: false,
-    });
+      success: false
+    })
   }
 }
 
 
 export async function addHomeSlide(request, response) {
   try {
+    if (!request.body.images || !Array.isArray(request.body.images) || request.body.images.length === 0) {
+      return response.status(400).json({ message: "No images provided" });
+    }
+    if (!request.body.title || typeof request.body.title !== 'string' || request.body.title.trim() === '') {
+      return response.status(400).json({ message: "Title is required" });
+    }
+
     let slide = new HomeSliderModel({
       images: request.body.images,
+      title: request.body.title.trim(),
     });
-  if (!request.body.images || !Array.isArray(request.body.images) || request.body.images.length === 0) {
-  return response.status(400).json({ message: "No images provided" });
-}
+
     if (!slide) {
       return response.status(500).json({
         message: "slide not created",
@@ -160,19 +191,24 @@ export async function addHomeSlide(request, response) {
 
 export async function getHomeSlides(request, response) {
   try {
+    // Remove conditional request headers to force fresh response
+    delete request.headers['if-none-match'];
+    delete request.headers['if-modified-since'];
+    
     const slides = await HomeSliderModel.find();
-    if (!slides) {
-      return response.status(404).json({
-        message: "slides not found",
-        error: true,
-        success: false,
-      });
-    }
-
+    
+    // Ensure no caching and prevent 304 responses
+    response.set('Cache-Control', 'no-cache, no-store, must-revalidate, private');
+    response.set('Pragma', 'no-cache');
+    response.set('Expires', '0');
+    response.removeHeader('ETag');
+    response.removeHeader('Last-Modified');
+    
+    // Force 200 status
     return response.status(200).json({
       error: false,
       success: true,
-      data: slides,
+      data: slides || [],
     });
   } catch (error) {
     return response.status(500).json({
@@ -245,10 +281,18 @@ export async function deleteSlide(request, response) {
 
 export async function updateSlide(request, response) {
   try {
+    if (!request.body.images || !Array.isArray(request.body.images) || request.body.images.length === 0) {
+      return response.status(400).json({ message: "No images provided" });
+    }
+    if (!request.body.title || typeof request.body.title !== 'string' || request.body.title.trim() === '') {
+      return response.status(400).json({ message: "Title is required" });
+    }
+
     const slide = await HomeSliderModel.findByIdAndUpdate(
       request.params.id,
       {
         images: request.body.images,
+        title: request.body.title.trim(),
       },
       { new: true }
     );

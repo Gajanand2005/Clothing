@@ -18,6 +18,9 @@ dotenv.config();
 
 const app = express();
 
+// Disable ETag globally to prevent 304 responses
+app.set('etag', false);
+
 // Middlewares
 app.use(express.json());
 app.use(cors({

@@ -13,7 +13,7 @@ import toast, {Toaster} from 'react-hot-toast';
 
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
-import HomeSliderBanners from './Pages/HomeSliderBanners/Index.jsx';
+
 
 import Users from './pages/Users/Index.jsx';
 import Orders from './pages/Orders/Index.jsx';
@@ -28,6 +28,7 @@ import SubCatList from './pages/Categegory/SubCatList.jsx';
 import ProductDetails from './pages/Products/productDetails.jsx';
 
 import AddSize from './pages/Products/addSize.jsx';
+import HomeSliderBanner from './pages/HomeSliderBanners/Index.jsx';
 
 
 
@@ -352,7 +353,7 @@ function App() {
                     : "w-[100%] transition-all"
                 }`}
               >
-                <HomeSliderBanners />
+                <HomeSliderBanner />
               </div>
             </div>
           </section>

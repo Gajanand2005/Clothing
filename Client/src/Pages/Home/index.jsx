@@ -10,7 +10,7 @@ import ProductSlider from '../../Components/ProductSlider/Index';
 import { fetchDataFromApi } from '../../Utlis/Api.js';
 const Home = () => {
  const [value, setValue] = React.useState(0);
- const [homeSlidesData, setHomeSlidesData]= useState([]);
+ const [homeSlidesData, setHomeSlidesData]= useState({});
 
  useEffect(()=>{
   fetchDataFromApi("/api/homeSlides").then((res)=>{
@@ -20,11 +20,11 @@ const Home = () => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  }; 
+  };
   return (
     <div>
       {
-        homeSlidesData?.length!==0 &&  <HomeSlider data={homeSlidesData} />
+        homeSlidesData?.data?.length !==0 &&  <HomeSlider data={homeSlidesData} />
       }
 
       <HomeCatSlider />

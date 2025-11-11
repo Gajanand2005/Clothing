@@ -185,10 +185,21 @@ export const fetchDataFromApi = async (url, config = {}) => {
 
 export const uploadImage = async (url, formData, config = {}) => {
   try {
+    // For FormData, don't set Content-Type - let browser set it automatically with boundary
+    const { headers = {}, ...restConfig } = config;
+    
+    // Remove Content-Type if it exists, so browser can set it with proper boundary
+    const { 'Content-Type': _, ...headersWithoutContentType } = headers;
+    
+    const uploadConfig = {
+      ...restConfig,
+      headers: headersWithoutContentType
+    };
+    
     const response = await apiClient.post(
       url,
       formData,
-      mergeConfig(config) // ← yahan se Content-Type hata do
+      uploadConfig
     );
     return response.data;
   } catch (error) {
