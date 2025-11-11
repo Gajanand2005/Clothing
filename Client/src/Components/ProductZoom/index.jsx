@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 import { Navigation, Autoplay } from "swiper/modules";
 
 
-const ProductZoom = () => {
+const ProductZoom = (props) => {
 
   const [slideIndex, setSlideIndex] = useState(0);
   const zoomSliderBig = useRef();
@@ -31,31 +31,23 @@ const ProductZoom = () => {
             spaceBetween={10}
             modules={[Navigation, Autoplay]}
             autoplay={{ delay: 2500, disableOnInteraction: false }}
-            className="zoomProductSliderThumbs h-[70vh] overflow-hidden"
+            className={`zoomProductSliderThumbs h-[70vh] overflow-hidden ${props?.images?.length > 5 && 'space'}`}
           >
-            <SwiperSlide>
-              <div className={`item !mb-2 rounded-md overflow-hidden cursor-pointer group  ${slideIndex===0 ? 'opacity-30' : 'opacity-50'}`} onClick={()=> goto(0)}>
+            {
+              props?.images?.map((item,index)=>{
+                  return(
+                    <SwiperSlide key={index}>
+              <div className={`item !mb-2 rounded-md overflow-hidden cursor-pointer group  ${slideIndex===index ? 'opacity-30' : 'opacity-50'}`} onClick={()=> goto(index)}>
                 <img
-                  src="https://api.spicezgold.com/download/file_1734529297930_fiorra-women-s-teapot-blue-pure-cotton-a-line-kurta-with-sharara-and-dupatta-product-images-rvo9n8udfg-1-202307260626.jpg"
-                  className="w-full transition-all group-hover:scale-105"
-                  alt=""
+                      src={item}
                 />
               </div>
-              <div className={`item !mb-2 rounded-md overflow-hidden cursor-pointer group  ${slideIndex===1 ? 'opacity-30' : 'opacity-50'}`}onClick={()=> goto(1)}>
-                <img
-                  src="https://api.spicezgold.com/download/file_1734529297929_fiorra-women-s-teapot-blue-pure-cotton-a-line-kurta-with-sharara-and-dupatta-product-images-rvo9n8udfg-0-202307260626.jpg"
-                  className="w-full transition-all group-hover:scale-105"
-                  alt=""
-                />
-              </div>
-              <div className={`item !mb-2 rounded-md overflow-hidden cursor-pointer group  ${slideIndex===2 ? 'opacity-30' : 'opacity-50'}`}onClick={()=> goto(2)}>
-                <img
-                  src="https://api.spicezgold.com/download/file_1734529297930_fiorra-women-s-teapot-blue-pure-cotton-a-line-kurta-with-sharara-and-dupatta-product-images-rvo9n8udfg-2-202307260626.jpg"
-                  className="w-full transition-all group-hover:scale-105"
-                  alt=""
-                />
-              </div>
+
             </SwiperSlide>
+                  )
+              })
+            }
+            
           </Swiper>
         </div>
 
@@ -67,33 +59,21 @@ const ProductZoom = () => {
 
             className=""
           >
-            <SwiperSlide>
+            {
+              props?.images?.map((item,index)=>{
+                  return(
+                    <SwiperSlide key={index} > 
               <InnerImageZoom
                 zoomType="hover"
                 zoomScale={1}
-                src={
-                  "https://api.spicezgold.com/download/file_1734529297929_fiorra-women-s-teapot-blue-pure-cotton-a-line-kurta-with-sharara-and-dupatta-product-images-rvo9n8udfg-0-202307260626.jpg"
-                }
+                src={item}
               />
             </SwiperSlide>
-            <SwiperSlide>
-              <InnerImageZoom
-                zoomType="hover"
-                zoomScale={1}
-                src={
-                  "https://api.spicezgold.com/download/file_1734529297930_fiorra-women-s-teapot-blue-pure-cotton-a-line-kurta-with-sharara-and-dupatta-product-images-rvo9n8udfg-2-202307260626.jpg"
-                }
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <InnerImageZoom
-                zoomType="hover"
-                zoomScale={1}
-                src={
-                  "https://api.spicezgold.com/download/file_1734529297929_fiorra-women-s-teapot-blue-pure-cotton-a-line-kurta-with-sharara-and-dupatta-product-images-rvo9n8udfg-0-202307260626.jpg"
-                }
-              />
-            </SwiperSlide>
+                  )
+              })
+            }
+            
+       
             
           </Swiper>
         </div>

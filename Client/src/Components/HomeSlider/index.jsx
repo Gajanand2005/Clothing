@@ -26,7 +26,7 @@ const HomeSlider = (props) => {
           className="sliderHome"
         >
           {
-            props?.data?.data?.length !== 0 && props?.data?.data?.map((item, index) => {
+            props?.data?.data?.length !== 0 && props?.data?.map((item, index) => {
               return item.images.map((image, imgIndex) => (
                 <SwiperSlide key={`${index}-${imgIndex}`}>
                   <div className="item rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out">

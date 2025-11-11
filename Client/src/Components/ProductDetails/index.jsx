@@ -4,100 +4,57 @@ import { TbHeartHandshake } from "react-icons/tb";
 import QtyBox from "../QtyBox/Index";
 import Button from "@mui/material/Button";
 
-const ProductDetailsComponent = () => {
+const ProductDetailsComponent = (props) => {
   const [productActionIndex, setProductActionIndex] = useState(null);
   return (
     <>
-      <h1 className="text-[24px] font-[600] !mb-2">Chikankari Woven Kurta</h1>
+      <h1 className="text-[24px] font-[600] !mb-2">{props?.item?.name}</h1>
       <div className="flex items-center gap-3 text-[13px]">
         <span className="text-gray-400">
           Brand :{" "}
           <span className="font-[500] text-black opacity-75">
-            S-Mal Couture
+            {props?.item?.brand}
           </span>
         </span>
       </div>
       <div className="flex items-center gap-4 py-1 !mt-4">
         <span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">
-          $58.00
+          &#x20b9;{props?.item?.price}
         </span>
         <span className="oldPrice text-orange-600 font-bold text-[20px]">
-          $12.00
+           &#x20b9;{props?.item?.oldPrice}
         </span>
 
         <span className="text-[15px]">
           Available In Stock:{" "}
           <span className="text-green-600 text-[15px] font-[600]">
-            147 Items
+            {props?.item?.countInStock} Items
           </span>
         </span>
       </div>
 
       <p className="!mt-2 pr-10 !mb-5">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit
-        repellendus sit ad aspernatur officiis, recusandae est libero dolorum,
-        esse vel earum laudantium ducimus, obcaecati quisquam odio quasi non
-        placeat numquam.
+       {props?.item?.description}
       </p>
-      <div className="flex items-center gap-1">
+      {
+        props?.item?.size?.length !==0 && <div className="flex items-center gap-1">
         <span className="text-[16px]">Size :</span>
         <div className="flex items-center gap-1 actions]">
-          <Button
+          {
+            props?.item?.size?.map((item,index)=>{
+                return(
+   <Button
             className={`${
-              productActionIndex === 0 ? "!bg-orange-600 !text-white " : ""
+              productActionIndex === index ? "!bg-orange-600 !text-white " : ""
             }`}
-            onClick={() => setProductActionIndex(0)}
+            onClick={() => setProductActionIndex(index)}
           >
-            XS
+            {item}
           </Button>
-          <Button
-            className={`${
-              productActionIndex === 1 ? "!bg-orange-600 !text-white" : ""
-            }`}
-            onClick={() => setProductActionIndex(1)}
-          >
-            S
-          </Button>
-          <Button
-            className={`${
-              productActionIndex === 2 ? "!bg-orange-600 !text-white" : ""
-            }`}
-            onClick={() => setProductActionIndex(2)}
-          >
-            M
-          </Button>
-          <Button
-            className={`${
-              productActionIndex === 3 ? "!bg-orange-600 !text-white" : ""
-            }`}
-            onClick={() => setProductActionIndex(3)}
-          >
-            L
-          </Button>
-          <Button
-            className={`${
-              productActionIndex === 4 ? "!bg-orange-600 !text-white" : ""
-            }`}
-            onClick={() => setProductActionIndex(4)}
-          >
-            XL
-          </Button>
-          <Button
-            className={`${
-              productActionIndex === 5 ? "!bg-orange-600 !text-white" : ""
-            }`}
-            onClick={() => setProductActionIndex(5)}
-          >
-            2XL
-          </Button>
-          <Button
-            className={`${
-              productActionIndex === 6 ? "!bg-orange-600 !text-white" : ""
-            }`}
-            onClick={() => setProductActionIndex(6)}
-          >
-            3XL
-          </Button>
+                )
+            })
+          }
+       
           <Button
             className={`${
               productActionIndex === 7 ? "!bg-orange-600 !text-white" : ""
@@ -116,6 +73,8 @@ const ProductDetailsComponent = () => {
           </Button>
         </div>
       </div>
+      }
+      
       <p className="text-[14px] !mt-4 mb-2">Dilvery Time 5-12 Days</p>
       <div className="flex items-center !mt-4 gap-4">
         <div className="qtyBoxWrapper w-[69px]">

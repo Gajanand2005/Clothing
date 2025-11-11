@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BsMenuButtonWideFill } from "react-icons/bs";
 import { FaAngleDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -7,18 +7,17 @@ import { MdOutlineRocketLaunch } from "react-icons/md";
 import CategoryPanel from "./CategoryPanel";
 import "./style.css";
 import { fetchDataFromApi } from "../../../Utlis/Api.js";
+import { MyContext } from "../../../App.jsx";
 
 const Navigation = () => {
   const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
   const [catData, setCatData] = useState([]);
 
+const context = useContext(MyContext)
+
   useEffect(() => {
-    fetchDataFromApi("/api/category").then((res) => {
-      if (res?.error === false) {
-        setCatData(res?.data);
-      }
-    });
-  }, []);
+ setCatData(context?.catData);
+  },[context?.catData]);
 
   const openCategoryPanel = (value) => {
     setIsOpenCatPanel(value !== undefined ? value : !isOpenCatPanel);

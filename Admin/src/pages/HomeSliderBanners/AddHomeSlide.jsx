@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useContext } from 'react';
 import { MyContext } from '../../App';
 import { deleteImages, postData } from '../../../Utlis/Api';
+import { useNavigate } from "react-router-dom";
 
 const AddHomeSlide = () => {
 
@@ -23,6 +24,7 @@ const AddHomeSlide = () => {
     const [isLoading, setIsLoading] = useState(false);
   const context = useContext(MyContext);
 
+  const history = useNavigate();
 
 
 
@@ -56,6 +58,7 @@ const AddHomeSlide = () => {
          context.setIsOpenFullScreenPanel({
            open: false,
          });
+         history("/homeSlider/list")
        });
      };
   

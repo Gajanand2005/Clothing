@@ -3,7 +3,6 @@ import Header from "./Components/Header/Index.jsx";
 import Footer from "./Components/Footer/Index.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductListing from "./Pages/ProductListing/Index.jsx";
-import Home from "./Pages/Home/Index.jsx";
 import ProductDetails from "./Pages/ProductDetails/Index.jsx";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -31,6 +30,7 @@ import OrderTracking from "./Pages/OrderTracking/Index.jsx";
 import { fetchDataFromApi } from "./Utlis/Api.js";
 import Verify from "./Pages/Verify/index.jsx";
 import Address from "./Pages/MyAccount/Address.jsx";
+import Home from "./Pages/Home/Index.jsx";
 
  
 
@@ -38,16 +38,31 @@ import Address from "./Pages/MyAccount/Address.jsx";
 const MyContext = createContext();
 
 const App = () => {
-  const [openProductDetailsModal, setOpenProductDetailsModel] = useState(false);
+  const [openProductDetailsModal, setOpenProductDetailsModel] = useState({
+    open:false,
+    item:{}
+  });
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
   const [openCartPanel, setOpenCartPanel] =useState(false)
   const [isLogin, setIsLogin]= useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
   const [userData, setUserData]= useState(null);
+    const [catData, setCatData] = useState([]);
 
+
+
+    const handleOpenProductDetailsModal = (status, item) => {
+      setOpenProductDetailsModel({
+      open:status,
+      item:item
+    });
+    }
   const handleCloseProductDetailsModal = () => {
-    setOpenProductDetailsModel(false);
+    setOpenProductDetailsModel({
+      open:false,
+      item:{}
+    });
   };
 
   const toggleCartPanel = (newOpen)=>()=>{
@@ -81,6 +96,17 @@ const App = () => {
     }
   },[]) // Remove [isLogin] to prevent infinite loop
 
+
+  useEffect(() => {
+    fetchDataFromApi("/api/category").then((res) => {
+      if (res?.error === false) {
+        setCatData(res?.data);
+      }
+    });
+  }, []);
+
+
+
   const alertBox = (status, msg)=>{
 
     if(status.toLowerCase()==="success"){
@@ -94,6 +120,7 @@ const App = () => {
 
   const value = {
     setOpenProductDetailsModel,
+    handleOpenProductDetailsModal,
     setOpenCartPanel,
     toggleCartPanel,
     openCartPanel,
@@ -102,6 +129,8 @@ const App = () => {
     setIsLogin,
     setUserData,
     userData,
+    setCatData,
+    catData,
   };
 
   return (
@@ -140,10 +169,10 @@ const App = () => {
       </BrowserRouter>
       <Toaster/>
       <Dialog
-        open={openProductDetailsModal}
+        open={openProductDetailsModal.open}
         fullWidth={fullWidth}
         maxWidth={maxWidth}
-        onClose={handleCloseProductDetailsModal}
+        onClose={ handleCloseProductDetailsModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         className="productDetailsModal"
@@ -156,13 +185,18 @@ const App = () => {
             >
               <IoClose className="text-[20px]" />
             </Button>
-            <div className="col1 w-[40%] px-3">
-              <ProductZoom />
+            {
+              openProductDetailsModal?.item?.length!==0 && <>
+                <div className="col1 w-[40%] px-3">
+              <ProductZoom images={openProductDetailsModal?.item?.images} />
             </div>
 
             <div className="col2 w-[60%] py-8 px-8">
-              <ProductDetailsComponent />
+              <ProductDetailsComponent item={openProductDetailsModal?.item} />
             </div>
+              </>
+            }
+          
           </div>
         </DialogTitle>
         <DialogContent></DialogContent>
