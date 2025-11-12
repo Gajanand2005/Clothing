@@ -1073,3 +1073,45 @@ export async function getProductSizeById(request,response) {
         })
     }
 }
+
+export async function filters(request, response) {
+  const { catId, subCatId, thirdsubCatId, minPrice, maxPrice, page = 1, limit = 10 } = request.body;
+
+  const filters = {};
+
+  if (catId?.length) filters.catId = { $in: catId };
+  if (subCatId?.length) filters.subCatId = { $in: subCatId };
+  if (thirdsubCatId?.length) filters.thirdsubCatId = { $in: thirdsubCatId };
+
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    filters.price = {};
+    if (minPrice !== undefined) filters.price.$gte = Number(minPrice);
+    if (maxPrice !== undefined) filters.price.$lte = Number(maxPrice);
+  }
+
+  try {
+    const products = await ProductModel.find(filters)
+      .populate("catId")
+      .populate("subCatId")
+      .populate("thirdsubCatId")
+      .skip((page - 1) * parseInt(limit))
+      .limit(parseInt(limit));
+
+    const total = await ProductModel.countDocuments(filters);
+
+    return response.status(200).json({
+      error: false,
+      success: true,
+      products,
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+}

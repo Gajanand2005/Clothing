@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sidebar from "../../Components/Sidebar/Index.jsx";
+// import Sidebar from "../../Components/Sidebar/Index.jsx";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
@@ -12,11 +12,22 @@ import { RiMenuSearchLine } from "react-icons/ri";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
+import Sidebar from "../../Components/Sidebar/index.jsx";
 
 const ProductListing = () => {
   const [itemView, setIsItemView] = useState("grid");
-
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [productData, setProductData] = useState([]);
+  const [isloading, setIsLoading] = useState(false);
+
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+
+
+
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -49,7 +60,14 @@ const ProductListing = () => {
       <div className="bg-white p-2 mt-4">
         <div className="container flex flex-col lg:flex-row gap-3">
           <div className="sidebarWrapper w-full lg:w-[20%] h-full bg-white ">
-            <Sidebar />
+            <Sidebar  
+            productData={productData}
+             setProductData={setProductData} 
+            isloading={isloading} 
+            setIsLoading={setIsLoading}
+            page={page}
+            setTotalPages={setTotalPages}
+            />
           </div>
 
           <div className="rightContent w-full lg:w-[80%] py-2 ">
@@ -153,21 +171,15 @@ const ProductListing = () => {
             >
               {itemView === "grid" ? (
                 <>
-                  <ProductItem />
-                  <ProductItem />
-                  <ProductItem />
-                  <ProductItem />
-                  <ProductItem />
-                  <ProductItem />
-                  <ProductItem />
-                  <ProductItem />
-                  <ProductItem />
-                  <ProductItem />
-                  <ProductItem />
+                  
+                 
                   <ProductItem />
                 </>
               ) : (
                 <>
+                {/* {
+                  isloading == true ?    <productLoadingGrid/>
+                } */}
                   <ProductItemListView />
                   <ProductItemListView />
                   <ProductItemListView />
