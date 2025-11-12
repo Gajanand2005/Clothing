@@ -7,9 +7,10 @@ import StarIcon from '@mui/icons-material/Star';
 import Button from '@mui/material/Button';
 import { FaHeart } from "react-icons/fa6";
 import { IoGitCompare } from "react-icons/io5";
-import { MdZoomOutMap } from "react-icons/md";
+import { MdOutlineShoppingCart, MdZoomOutMap } from "react-icons/md";
 import Tooltip from '@mui/material/Tooltip';
 import { MyContext } from '../../App';
+
 
 
 
@@ -28,13 +29,13 @@ function ProductItem(props) {
     <div className='productItem shadow-lg rounded-md overflow-hidden border-2  border-[rgba(0,0,0,0.1)] '>
       <div className='group imgWrapper w-[100%] overflow-hidden rounded-md relative'>
         <Link to={`/products/${props?.item?._id}`}>
-        <div className='img h-[180px] sm:h-[200px] md:h-[250px] overflow-hidden'>
+        <div className='img  overflow-hidden'>
         <img src={props?.item?.images[0]} alt=""  className='w-full'/>
         <img src={props?.item?.images[1]} alt=""  className='w-full'/>
       
         </div>
       </Link>
-      <span className='discount flex items-center absolute top-[10px] left-[10px] z-50 bg-orange-500 text-white rounded-full p-1 text-[10px] md:text-[12px] font-[500]  '> {props?.item?.discount}</span>
+      <span className='discount flex items-center absolute top-[10px] left-[10px] z-50 bg-orange-500 text-white rounded-full p-1 text-[10px] md:text-[12px] font-[500]  '> {props?.item?.discount}%</span>
 
 
       <div className='actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-2 flex-col w-[35px] sm:w-[40px] md:w-[50px] transition-all duration-300 group-hover:top-[10px] opacity-0 group-hover:opacity-100'>
@@ -47,7 +48,7 @@ function ProductItem(props) {
       </div>
       </div>
 
-      <div className='info p-2 md:p-3 py-3 '>
+      <div className='info p-2 md:p-3 py-3 relative pb-[50px] h-[190px] '>
         <h6 className='text-[11px] sm:text-[12px] md:text-[14px]'><span  className='link transition-all'>{props?.item?.brand}</span></h6>
          <h3 className='text-[13px] sm:text-[14px] md:text-[16px] title mt-1 font-[500] text-[#000]' ><Link to={`/products/${props?.item?._id}`} className='link transition-all'>{props?.item?.name?.substr(0,30)+'....'}</Link></h3>
         <div className='py-1'>
@@ -55,9 +56,18 @@ function ProductItem(props) {
         </div>
 
     <div className='flex items-center gap-3 sm:gap-4 py-1'>
-      <span className='oldPrice line-through text-gray-500 text-[12px] sm:text-[14px] md:text-[16px] font-[500]'>  &#x20b9; ${props?.item?.price}</span>
-      <span className='oldPrice text-orange-600 font-bold text-[12px] sm:text-[14px] md:text-[16px]'>  &#x20b9; ${props?.item?.oldPrice}</span>
+      <span className='oldPrice line-through text-gray-500 text-[12px] sm:text-[14px] md:text-[16px] font-[500]'>  &#x20b9;{props?.item?.price}</span>
+      <span className='oldPrice text-orange-600 font-bold text-[12px] sm:text-[14px] md:text-[16px]'>  &#x20b9; {props?.item?.oldPrice}</span>
     </div>
+
+
+<div className="w-full !absolute bottom-[15px] left-0 pl-3 pr-3">
+<Button className='btn-org btn-border flex w-full btn-sm gap-2' size='small'>
+  <MdOutlineShoppingCart className='text-[18px]'/> Add to Cart
+</Button>
+</div>
+
+
       </div>
 
     </div>

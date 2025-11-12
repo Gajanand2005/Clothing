@@ -894,7 +894,7 @@ export async function updateProduct(request, response) {
         });
 
     } catch (error) {
-        return res.status(500).json({
+        return response.status(500).json({
             message: error.message || error,
             error: true,
             successs: false
@@ -1073,7 +1073,7 @@ export async function getProductSizeById(request,response) {
         })
     }
 }
-
+//filters 
 export async function filters(request, response) {
   const { catId, subCatId, thirdsubCatId, minPrice, maxPrice, page = 1, limit = 10 } = request.body;
 
@@ -1091,11 +1091,8 @@ export async function filters(request, response) {
 
   try {
     const products = await ProductModel.find(filters)
-      .populate("catId")
-      .populate("subCatId")
-      .populate("thirdsubCatId")
-      .skip((page - 1) * parseInt(limit))
-      .limit(parseInt(limit));
+      .populate("category")
+      .skip((page - 1) * limit).limit(parseInt(limit));
 
     const total = await ProductModel.countDocuments(filters);
 
@@ -1115,3 +1112,85 @@ export async function filters(request, response) {
     });
   }
 }
+
+
+
+//sorted by Ai 
+const sortProducts = (products, sortBy, order) => {
+  return products.sort((a, b) => {
+    if (sortBy === 'name') {
+      return order === 'asc'
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
+    }
+
+   if (sortBy === 'price') {
+  const priceA = Number(a.price);
+  const priceB = Number(b.price);
+
+  return order === 'asc'
+    ? priceA - priceB
+    : priceB - priceA;
+}
+
+
+    return 0; // default
+  });
+};
+
+export async function sortBy(request, response) {
+  const { products, sortBy, order } = request.body;
+  
+  const sortedItems = sortProducts([...products?.products], sortBy, order);
+
+  return response.status(200).json({
+    error: false,
+    success: true,
+    products: sortedItems,
+    page: 0,
+    totalPages: 0
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//sort by Ui Tech
+// const sortedItems = (products,sortBy,order) => {
+//   return products.sort((a,b)=>{
+//     if(sortBy === 'name'){
+
+//         return order === 'asc' ? a.name.localCompare(b.name) : b.name.localCompare(a.name)
+//     }
+
+//     if(sortBy ==="price"){
+//         return order = 'asc' ? a.price -b.price : b.price - a.price
+//     }
+//     return ; 
+//   })
+// }
+
+// export async function sortBy(request, response) {
+//     const{products,sortBy,order}=request.body
+//     const sortedItems = sortedItems([...products?.products], sortBy , order)
+
+
+// return response.status(200).json({
+//     error:false,
+//     success:true,
+//     products:sortedItems,
+//     page:0,
+//     totalPages:0
+// })
+
+
+// }
