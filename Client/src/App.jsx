@@ -3,7 +3,7 @@ import Header from "./Components/Header/Index.jsx";
 import Footer from "./Components/Footer/Index.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductListing from "./Pages/ProductListing/Index.jsx";
-import ProductDetails from "./Pages/ProductDetails/Index.jsx";
+import ProductDetails from "./Pages/ProductDetails/index.jsx";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -32,6 +32,8 @@ import Verify from "./Pages/Verify/index.jsx";
 import Address from "./Pages/MyAccount/Address.jsx";
 import Home from "./Pages/Home/Index.jsx";
 
+import Size from "./Pages/SizeGuide/Index.jsx";
+
  
 
 
@@ -49,6 +51,11 @@ const App = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [userData, setUserData]= useState(null);
     const [catData, setCatData] = useState([]);
+  const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
+    open: false,
+    model: "",
+    id: ""
+  });
 
 
 
@@ -131,6 +138,8 @@ const App = () => {
     userData,
     setCatData,
     catData,
+    setIsOpenFullScreenPanel,
+    isOpenFullScreenPanel,
   };
 
   return (
@@ -162,6 +171,7 @@ const App = () => {
               <Route path={"/order-tracking"} exact={true} element={<OrderTracking />} />
                <Route path={"/help-center"} exact={true} element={<HelpCenter />} />
                <Route path={"/address"} exact={true} element={<Address />} />
+               <Route path={"/size"} exact={true} element={<Size />} />
           </Routes>
           <Whataap/>
           <Footer />

@@ -575,3 +575,4 @@ input[type=number]::-webkit-outer-spin-button{
    width: 1200px  !important;
    max-width: 1200px !important;
 }
+.MuiCircularProgress-root{@apply !text-orange-600}

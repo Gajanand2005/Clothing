@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { LuCarTaxiFront } from "react-icons/lu";
 import { TbHeartHandshake } from "react-icons/tb";
 import QtyBox from "../QtyBox/Index";
 import Button from "@mui/material/Button";
+import { MdPhotoSizeSelectActual } from "react-icons/md";
+import { MyContext } from "../../App";
+import { Link } from "react-router-dom";
 
 const ProductDetailsComponent = (props) => {
+    const context = useContext(MyContext);
   const [productActionIndex, setProductActionIndex] = useState(null);
   return (
     <>
@@ -19,10 +23,10 @@ const ProductDetailsComponent = (props) => {
       </div>
       <div className="flex items-center gap-4 py-1 !mt-4">
         <span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">
-          &#x20b9;{props?.item?.price}
+          &#x20b9;{props?.item?.oldPrice}
         </span>
-        <span className="oldPrice text-orange-600 font-bold text-[20px]">
-           &#x20b9;{props?.item?.oldPrice}
+        <span className="price text-orange-600 font-bold text-[20px]">
+           &#x20b9;{props?.item?.price}
         </span>
 
         <span className="text-[15px]">
@@ -39,7 +43,7 @@ const ProductDetailsComponent = (props) => {
       {
         props?.item?.size?.length !==0 && <div className="flex items-center gap-1">
         <span className="text-[16px]">Size :</span>
-        <div className="flex items-center gap-1 actions]">
+        <div className="flex items-center gap-1 actions">
           {
             props?.item?.size?.map((item,index)=>{
                 return(
@@ -55,27 +59,12 @@ const ProductDetailsComponent = (props) => {
             })
           }
        
-          <Button
-            className={`${
-              productActionIndex === 7 ? "!bg-orange-600 !text-white" : ""
-            }`}
-            onClick={() => setProductActionIndex(7)}
-          >
-            4XL
-          </Button>
-          <Button
-            className={`${
-              productActionIndex === 8 ? "!bg-orange-600 !text-white" : ""
-            }`}
-            onClick={() => setProductActionIndex(8)}
-          >
-            5XL
-          </Button>
+        
         </div>
       </div>
       }
       
-      <p className="text-[14px] !mt-4 mb-2">Dilvery Time 5-12 Days</p>
+      <p className="text-[14px] !mt-4 mb-2">Delivery Time 5-12 Days</p>
       <div className="flex items-center !mt-4 gap-4">
         <div className="qtyBoxWrapper w-[69px]">
           <QtyBox />
@@ -91,7 +80,12 @@ const ProductDetailsComponent = (props) => {
           <TbHeartHandshake className="text-[19px]" />
           Add to Wishlist
         </span>
+         <Link className="flex items-center gap-3 text-[15px] " to='/size'>
+          <MdPhotoSizeSelectActual className="text-[19px]" />
+         Size Guide
+        </Link>
       </div>
+      
     </>
   );
 };

@@ -72,12 +72,10 @@ function App() {
 
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
-   
     id : ""
   });
    const [isOpenFullScreenPanel2 , setIsOpenFullScreenPanel2] = useState({
     open: false,
-   
     id : ""
   });
   

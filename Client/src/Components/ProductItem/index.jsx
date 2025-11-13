@@ -28,7 +28,7 @@ function ProductItem(props) {
   return (
     <div className='productItem shadow-lg rounded-md overflow-hidden border-2  border-[rgba(0,0,0,0.1)] '>
       <div className='group imgWrapper w-[100%] overflow-hidden rounded-md relative'>
-        <Link to={`/products/${props?.item?._id}`}>
+        <Link to={`/product/${props?.item?._id}`}>
         <div className='img  overflow-hidden'>
         <img src={props?.item?.images[0]} alt=""  className='w-full'/>
         <img src={props?.item?.images[1]} alt=""  className='w-full'/>

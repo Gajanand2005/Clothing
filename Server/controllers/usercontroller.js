@@ -7,6 +7,8 @@ import generatedAccessToken from "../utils/generatedAcessToken.js";
 import generatedRefreshToken from "../utils/generatedRefresToken.js";
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
+import ReviewModel from "../models/reviewsmodel.js";
+import { error } from "console";
 
 
 
@@ -118,7 +120,7 @@ export async function verifyEmailController(req, res) {
         })
     }
 }
-
+//authWithGoogle
 export async function authWithGoogle(req, res) {
     const {name,email,password,avatar,mobile,role}= req.body;
 
@@ -736,6 +738,65 @@ export async function userDetails(req, res) {
             error: false,
             success: true
         })
+    } catch (error) {
+        return res.status(500).json({
+            message: "Something is wrong",
+            error: true,
+            success: false
+        })
+    }
+}
+
+
+//review controller
+export async function addReview(req, res) {
+    try {
+
+        const {image, userName, review, userId, productId}= req.body;
+        const UserReview = new ReviewModel({
+             image: image,
+             userName: userName,
+             review: review,
+             userId : userId,
+             productId :productId
+        })
+
+        await UserReview.save();
+
+        return res.json({
+            message: "Review added successfully",
+            error: false,
+            success: true,
+
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Something is wrong",
+            error: true,
+            success: false
+        })
+    }
+}
+
+// get reviews
+export async function getReviews(req, res) {
+    try {
+        const productId= req.query.productId;
+        const reviews = await ReviewModel.find({productId:productId});
+        if(reviews.length === 0){
+            return res.status(400).json({
+                error: true,
+                success: false
+            })
+        }
+
+            return res.status(200).json({
+                error: false,
+                success: true,
+              reviews: reviews
+            })
+
     } catch (error) {
         return res.status(500).json({
             message: "Something is wrong",
