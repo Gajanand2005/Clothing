@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import ProductZoom from "../../Components/ProductZoom/Index";
@@ -8,10 +8,22 @@ import { MyContext } from '../../App';
 import TextField from "@mui/material/TextField";
 import ProductSlider from "../../Components/ProductSlider/Index";
 import ProductDetailsComponent from "../../Components/ProductDetails/Index";
+import { useParams } from "react-router-dom";
+import { fetchDataFromApi } from "../../Utlis/Api";
 
 const ProductDetails = () => {
   
   const [activeTab, setActiveTab] = useState(0);
+  const [productData, setProductData]= useState();
+  const {id} = useParams();
+
+  useEffect(()=>{
+     fetchDataFromApi(`/api/product/${id}`).then((res)=>{
+      if(res?.error===false){
+        setProductData(res?.product);
+      }
+     })
+  },[id])
 
   return (
     <>
@@ -44,11 +56,11 @@ const ProductDetails = () => {
       <section className="bg-white py-5">
         <div className="container flex gap-9">
           <div className="productZoomContainer w-[40%] ">
-            <ProductZoom />
+            <ProductZoom images={productData?.images} />
           </div>
 
           <div className="productContent w-[60%] pr-10 ">
-            <ProductDetailsComponent/>
+            <ProductDetailsComponent item={productData}/>
           </div>
         </div>
 

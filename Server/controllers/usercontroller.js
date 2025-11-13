@@ -7,7 +7,7 @@ import generatedAccessToken from "../utils/generatedAcessToken.js";
 import generatedRefreshToken from "../utils/generatedRefresToken.js";
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
-import { error } from "console";
+
 
 
 cloudinary.config({
@@ -118,6 +118,99 @@ export async function verifyEmailController(req, res) {
         })
     }
 }
+
+export async function authWithGoogle(req, res) {
+    const {name,email,password,avatar,mobile,role}= req.body;
+
+    try {
+        const existingUser = await UserModel.findOne({email: email});
+        if(!existingUser){
+            const userData = {
+                name:name,
+                mobile:mobile,
+                email:email,
+                password: "null",
+                role: role,
+                verify_email: true,
+                signUpWithGoogle: true
+            };
+            if (avatar) {
+                userData.avatar = avatar;
+            }
+            const user = await UserModel.create(userData);
+            await user.save();
+            
+        const accessToken = await generatedAccessToken(user._id);
+        const refreshToken = await generatedRefreshToken(user._id);
+
+      await UserModel.findByIdAndUpdate(user?._id, {
+            last_login_date: new Date()
+        })
+
+
+        const cookiesOption = {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        }
+        res.cookie('accessToken', accessToken, cookiesOption);
+        res.cookie('refreshToken', refreshToken, cookiesOption);
+
+
+        return res.json({
+            message: "Login successfully",
+            error: false,
+            success: true,
+            data: {
+                accessToken,
+                refreshToken
+            }
+        })
+        }else{
+            const accessToken = await generatedAccessToken(existingUser._id);
+        const refreshToken = await generatedRefreshToken(existingUser._id);
+
+      await UserModel.findByIdAndUpdate(existingUser?._id, {
+            last_login_date: new Date()
+        })
+
+
+        const cookiesOption = {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        }
+        res.cookie('accessToken', accessToken, cookiesOption);
+        res.cookie('refreshToken', refreshToken, cookiesOption);
+
+        return res.json({
+            message: "Login successfully",
+            error: false,
+            success: true,
+            data: {
+                accessToken,
+                refreshToken,
+                user: {
+                    _id: existingUser._id,
+                    name: existingUser.name,
+                    email: existingUser.email,
+                    avatar: existingUser.avatar,
+                    mobile: existingUser.mobile,
+                    role: existingUser.role
+                }
+            }
+        })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+
+}
+
 //login user
 export async function loginUserController(req, res) {
     try {
@@ -175,7 +268,15 @@ export async function loginUserController(req, res) {
             success: true,
             data: {
                 accessToken,
-                refreshToken
+                refreshToken,
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    avatar: user.avatar,
+                    mobile: user.mobile,
+                    role: user.role
+                }
             }
         })
     } catch (error) {
@@ -488,11 +589,11 @@ export async function resetPassword(req, res) {
   try {
     const { email, oldPassword, newPassword, confirmPassword } = req.body;
 
-    if (!email || !oldPassword || !newPassword || !confirmPassword) {
+    if (!email || !newPassword || !confirmPassword) {
       return res.status(400).json({
         error: true,
         success: false,
-        message: "Provide required fields: email, oldPassword, newPassword, confirmPassword"
+        message: "Provide required fields: email, newPassword, confirmPassword"
       });
     }
 
@@ -505,21 +606,29 @@ export async function resetPassword(req, res) {
       });
     }
 
-    if (!user.password) {
-      return res.status(400).json({
-        message: "No password found for this user.",
-        error: true,
-        success: false
-      });
-    }
-
-    const checkPassword = await bcrypt.compare(oldPassword, user.password);
-    if (!checkPassword) {
-      return res.status(400).json({
-        message: "Your old password is wrong",
-        error: true,
-        success: false,
-      });
+    if (user?.signUpWithGoogle === false) {
+      if (!oldPassword) {
+        return res.status(400).json({
+          error: true,
+          success: false,
+          message: "Provide oldPassword"
+        });
+      }
+      if (!user.password) {
+        return res.status(400).json({
+          message: "No password found for this user.",
+          error: true,
+          success: false
+        });
+      }
+      const checkPassword = await bcrypt.compare(oldPassword, user.password);
+      if (!checkPassword) {
+        return res.status(400).json({
+          message: "Your old password is wrong",
+          error: true,
+          success: false,
+        });
+      }
     }
 
     if (newPassword !== confirmPassword) {
@@ -534,6 +643,7 @@ export async function resetPassword(req, res) {
     const hashPassword = await bcrypt.hash(confirmPassword, salt);
 
     user.password = hashPassword;
+    user.signUpWithGoogle = false;
     await user.save();
 
     return res.json({

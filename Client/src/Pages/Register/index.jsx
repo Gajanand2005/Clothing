@@ -5,11 +5,19 @@ import { TbEyeglass2 } from "react-icons/tb";
 import { TbEyeglassOff } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { postData } from "../../Utlis/Api";
+import { postData, fetchDataFromApi } from "../../Utlis/Api";
 import { MyContext } from "../../App";
 import CircularProgress from '@mui/material/CircularProgress';
 import { FaS } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { firebaseApp } from "../../firebase";
+const auth = getAuth(firebaseApp);
+const googleProvider = new GoogleAuthProvider();
+
+
+
 
 const Register = () => {
   const [isLoading, setIsLoading]= useState(false)
@@ -79,6 +87,73 @@ const Register = () => {
     setIsLoading(true);
     context.alertBox("error","Registration failed. Please try again.");
   })
+ }
+
+ const authWithGoogle=()=>{
+
+  signInWithPopup(auth, googleProvider)
+  .then((result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+    const fields = {
+      name: user.providerData[0].displayName,
+      email: user.providerData[0].email,
+      password: null,
+      avatar: user.providerData[0].photoURL,
+      mobile:user.providerData[0].phoneNumber,
+      role: "USER"
+    };
+
+    postData("/api/user/authWithGoogle",fields).then((res)=>{
+
+    if(res?.error !== true){
+       setIsLoading(false)
+       context.alertBox("success",res?.message)
+       localStorage.setItem("userEmail",fields.email)
+       localStorage.setItem("accessToken", res?.data?.accessToken);
+       localStorage.setItem("refreshToken", res?.data?.refreshToken);
+
+       context.setIsLogin(true);
+
+       // Fetch user details after login
+       fetchDataFromApi("/api/user/user-details").then((userRes) => {
+         if (userRes?.success) {
+           context.setUserData(userRes?.data);
+         } else {
+           // If fetching user details fails, alert but keep login state
+           context.alertBox("error", "Failed to fetch user details.");
+         }
+       }).catch((error) => {
+         // If fetching user details fails, alert but keep login state
+         context.alertBox("error", "Failed to fetch user details.");
+       });
+
+     history('/')
+
+    }else{
+       context.alertBox("error",res?.message);
+
+       setIsLoading(false)
+    }
+  })
+
+    // IdP data available using getAdditionalUserInfo(result)
+    // ...
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  });
+
+
  }
 
   return (
@@ -155,7 +230,7 @@ const Register = () => {
             <p className="text-center">Already have an account? <Link className="link text-[14px] font-[600] text-orange-600" to='/login'>Sign in</Link></p>
 
             <p className="text-center font-[500]">Or continue with social account</p>
-            <Button className="flex gap-3 w-full !bg-[#f1f1f1] !text-[18px] !p-3  "><FcGoogle className="text-[20px]" />Login with Google</Button>
+            <Button className="flex gap-3 w-full !bg-[#f1f1f1] !text-[18px] !p-3  " onClick={authWithGoogle}><FcGoogle className="text-[20px]"  />Register with Google</Button>
             </form>
           </div>
         </div>

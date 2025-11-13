@@ -7,6 +7,10 @@ import { FcGoogle } from "react-icons/fc";
 import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
 import { postData, fetchDataFromApi } from "../../Utlis/Api";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { firebaseApp } from "../../firebase";
+const auth = getAuth(firebaseApp);
+const googleProvider = new GoogleAuthProvider();
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +56,66 @@ const Login = () => {
   };
 
   const valideValue = Object.values(formFields).every((el) => el);
+
+  const authWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        const fields = {
+          name: user.providerData[0].displayName,
+          email: user.providerData[0].email,
+          password: null,
+          avatar: user.providerData[0].photoURL,
+          mobile: user.providerData[0].phoneNumber,
+          role: "USER"
+        };
+
+        postData("/api/user/authWithGoogle", fields).then((res) => {
+          if (res?.error !== true) {
+            setIsLoading(false);
+            context.alertBox("success", res?.message);
+            localStorage.setItem("userEmail", fields.email);
+            localStorage.setItem("accessToken", res?.data?.accessToken);
+            localStorage.setItem("refreshToken", res?.data?.refreshToken);
+
+            context.setIsLogin(true);
+
+            // Fetch user details after login
+            fetchDataFromApi("/api/user/user-details").then((userRes) => {
+              if (userRes?.success) {
+                context.setUserData(userRes?.data);
+              } else {
+                // If fetching user details fails, alert but keep login state
+                context.alertBox("error", "Failed to fetch user details.");
+              }
+            }).catch((error) => {
+              // If fetching user details fails, alert but keep login state
+              context.alertBox("error", "Failed to fetch user details.");
+            });
+
+            history("/");
+          } else {
+            context.alertBox("error", res?.message);
+            setIsLoading(false);
+          }
+        });
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -190,7 +254,7 @@ const Login = () => {
               <p className="text-center font-[500]">
                 Or continue with social account
               </p>
-              <Button className="flex gap-3 w-full !bg-[#f1f1f1] !text-[18px] !p-3  ">
+              <Button className="flex gap-3 w-full !bg-[#f1f1f1] !text-[18px] !p-3" onClick={authWithGoogle}>
                 <FcGoogle className="text-[20px]" />
                 Login with Google
               </Button>

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { forgotPasswordController, loginUserController, logoutController, refreshToken, registerUserController, removeImageFromCloudinary, resetPassword, updateUserDetails, userAvatarController, userDetails, verifyEmailController, verifyForgotPasswordOtp } from '../controllers/usercontroller.js';
+import { authWithGoogle, forgotPasswordController, loginUserController, logoutController, refreshToken, registerUserController, removeImageFromCloudinary, resetPassword, updateUserDetails, userAvatarController, userDetails, verifyEmailController, verifyForgotPasswordOtp } from '../controllers/usercontroller.js';
 import auth from '../middleware/auth.js';
 import upload from '../middleware/multer.js';
 const userRouter = Router()
@@ -7,8 +7,9 @@ const userRouter = Router()
 userRouter.post('/register', registerUserController)
 userRouter.post('/verifyEmail', verifyEmailController)
 userRouter.post('/login', loginUserController)
+userRouter.post('/authWithGoogle',authWithGoogle)
 userRouter.get('/logout', auth, logoutController);
-userRouter.put('/user-avatar', auth, (req, res, next) => {
+userRouter.post('/user-avatar', auth, (req, res, next) => {
     upload.array('avatar')(req, res, function(err) {
         if (err) {
             return res.status(400).json({

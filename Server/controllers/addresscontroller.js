@@ -59,31 +59,23 @@ const address = new AddressModel({
 }
 
 export async function getAddressController (request, response) {
-   try {
-     const userId = request.userId;
-     const address = await AddressModel.find({userId: userId});
-
-        if(!address || address.length === 0){
-            return response.status(404).json({
-                error: true,
-                 success: false,
-                 message :"Address not found"
-            })
-        }
+    try {
+      const userId = request.userId;
+      const address = await AddressModel.find({userId: userId});
 
        return response.status(200).json({
                 error: false,
-                 success: true,
-                 data: address
+                  success: true,
+                  data: address
             })
 
-   } catch (error) {
-    return response.status(500).json({
-        message: error.message || error,
-        error: true,
-        success: false
-    })
-   }
+    } catch (error) {
+     return response.status(500).json({
+         message: error.message || error,
+         error: true,
+         success: false
+     })
+    }
 }
 
 // export async function selectAddressController (request, response) {
