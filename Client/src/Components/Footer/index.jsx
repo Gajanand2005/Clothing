@@ -157,8 +157,8 @@ const Footer = () => {
         </div>
         {/* cart panel */}
         <Drawer
-          open={context.openCartPanel}
-          onClick={context.toggleCartPanel(false)}
+          open={context?.openCartPanel}
+          onClick={context?.toggleCartPanel(false)}
           anchor={"right"}
           className="cartPanel"
         >
@@ -166,7 +166,7 @@ const Footer = () => {
             <h4>Shopping Cart (1)</h4>
             <IoClose
               className="text-[20px] cursor-pointer"
-              onClick={context.toggleCartPanel(false)}
+              onClick={context?.toggleCartPanel(false)}
             />
           </div>
 

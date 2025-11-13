@@ -53,6 +53,7 @@ const Header = () => {
     localStorage.removeItem("refreshToken");
     context.setIsLogin(false);
     context.setUserData(null);
+    context.setUserData(null);
 
     fetchDataFromApi(
       `/api/user/logout?token=${localStorage.getItem("accessToken")}`,
@@ -117,7 +118,7 @@ const Header = () => {
             </div>
             <div className="col3 w-full md:w-[35%] flex items-center justify-center md:justify-end pl-0 md:pl-7">
               <ul className="flex items-center justify-center md:justify-end gap-2 md:gap-3 w-full flex-wrap">
-                {context.isLogin === false ? (
+                {context?.isLogin === false ? (
                   <li className="list-none">
                     <Link
                       to="/login"
@@ -240,8 +241,8 @@ const Header = () => {
                       aria-label="cart"
                       onClick={() => context.setOpenCartPanel(true)}
                     >
-                      <StyledBadge badgeContent={4} color="secondary">
-                        <FaCartShopping />
+                      <StyledBadge badgeContent={context?.cartData?.length} color="secondary">
+                        <FaCartShopping  />
                       </StyledBadge>
                     </IconButton>
                   </Tooltip>

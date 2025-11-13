@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { TbEyeglass2 } from "react-icons/tb";
@@ -30,6 +30,13 @@ const Register = () => {
 
   const context = useContext(MyContext)
   const history = useNavigate();
+
+
+  useEffect(() => {
+    
+  window.scrollTo(0,0)
+  
+  }, [])
 
  const onchangeInput=(e)=>{
   const {name, value}= e.target;

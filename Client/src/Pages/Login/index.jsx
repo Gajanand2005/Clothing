@@ -23,6 +23,15 @@ const Login = () => {
   const context = useContext(MyContext);
   const history = useNavigate();
 
+
+useEffect(() => {
+  
+window.scrollTo(0,0)
+
+}, [])
+
+
+
   const forgotPassword = () => {
     if (formFields.email === "") {
       context.alertBox("error", "Please enter email id");

@@ -27,7 +27,7 @@ import Whataap from "./Components/Whataap/Index.jsx";
 
 import HelpCenter from "./Pages/HelpCenter/Index.jsx";
 import OrderTracking from "./Pages/OrderTracking/Index.jsx";
-import { fetchDataFromApi } from "./Utlis/Api.js";
+import { fetchDataFromApi, postData } from "./Utlis/Api.js";
 import Verify from "./Pages/Verify/index.jsx";
 import Address from "./Pages/MyAccount/Address.jsx";
 import Home from "./Pages/Home/Index.jsx";
@@ -51,11 +51,12 @@ const App = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [userData, setUserData]= useState(null);
     const [catData, setCatData] = useState([]);
-  const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
-    open: false,
-    model: "",
-    id: ""
-  });
+    const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
+      open: false,
+      model: "",
+      id: ""
+    });
+    const [cartData, setCartData] = useState([]);
 
 
 
@@ -98,9 +99,12 @@ const App = () => {
         alertBox("error", "Failed to fetch user details");
       });
 
+  getCartItmes();
+
     }else{
       setIsLogin(false)
     }
+
   },[]) // Remove [isLogin] to prevent infinite loop
 
 
@@ -125,6 +129,51 @@ const App = () => {
 
   }
 
+
+const  addToCart = (product,userId,quantity) => {
+ if(userId ===  undefined){
+  alertBox("error", "you are not login please login first");
+  return false;
+ }
+
+const data ={
+productTitle:product?.name,
+image:product?.images[0],
+price:product?.price,
+quantity:quantity,
+countInStock:product?.countInStock,
+productId:product?._id,
+subTotal:parseInt(product?.price*quantity),
+userId:userId,
+}
+
+postData("/api/cart/add",data).then((res)=>{
+  if(res?.error === false){
+    alertBox("success", res?.message );
+
+    getCartItmes();
+
+    
+  }else{
+    alertBox("error",res?.message)
+  }
+})
+}
+
+ const getCartItmes= () => {
+   fetchDataFromApi(`/api/cart/get`).then((res)=>{
+      if(res?.error === false){
+        setCartData(res?.data);
+      }
+    })
+ }
+ 
+
+
+
+
+
+
   const value = {
     setOpenProductDetailsModel,
     handleOpenProductDetailsModal,
@@ -140,6 +189,9 @@ const App = () => {
     catData,
     setIsOpenFullScreenPanel,
     isOpenFullScreenPanel,
+    addToCart,
+    cartData,
+    setCatData
   };
 
   return (
