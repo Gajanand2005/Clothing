@@ -1,3 +1,0 @@
-- [x] Update Server/models/usermodel.js to make password optional for Google users
-- [x] Update Client/src/Pages/Register/index.jsx to set login state after Google auth
-- [x] Update Client/src/Pages/Login/index.jsx to add Google auth functionality

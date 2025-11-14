@@ -1,9 +1,10 @@
 import CartProductModel from '../models/cartProductModel.js';
+import ProductModel from '../models/productmodel.js';
 
 export const addToCartItemController = async(req, res)=>{
     try {
         const userId = req.userId;
-        const {productTitle,image,price,quantity,subTotal,productId,countInStock}= req.body;
+        const {productTitle,image,price,oldPrice,quantity,subTotal,productId,countInStock,discount, size, brand}= req.body;
 
         if(!productId){
             return res.status(400).json({
@@ -28,11 +29,15 @@ export const addToCartItemController = async(req, res)=>{
            productTitle:productTitle,
             image:image,
             price:price,
+            oldPrice:oldPrice,
             quantity:quantity,
             subTotal:subTotal,
             productId:productId,
             countInStock:countInStock,
-            userId:userId
+            userId:userId,
+            brand:brand,
+            discount:discount,
+            size:size,
 
         })
 
@@ -59,12 +64,23 @@ export const addToCartItemController = async(req, res)=>{
 
 export const getCartItemsController= async(req,res)=>{
     try {
-        
+
         const userId = req.userId;
         const cartItems = await CartProductModel.find({userId : userId});
 
+        // Add product sizes to each cart item
+        const cartItemsWithSizes = await Promise.all(
+            cartItems.map(async (item) => {
+                const product = await ProductModel.findById(item.productId);
+                return {
+                    ...item.toObject(),
+                    productSizes: product ? product.size : []
+                };
+            })
+        );
+
         return res.json({
-            data : cartItems,
+            data : cartItemsWithSizes,
             error : false,
             success: true
         })
@@ -81,7 +97,7 @@ export const getCartItemsController= async(req,res)=>{
 export const updateCartItemQtyController = async(req,res)=>{
     try {
         const userId = req.userId;
-        const {_id, qty,subTotal}= req.body;
+        const {_id, qty,subTotal,size}= req.body;
 
          if(!_id || !qty){
             return res.status(400).json({
@@ -94,12 +110,49 @@ export const updateCartItemQtyController = async(req,res)=>{
             userId : userId
          },{
             quantity : qty,
-            subTotal: subTotal
+            subTotal: subTotal,
+            size: size
          },{new:true}
          );
 
          return res.json({
             message : "update Cart",
+            success : true,
+            error : false,
+            data : updateCartitem
+
+         })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error : true,
+            success: false
+        })
+    }
+}
+
+export const updateCartItemSizeController = async(req,res)=>{
+    try {
+        const userId = req.userId;
+        const {_id, size}= req.body;
+
+         if(!_id || !size){
+            return res.status(400).json({
+                message : "Provide _id and size"
+            })
+         }
+
+         const updateCartitem = await CartProductModel.updateOne({
+            _id : _id,
+            userId : userId
+         },{
+            size : size
+         },{new:true}
+         );
+
+         return res.json({
+            message : "update Cart size",
             success : true,
             error : false,
             data : updateCartitem
@@ -141,7 +194,7 @@ export const deleteCartItemQtyController = async (req,res)=>{
           })
         }
 
-        return res.json({
+        return res.status(200).json({
             message : "Item removed",
             error : false,
             success: true,

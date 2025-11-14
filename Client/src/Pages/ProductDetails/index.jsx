@@ -17,6 +17,7 @@ const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [productData, setProductData] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [reviewsCount, setReviewsCount] = useState(0);
   const [relatedProductData, setRelatedProductData]=useState([]);
   const { id } = useParams();
@@ -31,6 +32,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     setIsLoading(true);
+    setError(null);
     fetchDataFromApi(`/api/product/${id}`).then((res) => {
       if (res?.error === false) {
         setProductData(res?.product);
@@ -45,6 +47,9 @@ const ProductDetails = () => {
         setTimeout(() => {
           setIsLoading(false);
         }, 1000);
+      } else {
+        setError(res?.message || "Product not found");
+        setIsLoading(false);
       }
     });
 
@@ -84,6 +89,13 @@ const ProductDetails = () => {
           <div className="flex items-center justify-center min-h-[300px]">
             <CircularProgress color="inherit" />
           </div>
+        ) : error ? (
+          <div className="container flex items-center justify-center min-h-[300px]">
+            <div className="text-center">
+              <h2 className="text-[24px] font-[600] text-red-600 mb-4">Product Not Found</h2>
+              <p className="text-[16px] text-gray-600">{error}</p>
+            </div>
+          </div>
         ) : (
           <>
             <div className="container flex gap-9">
@@ -106,7 +118,7 @@ const ProductDetails = () => {
                 >
                   Description
                 </span>
-              
+
                 <span
                   className={`link text-[17px] cursor-pointer font-[600] ${
                     activeTab === 1 && "text-orange-600"
@@ -135,14 +147,14 @@ const ProductDetails = () => {
               )}
             </div>
             {
-              relatedProductData?.length!==0 && 
+              relatedProductData?.length!==0 &&
               <div className="container !mt-5 ">
               <h2 className="text-[20px] font-[600] !mb-0">Related Products</h2>
               <ProductSlider items={5} data={relatedProductData} />
             </div>
             }
 
-            
+
           </>
         )}
       </section>

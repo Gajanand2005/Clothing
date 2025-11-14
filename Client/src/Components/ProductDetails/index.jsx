@@ -6,10 +6,71 @@ import Button from "@mui/material/Button";
 import { MdPhotoSizeSelectActual } from "react-icons/md";
 import { MyContext } from "../../App";
 import { Link } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import { postData } from "../../Utlis/Api";
+
 
 const ProductDetailsComponent = (props) => {
-    const context = useContext(MyContext);
+  const context = useContext(MyContext);
+  const [quantity, setQuantity] = useState(1);
   const [productActionIndex, setProductActionIndex] = useState(null);
+  const [selectedTabName, setSelectedTabName] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [tabError, setTabError]= useState(false);
+
+  const handleSelectQty = (qty) => {
+    setQuantity(qty);
+  };
+
+  const handleClickActiveTab = (index, name) => {
+    setProductActionIndex(index);
+    setSelectedTabName(name);
+  };
+
+  const addToCart = (product, userId, quantity) => {
+
+     if (userId === undefined) {
+      alertBox("error", "you are not login please login first");
+      return false;
+    }
+
+    const productItem = {
+      productTitle: product?.name,
+      name: product?.name,
+      image: product?.images[0],
+      price: product?.price,
+      oldPrice: product?.oldPrice,
+      discount: product?.discount,
+      quantity: quantity,
+      countInStock: product?.countInStock,
+      productId: product?._id,
+      subTotal: parseInt(product?.price * quantity),
+      userId: userId,
+      brand: product?.brand,
+      size: selectedTabName,
+    };
+
+    setIsLoading(true);
+
+    if (selectedTabName !== null) {
+      setIsLoading(true);
+      postData("/api/cart/add", productItem).then((res) => {
+            if (res?.error === false) {
+            context?.alertBox("success", res?.message);
+              context?.getCartItems();
+            setTimeout(() => {
+              setIsLoading(false)
+            }, 1000);
+            } else {
+             context?.alertBox("error", res?.message);
+             setIsLoading(false);
+            }
+          });
+    }else{
+      setTabError(true);
+    }
+  };
+
   return (
     <>
       <h1 className="text-[24px] font-[600] !mb-2">{props?.item?.name}</h1>
@@ -26,7 +87,7 @@ const ProductDetailsComponent = (props) => {
           &#x20b9;{props?.item?.oldPrice}
         </span>
         <span className="price text-orange-600 font-bold text-[20px]">
-           &#x20b9;{props?.item?.price}
+          &#x20b9;{props?.item?.price}
         </span>
 
         <span className="text-[15px]">
@@ -37,41 +98,48 @@ const ProductDetailsComponent = (props) => {
         </span>
       </div>
 
-      <p className="!mt-2 pr-10 !mb-5">
-       {props?.item?.description}
-      </p>
-      {
-        props?.item?.size?.length !==0 && <div className="flex items-center gap-1">
-        <span className="text-[16px]">Size :</span>
-        <div className="flex items-center gap-1 actions">
-          {
-            props?.item?.size?.map((item,index)=>{
-                return(
-   <Button
-            className={`${
-              productActionIndex === index ? "!bg-orange-600 !text-white " : ""
-            }`}
-            onClick={() => setProductActionIndex(index)}
-          >
-            {item}
-          </Button>
-                )
-            })
-          }
-       
-        
+      <p className="!mt-2 pr-10 !mb-5">{props?.item?.description}</p>
+      {props?.item?.size?.length !== 0 && (
+        <div className="flex items-center gap-1">
+          <span className="text-[16px]">Size :</span>
+          <div className="flex items-center gap-1 actions">
+            {props?.item?.size?.map((item, index) => {
+              return (
+                <Button
+                  className={`${
+                    productActionIndex === index
+                      ? "!bg-orange-600 !text-white "
+                      : ""
+                  }${tabError===true && '!border !border-red-700'}`}
+                  onClick={() => handleClickActiveTab(index, item)}
+                >
+                  {item}
+                </Button>
+              );
+            })}
+          </div>
         </div>
-      </div>
-      }
-      
+      )}
+
       <p className="text-[14px] !mt-4 mb-2">Delivery Time 5-12 Days</p>
       <div className="flex items-center !mt-4 gap-4">
         <div className="qtyBoxWrapper w-[69px]">
-          <QtyBox />
+          <QtyBox handleSelectQty={handleSelectQty} />
         </div>
-        <Button className="!bg-orange-600 hover:!bg-black !text-white flex gap-2">
-          <LuCarTaxiFront className="!text-[22px] " />
-          Add to Cart
+        <Button
+          className="!bg-orange-600 btn-org hover:!bg-black !text-white flex gap-2 !min-w-[150px]"
+          onClick={() =>
+            addToCart(props?.item, context?.userData?._id, quantity)
+          }
+        >
+          {isLoading === true ? (
+            <CircularProgress color="inherit" className="!text-white" />
+          ) : (
+            <>
+              <LuCarTaxiFront className="!text-[22px] " />
+              Add to Cart
+            </>
+          )}
         </Button>
       </div>
 
@@ -80,12 +148,11 @@ const ProductDetailsComponent = (props) => {
           <TbHeartHandshake className="text-[19px]" />
           Add to Wishlist
         </span>
-         <Link className="flex items-center gap-3 text-[15px] " to='/size'>
+        <Link className="flex items-center gap-3 text-[15px] " to="/size">
           <MdPhotoSizeSelectActual className="text-[19px]" />
-         Size Guide
+          Size Guide
         </Link>
       </div>
-      
     </>
   );
 };

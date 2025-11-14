@@ -15,6 +15,15 @@ price:{
     type:Number,
     required:true
 },
+oldPrice:{
+    type:Number,
+},
+discount:{
+    type:Number,
+},
+size:{
+    type:String,
+},
 quantity:{
     type:Number,
     required:true
@@ -36,8 +45,11 @@ countInStock:{
 userId:{
    type:String,
    required:true 
+},
+brand:{
+   type:String,
+  
 }
-
 },
     {
         timestamps: true

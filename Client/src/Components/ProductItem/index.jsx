@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../Productitem/style.css";
 import { Link } from "react-router-dom";
-
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import Button from "@mui/material/Button";
@@ -11,6 +10,8 @@ import { MdOutlineShoppingCart, MdZoomOutMap } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
 import { MyContext } from "../../App";
 import { deleteData, editData } from "../../Utlis/Api";
+import { IoCloseSharp } from "react-icons/io5";
+
 
 function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
@@ -22,12 +23,49 @@ function ProductItem(props) {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const [cartItem, setCartItem] = useState([]);
+  const [activeTab, setActiveTab] = useState(null);
+  const [isShowTabs, setIsShowTabs] = useState(false);
+   const [selectedTabName, setSelectedTabName] = useState(null);
 
   const context = useContext(MyContext);
 
   const addToCart = (product, userId, quantity) => {
-    context?.addToCart(product, userId, quantity);
-    setIsAdded(true);
+
+   
+    const productItem = {
+     _id:product?._id,
+      name: product?.name,
+      image: product?.images[0],
+      price: product?.price,
+      oldPrice: product?.oldPrice,
+      discount: product?.discount,
+      quantity: quantity,
+      countInStock: product?.countInStock,
+      productId: product?._id,
+      subTotal: parseInt(product?.price * quantity),
+      userId: userId,
+      brand: product?.brand,
+      size: selectedTabName,
+    };
+
+    if (props?.item?.size?.length !== 0) {
+      setIsShowTabs(true);
+    } else {
+      context?.addToCart(productItem, userId, quantity);
+      setIsAdded(true);
+      setIsShowTabs(false);
+    }
+
+    if (activeTab !== null) {
+      context?.addToCart(productItem, userId, quantity);
+      setIsAdded(true);
+      setIsShowTabs(false);
+    }
+  };
+
+  const handleClickActiveTab = (index, name) => {
+    setActiveTab(index);
+    setSelectedTabName(name);
   };
 
   useEffect(() => {
@@ -38,6 +76,9 @@ function ProductItem(props) {
     if (item?.length !== 0) {
       setIsAdded(true);
       setCartItem(item);
+      setQuantity(item[0]?.quantity);
+    } else {
+      setQuantity(1);
     }
   }, [context?.cartData]);
 
@@ -53,15 +94,21 @@ function ProductItem(props) {
         (res) => {
           setIsAdded(false);
           context.alertBox("success", "Item Removed from cart");
+          context?.getCartItem();
+          setIsShowTabs(false);
+          setActiveTab(null);
         }
       );
     } else {
       const obj = {
         _id: cartItem[0]?._id,
-        qty: quantity,
-        subTotal: props?.item?.price * quantity,
+        qty: quantity - 1,
+        subTotal: props?.item?.price * (quantity - 1),
       };
-      editData(`/api/cart/update-qty`, obj).then((res = {}));
+      editData(`/api/cart/update-qty`, obj).then((res) => {
+        context.alertBox("success", res?.message);
+        context?.getCartItem();
+      });
     }
   };
 
@@ -70,10 +117,13 @@ function ProductItem(props) {
 
     const obj = {
       _id: cartItem[0]?._id,
-      qty: quantity,
-      subTotal: props?.item?.price * quantity,
+      qty: quantity + 1,
+      subTotal: props?.item?.price * (quantity + 1),
     };
-    editData(`/api/cart/update-qty`, obj).then((res = {}));
+    editData(`/api/cart/update-qty`, obj).then((res) => {
+      context.alertBox("success", res?.message);
+      context?.getCartItem();
+    });
   };
 
   return (
@@ -85,6 +135,26 @@ function ProductItem(props) {
             <img src={props?.item?.images[1]} alt="" className="w-full" />
           </div>
         </Link>
+
+        {isShowTabs === true && (
+          <div className="flex items-center justify-center absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.7)] z-[60] p-3 gap-2">
+            {props?.item?.size.length !== 0 &&
+              props?.item?.size?.map((size, index) => {
+                return (
+                  <span
+                    key={index}
+                    className={`flex items-center justify-center p-1 px-2 bg-[rgba(255,555,255,0.8)] h-[25px] rounded-sm cursor-pointer mix-w-[35px] hover:bg-white ${
+                      activeTab === index && "!bg-orange-600 !text-white"
+                    }`}
+                    onClick={() => handleClickActiveTab(index, size)}
+                  >
+                    {size}
+                  </span>
+                );
+              })}
+          </div>
+        )}
+
         <span className="discount flex items-center absolute top-[10px] left-[10px] z-50 bg-orange-500 text-white rounded-full p-1 text-[10px] md:text-[12px] font-[500]  ">
           {" "}
           {props?.item?.discount}%

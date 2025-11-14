@@ -10,15 +10,15 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import ProductZoom from "./Components/ProductZoom/Index.jsx";
+import ProductZoom from "./Components/ProductZoom/index.jsx";
 import { IoClose } from "react-icons/io5";
 import ProductDetailsComponent from "./Components/ProductDetails/Index.jsx";
 import Login from "./Pages/Login/index.jsx";
 import Register from "./Pages/Register/index.jsx";
 import CartPage from "./Pages/Cart/Index.jsx";
 
-import toast, {Toaster} from 'react-hot-toast'; 
-import ForgotPassword from './Pages/ForgotPassword/Index.jsx'
+import toast, { Toaster } from "react-hot-toast";
+import ForgotPassword from "./Pages/ForgotPassword/Index.jsx";
 import CheckOut from "./Pages/CheckOut/Index.jsx";
 import MyAccount from "./Pages/MyAccount/index.jsx";
 import MyList from "./Pages/MyList/Index.jsx";
@@ -27,86 +27,82 @@ import Whataap from "./Components/Whataap/Index.jsx";
 
 import HelpCenter from "./Pages/HelpCenter/Index.jsx";
 import OrderTracking from "./Pages/OrderTracking/Index.jsx";
-import { fetchDataFromApi, postData } from "./Utlis/Api.js";
+import { fetchDataFromApi, postData, editData } from "./Utlis/Api.js";
 import Verify from "./Pages/Verify/index.jsx";
 import Address from "./Pages/MyAccount/Address.jsx";
 import Home from "./Pages/Home/Index.jsx";
 
 import Size from "./Pages/SizeGuide/Index.jsx";
 
- 
-
-
 const MyContext = createContext();
 
 const App = () => {
   const [openProductDetailsModal, setOpenProductDetailsModel] = useState({
-    open:false,
-    item:{}
+    open: false,
+    item: {},
   });
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
-  const [openCartPanel, setOpenCartPanel] =useState(false)
-  const [isLogin, setIsLogin]= useState(false);
+  const [openCartPanel, setOpenCartPanel] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
-  const [userData, setUserData]= useState(null);
-    const [catData, setCatData] = useState([]);
-    const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
-      open: false,
-      model: "",
-      id: ""
+  const [userData, setUserData] = useState(null);
+  const [catData, setCatData] = useState([]);
+  const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
+    open: false,
+    model: "",
+    id: "",
+  });
+  const [cartData, setCartData] = useState([]);
+
+  const handleOpenProductDetailsModal = (status, item) => {
+    setOpenProductDetailsModel({
+      open: status,
+      item: item,
     });
-    const [cartData, setCartData] = useState([]);
-
-
-
-    const handleOpenProductDetailsModal = (status, item) => {
-      setOpenProductDetailsModel({
-      open:status,
-      item:item
-    });
-    }
+  };
   const handleCloseProductDetailsModal = () => {
     setOpenProductDetailsModel({
-      open:false,
-      item:{}
+      open: false,
+      item: {},
     });
   };
 
-  const toggleCartPanel = (newOpen)=>()=>{
+  const toggleCartPanel = (newOpen) => () => {
     setOpenCartPanel(newOpen);
-  }
+  };
 
-  useEffect(()=>{
-    const token= localStorage.getItem('accessToken');
-    if(token!==undefined && token!==null && token !==""){
-      setIsLogin(true)
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token !== undefined && token !== null && token !== "") {
+      setIsLogin(true);
 
-      fetchDataFromApi(`/api/user/user-details`).then((res)=>{
-
-          if(res?.success){
+      fetchDataFromApi(`/api/user/user-details`)
+        .then((res) => {
+          if (res?.success) {
             setUserData(res?.data);
-          } else if(res?.message === "You have not login" || res?.message === "jwt expired" || res?.message === "Invalid token"){
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            alertBox("error","Your session is closed please login again")
-            window.location.href="/login";
+          } else if (
+            res?.message === "You have not login" ||
+            res?.message === "jwt expired" ||
+            res?.message === "Invalid token"
+          ) {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            alertBox("error", "Your session is closed please login again");
+            window.location.href = "/login";
             setIsLogin(false);
           }
+        })
+        .catch((error) => {
+          console.error("Error fetching user details:", error);
+          alertBox("error", "Failed to fetch user details");
+        });
 
-      }).catch((error) => {
-        console.error("Error fetching user details:", error);
-        alertBox("error", "Failed to fetch user details");
-      });
-
-  getCartItmes();
-
-    }else{
-      setIsLogin(false)
+      getCartItems();
+    } else {
+      setIsLogin(false);
     }
-
-  },[]) // Remove [isLogin] to prevent infinite loop
-
+  }, []); // Remove [isLogin] to prevent infinite loop
 
   useEffect(() => {
     fetchDataFromApi("/api/category").then((res) => {
@@ -116,63 +112,70 @@ const App = () => {
     });
   }, []);
 
-
-
-  const alertBox = (status, msg)=>{
-
-    if(status.toLowerCase()==="success"){
+  const alertBox = (status, msg) => {
+    if (status.toLowerCase() === "success") {
       toast.success(msg);
     }
-    if(status.toLowerCase()==="error"){
+    if (status.toLowerCase() === "error") {
       toast.error(msg);
     }
+  };
 
-  }
+  const addToCart = (product, userId, quantity) => {
+    if (userId === undefined) {
+      alertBox("error", "you are not login please login first");
+      return false;
+    }
 
+    const data = {
+      productTitle: product?.name,
+      image: product?.image,
+      price: product?.price,
+      oldPrice: product?.oldPrice,
+      discount: product?.discount,
+      quantity: quantity,
+      countInStock: product?.countInStock,
+      productId: product?._id,
+      subTotal: parseInt(product?.price * quantity),
+      userId: userId,
+      brand: product?.brand,
+      size: product?.size,
+    };
 
-const  addToCart = (product,userId,quantity) => {
- if(userId ===  undefined){
-  alertBox("error", "you are not login please login first");
-  return false;
- }
+    postData("/api/cart/add", data).then((res) => {
+      if (res?.error === false) {
+        alertBox("success", res?.message);
 
-const data ={
-productTitle:product?.name,
-image:product?.images[0],
-price:product?.price,
-quantity:quantity,
-countInStock:product?.countInStock,
-productId:product?._id,
-subTotal:parseInt(product?.price*quantity),
-userId:userId,
-}
+        getCartItems();
+      } else {
+        alertBox("error", res?.message);
+      }
+    });
+  };
 
-postData("/api/cart/add",data).then((res)=>{
-  if(res?.error === false){
-    alertBox("success", res?.message );
-
-    getCartItmes();
-
-    
-  }else{
-    alertBox("error",res?.message)
-  }
-})
-}
-
- const getCartItmes= () => {
-   fetchDataFromApi(`/api/cart/get`).then((res)=>{
-      if(res?.error === false){
+  const getCartItems = () => {
+    fetchDataFromApi(`/api/cart/get`).then((res) => {
+      if (res?.error === false) {
         setCartData(res?.data);
       }
-    })
- }
- 
+    });
+  };
 
+  const updateCartSize = (_id, size) => {
+    const data = {
+      _id: _id,
+      size: size,
+    };
 
-
-
-
+    editData("/api/cart/update-size", data).then((res) => {
+      if (res?.error === false) {
+        alertBox("success", "Size updated successfully");
+        getCartItems();
+      } else {
+        alertBox("error", res?.message);
+      }
+    });
+  };
 
   const value = {
     setOpenProductDetailsModel,
@@ -191,7 +194,9 @@ postData("/api/cart/add",data).then((res)=>{
     isOpenFullScreenPanel,
     addToCart,
     cartData,
-    setCatData
+    setCatData,
+    getCartItems,
+    updateCartSize,
   };
 
   return (
@@ -215,56 +220,67 @@ postData("/api/cart/add",data).then((res)=>{
             <Route path={"/register"} exact={true} element={<Register />} />
             <Route path={"/cart"} exact={true} element={<CartPage />} />
             <Route path={"/Verify"} exact={true} element={<Verify />} />
-            <Route path={"/forgot-Password"} exact={true} element={<ForgotPassword />} />
+            <Route
+              path={"/forgot-Password"}
+              exact={true}
+              element={<ForgotPassword />}
+            />
             <Route path={"/checkout"} exact={true} element={<CheckOut />} />
-             <Route path={"/my-account"} exact={true} element={<MyAccount />} />
-              <Route path={"/my-list"} exact={true} element={<MyList />} />
-              <Route path={"/my-order"} exact={true} element={<Order />} />
-              <Route path={"/order-tracking"} exact={true} element={<OrderTracking />} />
-               <Route path={"/help-center"} exact={true} element={<HelpCenter />} />
-               <Route path={"/address"} exact={true} element={<Address />} />
-               <Route path={"/size"} exact={true} element={<Size />} />
+            <Route path={"/my-account"} exact={true} element={<MyAccount />} />
+            <Route path={"/my-list"} exact={true} element={<MyList />} />
+            <Route path={"/my-order"} exact={true} element={<Order />} />
+            <Route
+              path={"/order-tracking"}
+              exact={true}
+              element={<OrderTracking />}
+            />
+            <Route
+              path={"/help-center"}
+              exact={true}
+              element={<HelpCenter />}
+            />
+            <Route path={"/address"} exact={true} element={<Address />} />
+            <Route path={"/size"} exact={true} element={<Size />} />
           </Routes>
-          <Whataap/>
+          <Whataap />
           <Footer />
         </MyContext.Provider>
       </BrowserRouter>
-      <Toaster/>
+      <Toaster />
       <Dialog
         open={openProductDetailsModal.open}
         fullWidth={fullWidth}
         maxWidth={maxWidth}
-        onClose={ handleCloseProductDetailsModal}
+        onClose={handleCloseProductDetailsModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         className="productDetailsModal"
       >
         <DialogTitle id="alert-dialog-title">
-          <div className="flex items-center w-full productDetailsModalContainer relative ">
-            <Button
-              className="!w-[40px] !h-[40px] min-w-[40px] !rounded-full !text-[#000] !absolute top-[0px] right-[0px] "
-              onClick={handleCloseProductDetailsModal}
-            >
-              <IoClose className="text-[20px]" />
-            </Button>
-            {
-              openProductDetailsModal?.item?.length!==0 && <>
-                <div className="col1 w-[40%] px-3">
-              <ProductZoom images={openProductDetailsModal?.item?.images} />
-            </div>
-
-            <div className="col2 w-[60%] py-8 px-8">
-              <ProductDetailsComponent item={openProductDetailsModal?.item} />
-            </div>
-              </>
-            }
-          
-          </div>
+          Product Details
+          <Button
+            className="!w-[40px] !h-[40px] min-w-[40px] !rounded-full !text-[#000] !absolute top-[10px] right-[10px] "
+            onClick={handleCloseProductDetailsModal}
+          >
+            <IoClose className="text-[20px]" />
+          </Button>
         </DialogTitle>
-        <DialogContent></DialogContent>
-      </Dialog>
-     
+        <DialogContent>
+          {Object.keys(openProductDetailsModal?.item || {}).length > 0 && (
+            <div className="flex items-center w-full productDetailsModalContainer relative">
+              <div className="col1 w-[40%] px-3 h-[70vh]">
+                <ProductZoom images={openProductDetailsModal?.item?.images} />
+              </div>
 
+              <div className="col2 w-[60%] py-8 px-8">
+                <ProductDetailsComponent
+                  item={openProductDetailsModal?.item}
+                />
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

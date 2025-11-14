@@ -22,6 +22,7 @@ import CartPanel from "../CartPanel/Index.jsx";
 import { MyContext } from "../../App.jsx";
 import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const Footer = () => {
   const context = useContext(MyContext);
@@ -163,14 +164,24 @@ const Footer = () => {
           className="cartPanel"
         >
           <div className="flex items-center justify-between py-3 px-4 gap-3 border-b border-[#000]">
-            <h4>Shopping Cart (1)</h4>
+            <h4>Shopping Cart ({context?.cartData?.length})</h4>
             <IoClose
               className="text-[20px] cursor-pointer"
               onClick={context?.toggleCartPanel(false)}
             />
           </div>
 
-          <CartPanel />
+        {
+          context?.cartData?.length!==0 ? <CartPanel data={context?.cartData} /> :
+          <>
+       <div className="flex items-center justify-center flex-col pt-[200px] ">
+           <img src="/bag.png" alt="" className="!w-[150px]"/>
+           <h4 className="!mt-5 text-[20px] font-[600] text-blue-300">Your Cart is Currently empty</h4>
+           <Button className="!bg-orange-600 !text-white hover:!bg-black !mt-5" onClick={context?.toggleCartPanel(false)}>Continue Shopping</Button>
+       </div>
+          </>
+        }
+          
         </Drawer>
       </footer>
     </>
