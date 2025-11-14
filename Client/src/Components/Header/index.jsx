@@ -59,12 +59,10 @@ const Header = () => {
       `/api/user/logout?token=${localStorage.getItem("accessToken")}`,
       { withCredentials: true }
     ).then((res) => {
-      // Logout request sent, but client-side logout is already done
-      // This ensures logout works even if server returns 401
     }).catch(() => {
-      // Ignore errors, client-side logout is complete
+      
     });
-
+    context?.setCartData([]);
     history("/");
   };
 

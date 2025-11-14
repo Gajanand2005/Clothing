@@ -6,7 +6,7 @@ import StarIcon from "@mui/icons-material/Star";
 import Button from "@mui/material/Button";
 import { FaHeart, FaMinus, FaPlus } from "react-icons/fa6";
 import { IoGitCompare } from "react-icons/io5";
-import { MdOutlineShoppingCart, MdZoomOutMap } from "react-icons/md";
+import { MdClose, MdOutlineShoppingCart, MdZoomOutMap } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
 import { MyContext } from "../../App";
 import { deleteData, editData } from "../../Utlis/Api";
@@ -138,6 +138,13 @@ function ProductItem(props) {
 
         {isShowTabs === true && (
           <div className="flex items-center justify-center absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.7)] z-[60] p-3 gap-2">
+
+           <Button className="!absolute top-[10px] right-[10px] !min-w-[30px] !min-h-[30px] !w-[30px] !h-[30px] !rounded-full !bg-[rgba(255,255,255,1)] text-black "
+           
+           onClick={()=>setIsShowTabs(false)}
+           ><MdClose className=" text-black z-[90] text-[25px]" /></Button>
+
+
             {props?.item?.size.length !== 0 &&
               props?.item?.size?.map((size, index) => {
                 return (
@@ -160,7 +167,7 @@ function ProductItem(props) {
           {props?.item?.discount}%
         </span>
 
-        <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-2 flex-col w-[35px] sm:w-[40px] md:w-[50px] transition-all duration-300 group-hover:top-[10px] opacity-0 group-hover:opacity-100">
+        <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-2 flex-col w-[35px] sm:w-[30px] md:w-[50px] transition-all duration-300 group-hover:top-[10px] opacity-0 group-hover:opacity-100">
           <Tooltip title="Heart" placement="left-start">
             <Button className="!w-[28px] !h-[28px] sm:!w-[30px] sm:!h-[30px] md:!w-[35px] md:!h-[35px] !min-w-[28px] sm:!min-w-[30px] md:!min-w-[35px] !rounded-full !bg-white !text-black hover:!bg-orange-500 hover:!text-white group">
               <FaHeart className="text-[14px] sm:text-[16px] md:text-[18px] !text-black group-!hover:text-white hover:!text-white" />{" "}

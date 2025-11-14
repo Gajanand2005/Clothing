@@ -1,0 +1,1 @@
+cart Item error on clicking the image - id error needs to be resolved 

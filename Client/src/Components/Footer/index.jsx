@@ -23,6 +23,11 @@ import { MyContext } from "../../App.jsx";
 import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
+import ProductZoom from "../ProductZoom/Index.jsx";
+import ProductDetailsComponent from "../ProductDetails/Index.jsx";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
 
 const Footer = () => {
   const context = useContext(MyContext);
@@ -130,15 +135,14 @@ const Footer = () => {
           {/* Bottom footer */}
           <div className="flex flex-col md:flex-row items-center justify-between mt-4 md:mt-6 pt-4 md:pt-6 gap-4">
             {/* Social media icons */}
-            <Link to='https://www.instagram.com/smalcouture?igsh=MmtxYjlwb3prajdi' >
             <div className="flex gap-3 md:gap-4 text-gray-600 text-lg md:text-xl">
-             
-              <FaInstagram className="hover:text-red-500 cursor-pointer" />
-              <Link to='https://www.instagram.com/smal_west?igsh=MXBwZTFzOW9vbXlwZA=='>
-              <FaInstagram className="hover:text-red-500 cursor-pointer" />
-              </Link>
+              <a href='https://www.instagram.com/smalcouture?igsh=MmtxYjlwb3prajdi' target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="hover:text-red-500 cursor-pointer" />
+              </a>
+              <a href='https://www.instagram.com/smal_west?igsh=MXBwZTFzOW9vbXlwZA==' target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="hover:text-red-500 cursor-pointer" />
+              </a>
             </div>
-            </Link>
             {/* Copyright */}
             <div className="text-gray-500 text-xs md:text-sm">
               © 2025 - Ecommerce Template
@@ -184,6 +188,44 @@ const Footer = () => {
           
         </Drawer>
       </footer>
+
+
+
+      <Dialog
+            open={context?.openProductDetailsModal.open}
+            fullWidth={context?.fullWidth}
+            maxWidth={context?.maxWidth}
+            onClose={context?.handleCloseProductDetailsModal}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            className="productDetailsModal"
+          >
+            <DialogTitle id="alert-dialog-title">
+              Product Details
+              <Button
+                className="!w-[40px] !h-[40px] min-w-[40px] !rounded-full !text-[#000] !absolute top-[10px] right-[10px] "
+                onClick={context?.handleCloseProductDetailsModal}
+              >
+                <IoClose className="text-[20px]" />
+              </Button>
+            </DialogTitle>
+            <DialogContent>
+              {
+              context?.openProductDetailsModal?.item?.length !== 0 && (
+                <div className="flex items-center w-full productDetailsModalContainer relative">
+                  <div className="col1 w-[40%] px-3 h-[70vh]">
+                    <ProductZoom images={ context?.openProductDetailsModal?.item?.images} />
+                  </div>
+
+                  <div className="col2 w-[60%] py-8 px-8">
+                    <ProductDetailsComponent
+                      item={ context?.openProductDetailsModal?.item}
+                    />
+                  </div>
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
     </>
   );
 };

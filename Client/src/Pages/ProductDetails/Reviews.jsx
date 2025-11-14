@@ -86,7 +86,7 @@ const reviews = (props) => {
                   {
                     reviewsData?.map((review,index)=>{
                       return(
-                        <div className="review !mb-5 pt-4 border-b border-[rgba(0,0,0,0.1)] w-full flex items-center justify-between">
+                        <div className="review !mb-5 pt-4 border-b border-[rgba(0,0,0,0.1)] w-full flex items-center justify-between" key={index}>
                     <div className="info w-[60%] flex items-center gap-3">
                       <div className="img w-[80px] h-[80px] overflow-hidden rounded-full">
                         <img

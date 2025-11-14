@@ -27,7 +27,7 @@ function ProductItem() {
   return (
     <div className='productItem shadow-lg rounded-md overflow-hidden border-2  border-[rgba(0,0,0,0.1)] flex flex-col md:flex-row items-center '>
       <div className='group imgWrapper w-full md:w-[25%] overflow-hidden rounded-md relative'>
-        <Link to="/product/:id">
+        <Link to={`/product/${_id}`}>
         <div className='img  h-[200px] md:h-[250px] overflow-hidden'>
         <img src="https://serviceapi.spicezgold.com/download/1753722939206_125c18d6-592d-4082-84e5-49707ae9a4fd1749366193911-Flying-Machine-Women-Wide-Leg-High-Rise-Light-Fade-Stretchab-1.jpg" alt=""  className='w-full'/>
         <img src="https://serviceapi.spicezgold.com/download/1753722939207_5107b7b1-ba6d-473c-9195-8576a6a0a9611749366193848-Flying-Machine-Women-Wide-Leg-High-Rise-Light-Fade-Stretchab-3.jpg" alt=""  className='w-full transition-all duration-700 absolute top-0 left-0 opacity-0 group-hover:opacity-100 group-hover:scale-105'/>
@@ -47,8 +47,8 @@ function ProductItem() {
       </div>
 
       <div className='info p-2 md:p-3 py-3 !px-4 md:!px-9 w-full md:w-[75%]'>
-        <h6 className='text-[12px] md:text-[15px] !mb-3'><Link to={'/product/:id'} className='link transition-all'>Flying Machine</Link></h6>
-        <h3 className='text-[14px] md:text-[18px] title mt-2 !mb-2 font-[500] text-[#000]' ><Link to={'/product/:id'} className='link transition-all '>Women Wide Leg High-Rise ...</Link></h3>
+        <h6 className='text-[12px] md:text-[15px] !mb-3'><Link to={`/product/${_id}`} className='link transition-all'>Flying Machine</Link></h6>
+        <h3 className='text-[14px] md:text-[18px] title mt-2 !mb-2 font-[500] text-[#000]' ><Link to={`/product/${_id}`} className='link transition-all '>Women Wide Leg High-Rise ...</Link></h3>
         <p className='text-[12px] md:text-[14px] mt-3 mb-3'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nemo aspernatur tempora natus, labore doloribus ullam nisi quae minima, voluptates cum animi reiciendis sit magni. Repellendus voluptas fugit quia necessitatibus delectus.</p>
         <div className='py-1'>
     

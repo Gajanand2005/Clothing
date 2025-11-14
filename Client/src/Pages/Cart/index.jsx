@@ -56,7 +56,7 @@ const CartPage = () => {
               <div className="flex items-center justify-center flex-col py-10 gap-5 ">
            <img src="/bag.png" alt="" className="!w-[150px]"/>
            <h4 className="!mt-2 text-[20px] font-[600] text-blue-300">Your Cart is Currently empty</h4>
-           <Link to="/"><Button className="!bg-orange-600 !text-white hover:!bg-black !mt-3" onClick={context?.toggleCartPanel(false)}>Continue Shopping</Button></Link>
+           <Link to="/"><Button className="!bg-orange-600 !text-white hover:!bg-black !mt-3" onClick={() => context?.toggleCartPanel(false)}>Continue Shopping</Button></Link>
        </div>
                 }
             </div>

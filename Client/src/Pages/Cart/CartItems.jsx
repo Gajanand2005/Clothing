@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { GoTriangleDown } from "react-icons/go";
-import { deleteData, editData } from "../../Utlis/Api";
+import { deleteData, editData, fetchDataFromApi } from "../../Utlis/Api";
 import { useContext } from "react";
 import { MyContext } from "../../App.jsx";
 
@@ -51,7 +51,7 @@ const CartItems = (props) => {
     }
   };
 
-  const updateCart = (selectedVal, qty) => {
+  const updateCart = (selectedVal, qty,field) => {
     handleCloseSize(selectedVal);
     const cartObj = {
       _id: props?.item?._id,
@@ -59,11 +59,26 @@ const CartItems = (props) => {
       subTotal: props?.item?.price * qty,
       size: selectedVal,
     };
-    editData("/api/cart/update-qty", cartObj).then((res) => {
+
+if(field==="size"){
+  fetchDataFromApi(`/api/product/${props?.item?.productId}`).then((res)=>{
+    const product = res?.product;
+    const item = product?.size?.filter((size)=>
+  size?.includes(selectedVal)
+    )
+    if(item?.length !== 0){
+ editData("/api/cart/update-qty", cartObj).then((res) => {
       if (res?.error === false) {
         context.alertBox("success", res?.message);
+      } else{
+        context.alertBox("error", "size not avilabe");
       }
     });
+    }
+  })
+
+}
+
   };
 
   const removeItem= (id)=>{
@@ -77,7 +92,7 @@ const CartItems = (props) => {
     <>
       <div className="cartItem w-full p-3 flex items-center gap-4 pb-5 border-b border-[rgba(0,0,0,0.1)]">
         <div className="img w-[15%] rounded-md overflow-hidden">
-          <Link to={`/product/${props?.item?.productId}`} className="group">
+          <Link to={`/product/${props?.item?._id}`} className="group">
             <img
               src={props?.item?.image}
               alt=""
@@ -121,7 +136,7 @@ const CartItems = (props) => {
                     <MenuItem
                       key={index}
                       className={`${item === selectedSize && "selected"}`}
-                      onClick={() => updateCart(item, props?.item?.quantity)}
+                      onClick={() => updateCart(item, props?.item?.quantity,"size")}
                     >
                       {item}
                     </MenuItem>
@@ -153,7 +168,7 @@ const CartItems = (props) => {
                   <MenuItem key={index} onClick={() => handleCloseQty(index+1)}>{index+1}</MenuItem>
                   )
                )}
-               
+
               </Menu>
             </div>
           </div>
@@ -176,3 +191,4 @@ const CartItems = (props) => {
 };
 
 export default CartItems;
+

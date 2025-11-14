@@ -27,49 +27,57 @@ const ProductDetailsComponent = (props) => {
     setSelectedTabName(name);
   };
 
-  const addToCart = (product, userId, quantity) => {
 
-     if (userId === undefined) {
-      alertBox("error", "you are not login please login first");
-      return false;
-    }
 
-    const productItem = {
-      productTitle: product?.name,
-      name: product?.name,
-      image: product?.images[0],
-      price: product?.price,
-      oldPrice: product?.oldPrice,
-      discount: product?.discount,
-      quantity: quantity,
-      countInStock: product?.countInStock,
-      productId: product?._id,
-      subTotal: parseInt(product?.price * quantity),
-      userId: userId,
-      brand: product?.brand,
-      size: selectedTabName,
-    };
 
-    setIsLoading(true);
+//add to cart Ai version 
+const addToCart = (product, userId, quantity) => {
+  if (!userId) {
+    context?.alertBox("error", "Please login first");
+    return;
+  }
 
-    if (selectedTabName !== null) {
-      setIsLoading(true);
-      postData("/api/cart/add", productItem).then((res) => {
-            if (res?.error === false) {
-            context?.alertBox("success", res?.message);
-              context?.getCartItems();
-            setTimeout(() => {
-              setIsLoading(false)
-            }, 1000);
-            } else {
-             context?.alertBox("error", res?.message);
-             setIsLoading(false);
-            }
-          });
-    }else{
+  // Size validation
+  if (props?.item?.size?.length !== 0) {
+    if (selectedTabName === null) {
       setTabError(true);
+      setIsLoading(false);
+      return; 
     }
+  }{
+
+  }
+
+  const productItem = {
+    productTitle: product?.name,
+    name: product?.name,
+    image: product?.images[0],
+    price: product?.price,
+    oldPrice: product?.oldPrice,
+    discount: product?.discount,
+    quantity: quantity,
+    countInStock: product?.countInStock,
+    productId: product?._id,
+    subTotal: parseInt(product?.price * quantity),
+    userId: userId,
+    brand: product?.brand,
+    size: selectedTabName,
   };
+
+  setIsLoading(true);
+
+  postData("/api/cart/add", productItem).then((res) => {
+    if (res?.error === false) {
+      context?.alertBox("success", res?.message);
+      context?.getCartItems();
+      setTimeout(() => setIsLoading(false), 1000);
+    } else {
+      context?.alertBox("error", res?.message);
+      setIsLoading(false);
+    }
+  });
+};
+
 
   return (
     <>
@@ -106,6 +114,7 @@ const ProductDetailsComponent = (props) => {
             {props?.item?.size?.map((item, index) => {
               return (
                 <Button
+                  key={`size-${index}-${item}`}
                   className={`${
                     productActionIndex === index
                       ? "!bg-orange-600 !text-white "
@@ -148,7 +157,7 @@ const ProductDetailsComponent = (props) => {
           <TbHeartHandshake className="text-[19px]" />
           Add to Wishlist
         </span>
-        <Link className="flex items-center gap-3 text-[15px] " to="/size">
+        <Link to="/size" className="flex items-center gap-3 text-[15px] ">
           <MdPhotoSizeSelectActual className="text-[19px]" />
           Size Guide
         </Link>

@@ -10,7 +10,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import ProductZoom from "./Components/ProductZoom/index.jsx";
 import { IoClose } from "react-icons/io5";
 import ProductDetailsComponent from "./Components/ProductDetails/Index.jsx";
 import Login from "./Pages/Login/index.jsx";
@@ -45,7 +44,6 @@ const App = () => {
   const [fullWidth, setFullWidth] = useState(true);
   const [openCartPanel, setOpenCartPanel] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const apiUrl = import.meta.env.VITE_API_URL;
   const [userData, setUserData] = useState(null);
   const [catData, setCatData] = useState([]);
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
@@ -179,10 +177,16 @@ const App = () => {
 
   const value = {
     setOpenProductDetailsModel,
+    openProductDetailsModal,
     handleOpenProductDetailsModal,
+    handleCloseProductDetailsModal,
     setOpenCartPanel,
     toggleCartPanel,
     openCartPanel,
+    maxWidth,
+    fullWidth,
+    setMaxWidth,
+    setFullWidth,
     alertBox,
     isLogin,
     setIsLogin,
@@ -194,7 +198,7 @@ const App = () => {
     isOpenFullScreenPanel,
     addToCart,
     cartData,
-    setCatData,
+    setCartData,
     getCartItems,
     updateCartSize,
   };
@@ -244,43 +248,10 @@ const App = () => {
           </Routes>
           <Whataap />
           <Footer />
+          
         </MyContext.Provider>
       </BrowserRouter>
       <Toaster />
-      <Dialog
-        open={openProductDetailsModal.open}
-        fullWidth={fullWidth}
-        maxWidth={maxWidth}
-        onClose={handleCloseProductDetailsModal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        className="productDetailsModal"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Product Details
-          <Button
-            className="!w-[40px] !h-[40px] min-w-[40px] !rounded-full !text-[#000] !absolute top-[10px] right-[10px] "
-            onClick={handleCloseProductDetailsModal}
-          >
-            <IoClose className="text-[20px]" />
-          </Button>
-        </DialogTitle>
-        <DialogContent>
-          {Object.keys(openProductDetailsModal?.item || {}).length > 0 && (
-            <div className="flex items-center w-full productDetailsModalContainer relative">
-              <div className="col1 w-[40%] px-3 h-[70vh]">
-                <ProductZoom images={openProductDetailsModal?.item?.images} />
-              </div>
-
-              <div className="col2 w-[60%] py-8 px-8">
-                <ProductDetailsComponent
-                  item={openProductDetailsModal?.item}
-                />
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </>
   );
 };
