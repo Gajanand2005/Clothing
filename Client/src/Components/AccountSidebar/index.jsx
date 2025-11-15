@@ -70,7 +70,7 @@ const onChangeFile = async (e, apiEndPoint) => {
 
   return (
     <>
-      <div className="card bg-white shadow-md rounded-md sticky top-[10px] ">
+      <div className="card bg-white shadow-md rounded-md sticky top-[160px] ">
               <div className="w-full p-4 md:p-5 flex items-center justify-center flex-col ">
                 <div className="w-[90px] md:w-[110px] h-[90px] md:h-[110px] rounded-full overflow-hidden !mb-3 relative group flex items-center justify-center bg-gray-200">
                    {

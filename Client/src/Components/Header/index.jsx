@@ -63,6 +63,7 @@ const Header = () => {
       
     });
     context?.setCartData([]);
+    context?.setMyListData([]);
     history("/");
   };
 
@@ -226,11 +227,13 @@ const Header = () => {
 
                 <li>
                   <Tooltip title="Wishlist" placement="top">
+                    <Link to = "/my-List">
                     <IconButton aria-label="cart">
-                      <StyledBadge badgeContent={4} color="secondary">
+                      <StyledBadge badgeContent={context?.myListData?.length !==0 ?context?.myListData?.length : 0}  color="secondary">
                         <GiTechnoHeart />
                       </StyledBadge>
                     </IconButton>
+                    </Link>
                   </Tooltip>
                 </li>
                 <li>

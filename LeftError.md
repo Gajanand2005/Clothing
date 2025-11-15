@@ -1,1 +1,1 @@
-cart Item error on clicking the image - id error needs to be resolved 
+click on the cart continue shopping doesnot lead to main page - its an error 

@@ -22,12 +22,12 @@ const CartPanel = (props) => {
           return(
                 <div className="cartItem w-full flex items-center gap-4 border-b border-[rgba(0,0,0,0.2)] pb-4">
           <div className="img w-[25%] overflow-hidden h-[80px] rounded-md">
-            <Link to={`/product/${item?._id}`} className='block group'>
+            <Link to={`/product/${item?.productId}`} className='block group'>
             <img src={item?.image} alt="" className="w-full group-hover:scale-105"/>
             </Link>
           </div>
           <div className="info w-[75%] py-5 relative">
-           <Link to={`/product/${item?._id}`} className='link transition-all'><h4>{item?.productTitle?.substr(0,40)+'...'} </h4></Link>
+           <Link to={`/product/${item?.productId}`} className='link transition-all'><h4>{item?.productTitle?.substr(0,40)+'...'} </h4></Link>
             <p className='flex items-center gap-5 !mt-2 !mb-2'> Qty: <span>{item?.quantity}</span>
             <span className='text-orange-600 font-bold'>Price : ₹{item?.price}</span></p>
             <MdOutlineDeleteForever className='absolute top-[10px] right-[10px] cursor-pointer text-[21px] link transition-all' onClick={()=>removeItem(item?._id)} />

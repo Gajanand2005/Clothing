@@ -9,8 +9,9 @@ import { IoGitCompare } from "react-icons/io5";
 import { MdClose, MdOutlineShoppingCart, MdZoomOutMap } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
 import { MyContext } from "../../App";
-import { deleteData, editData } from "../../Utlis/Api";
+import { deleteData, editData, postData } from "../../Utlis/Api";
 import { IoCloseSharp } from "react-icons/io5";
+import { IoMdHeart } from "react-icons/io";
 
 
 function getLabelText(value) {
@@ -22,6 +23,7 @@ function ProductItem(props) {
   const [hover, setHover] = useState(-1);
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
+  const [isAddedInMyList, setIsAddedInMyList] = useState(false);
   const [cartItem, setCartItem] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
   const [isShowTabs, setIsShowTabs] = useState(false);
@@ -73,6 +75,10 @@ function ProductItem(props) {
       cartItem.productId.includes(props?.item?._id)
     );
 
+ const myListItem = context?.myListData?.filter((item) =>
+      item.productId.includes(props?.item?._id)
+    );
+
     if (item?.length !== 0) {
       setIsAdded(true);
       setCartItem(item);
@@ -80,6 +86,15 @@ function ProductItem(props) {
     } else {
       setQuantity(1);
     }
+
+ if (myListItem?.length !== 0) {
+      setIsAddedInMyList(true);
+    } else {
+      setIsAddedInMyList(false)
+    }
+
+
+
   }, [context?.cartData]);
 
   const minusQty = () => {
@@ -126,6 +141,36 @@ function ProductItem(props) {
     });
   };
 
+ const handleAddtoMyList = (item) => {
+if(context?.userData === null){
+  context?.alertBox("error" , "you are not login please login first ");
+  return false;
+}else{
+
+ const obj ={
+    productId : item?._id,
+    userId:context?.userData?._id,
+    productTitle:item?.name,
+    image:item?.images[0],
+    price:item?.price,
+    oldPrice:item?.oldPrice,
+    brand:item?.brand,
+    discount:item?.discount
+  }
+
+postData("/api/myList/add",obj).then((res)=>{
+  if(res?.error === false){
+    context?.alertBox("success",res?.message);
+    setIsAddedInMyList(true);
+    context?.getMyListData()
+  }else{
+    context?.alertBox("error",res?.error)
+  }
+})
+
+}}
+  
+
   return (
     <div className="productItem shadow-lg rounded-md overflow-hidden border-2  border-[rgba(0,0,0,0.1)] ">
       <div className="group imgWrapper w-[100%] overflow-hidden rounded-md relative">
@@ -169,8 +214,24 @@ function ProductItem(props) {
 
         <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-2 flex-col w-[35px] sm:w-[30px] md:w-[50px] transition-all duration-300 group-hover:top-[10px] opacity-0 group-hover:opacity-100">
           <Tooltip title="Heart" placement="left-start">
-            <Button className="!w-[28px] !h-[28px] sm:!w-[30px] sm:!h-[30px] md:!w-[35px] md:!h-[35px] !min-w-[28px] sm:!min-w-[30px] md:!min-w-[35px] !rounded-full !bg-white !text-black hover:!bg-orange-500 hover:!text-white group">
-              <FaHeart className="text-[14px] sm:text-[16px] md:text-[18px] !text-black group-!hover:text-white hover:!text-white" />{" "}
+            <Button className="!w-[28px] !h-[28px] sm:!w-[30px] sm:!h-[30px] md:!w-[35px] md:!h-[35px] !min-w-[28px] sm:!min-w-[30px] md:!min-w-[35px] !rounded-full !bg-white !text-black hover:!bg-orange-500 hover:!text-white group"
+            
+            onClick={()=>handleAddtoMyList(props?.item)}
+            >
+ 
+{
+  isAddedInMyList ? (
+    <IoMdHeart
+      className="text-[14px] sm:text-[16px] md:text-[18px] text-orange-500 fill-current"
+    />
+  ) : (
+    <FaHeart
+      className="text-[14px] sm:text-[16px] md:text-[18px] text-black  fill-current"
+    />
+  )
+}
+
+ 
             </Button>
           </Tooltip>
 
