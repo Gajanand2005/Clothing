@@ -28,6 +28,7 @@ import ProductDetailsComponent from "../ProductDetails/Index.jsx";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
+import AddAddress from "../../Pages/MyAccount/AddAddress.jsx";
 
 const Footer = () => {
   const context = useContext(MyContext);
@@ -162,8 +163,8 @@ const Footer = () => {
         </div>
         {/* cart panel */}
         <Drawer
-          open={context?.openCartPanel}
-          onClick={context?.toggleCartPanel(false)}
+          open={context.openCartPanel}
+          onClose={context?.toggleCartPanel(false)}
           anchor={"right"}
           className="cartPanel"
         >
@@ -181,12 +182,33 @@ const Footer = () => {
        <div className="flex items-center justify-center flex-col pt-[200px] ">
            <img src="/bag.png" alt="" className="!w-[150px]"/>
            <h4 className="!mt-5 text-[20px] font-[600] text-blue-300">Your Cart is Currently empty</h4>
-           <Button className="!bg-orange-600 !text-white hover:!bg-black !mt-5" onClick={context?.toggleCartPanel(false)}>Continue Shopping</Button>
+           <Button className="!bg-orange-600 !text-white hover:!bg-black !mt-5" onClick={()=>context?.toggleCartPanel(false)}>Continue Shopping</Button>
        </div>
           </>
         }
           
         </Drawer>
+
+
+         {/* Address panel */}
+        <Drawer
+          open={context?.openAddressPanel}
+          
+          anchor={"right"}
+          className="addressPanel"
+        >
+          <div className="flex items-center justify-between py-3 px-4 gap-3 border-b border-[#000]">
+            <h4>{context.addressMode == "add" ? 'Add' : 'Edit'} Delivery Address </h4>
+            <IoClose
+              className="text-[20px] cursor-pointer"
+              onClick={()=>context?.toggleAddressPanel(false)}
+            />
+          </div>
+
+          <AddAddress/>
+          
+        </Drawer>
+
       </footer>
 
 

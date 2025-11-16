@@ -43,6 +43,7 @@ const App = () => {
   const [maxWidth, setMaxWidth] = useState("lg");
   const [fullWidth, setFullWidth] = useState(true);
   const [openCartPanel, setOpenCartPanel] = useState(false);
+   const [openAddressPanel, setOpenAddressPanel] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [userData, setUserData] = useState(null);
   const [catData, setCatData] = useState([]);
@@ -51,8 +52,11 @@ const App = () => {
     model: "",
     id: "",
   });
+    const [addressMode, setAddressMode] = useState("add");
   const [cartData, setCartData] = useState([]);
   const [myListData, setMyListData] = useState([]);
+  const [addressData, setAddressData] = useState([]);
+  const [addressId, setAddressId]= useState("");
 
   const handleOpenProductDetailsModal = (status, item) => {
     setOpenProductDetailsModel({
@@ -67,9 +71,17 @@ const App = () => {
     });
   };
 
-  const toggleCartPanel = (newOpen) => () => {
+  const toggleCartPanel = (newOpen) => {
     setOpenCartPanel(newOpen);
   };
+
+   const toggleAddressPanel = (newOpen) => {
+    if(newOpen === false){
+      setAddressMode("add");
+    }
+    setOpenAddressPanel (newOpen);
+  };
+
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -99,6 +111,7 @@ const App = () => {
 
       getCartItems();
       getMyListData();
+      getAddressData();
     } else {
       setIsLogin(false);
     }
@@ -123,23 +136,23 @@ const App = () => {
 
   const addToCart = (product, userId, quantity) => {
     if (userId === undefined) {
-      alertBox("error", "you are not login please login first");
+      alertBox("error", "You are not logged in, please login first");
       return false;
     }
 
     const data = {
       productTitle: product?.name,
-      image: product?.image,
+      image: product?.image || product?.images?.[0],
       price: product?.price,
       oldPrice: product?.oldPrice,
       discount: product?.discount,
       quantity: quantity,
       countInStock: product?.countInStock,
       productId: product?._id,
-      subTotal: parseInt(product?.price * quantity),
+      subTotal: Number(product?.price) * quantity,
       userId: userId,
       brand: product?.brand,
-      size: product?.size,
+      size: Array.isArray(product?.size) ? product?.size?.[0] : product?.size || '',
     };
 
     postData("/api/cart/add", data).then((res) => {
@@ -179,7 +192,7 @@ const App = () => {
 
 
   const getMyListData =() => {
-    
+
 fetchDataFromApi(`api/myList/`).then((res)=>{
   if(res?.error === false){
     setMyListData(res?.data);
@@ -187,6 +200,14 @@ fetchDataFromApi(`api/myList/`).then((res)=>{
 })
 
   }
+
+  const getAddressData = () => {
+    fetchDataFromApi(`/api/address/get?userId=${userData?._id}`).then((res) => {
+      if (res?.error === false) {
+        setAddressData(res?.data);
+      }
+    });
+  };
   
 
 
@@ -198,6 +219,9 @@ fetchDataFromApi(`api/myList/`).then((res)=>{
     setOpenCartPanel,
     toggleCartPanel,
     openCartPanel,
+    setOpenAddressPanel,
+    toggleAddressPanel,
+    openAddressPanel,
     maxWidth,
     fullWidth,
     setMaxWidth,
@@ -218,7 +242,14 @@ fetchDataFromApi(`api/myList/`).then((res)=>{
     updateCartSize,
     myListData,
     setMyListData,
-    getMyListData
+    getMyListData,
+    addressData,
+    setAddressData,
+    getAddressData,
+    setAddressMode,
+    addressMode,
+    setAddressId,
+    addressId,
   };
 
   return (

@@ -21,7 +21,7 @@ export const addToCartItemController = async(req, res)=>{
 
         if(checkItemCart){
             return res.status(400).json({
-                message: "items already in cart" 
+                message: "Item already in cart"
             })
         }
 
@@ -47,7 +47,7 @@ export const addToCartItemController = async(req, res)=>{
 
         return res.status(200).json({
             data : save,
-            message : 'item add to cart successfully',
+            message : 'Item added to cart successfully',
             error : false,
             success: true
         })
@@ -116,7 +116,7 @@ export const updateCartItemQtyController = async(req,res)=>{
          );
 
          return res.json({
-            message : "update Cart",
+            message : "Cart updated",
             success : true,
             error : false,
             data : updateCartitem
@@ -152,7 +152,7 @@ export const updateCartItemSizeController = async(req,res)=>{
          );
 
          return res.json({
-            message : "update Cart size",
+            message : "Cart size updated",
             success : true,
             error : false,
             data : updateCartitem
@@ -175,7 +175,7 @@ export const deleteCartItemQtyController = async (req,res)=>{
 
         if(!id){
             return res.status(400).json({
-                message : "Provide_id",
+                message : "Provide id",
                 error : true,
                 success: false
             })
@@ -188,7 +188,7 @@ export const deleteCartItemQtyController = async (req,res)=>{
 
         if(!deleteCartItem){
           return res.status(404).json({
-              message :"The product in the cart is not found",
+              message :"The product in the cart was not found",
             error : true,
             success: false
           })

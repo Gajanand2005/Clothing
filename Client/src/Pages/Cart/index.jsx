@@ -34,7 +34,7 @@ const CartPage = () => {
                   <span className="font-bold text-orange-600 ">
                     {context?.cartData?.length}
                   </span>{" "}
-                  product is your cart{" "}
+                  products in your cart{" "}
                 </p>
               </div>
 
@@ -73,7 +73,7 @@ const CartPage = () => {
                 <span className="text-orange-600 font-[600]">
                   {(context.cartData?.length !== 0
                     ? context.cartData
-                        ?.map((item) => parseInt(item.price) * item.quantity)
+                        ?.map((item) => Number(item.price) * item.quantity)
                         .reduce((total, value) => total + value, 0)
                     : 0
                   )?.toLocaleString("en-Us", {
@@ -95,7 +95,7 @@ const CartPage = () => {
                 <span className="text-orange-600 font-[600]">
                   {(context.cartData?.length !== 0
                     ? context.cartData
-                        ?.map((item) => parseInt(item.price) * item.quantity)
+                        ?.map((item) => Number(item.price) * item.quantity)
                         .reduce((total, value) => total + value, 0)
                     : 0
                   )?.toLocaleString("en-Us", {

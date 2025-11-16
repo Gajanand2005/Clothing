@@ -109,7 +109,7 @@ function ProductItem(props) {
         (res) => {
           setIsAdded(false);
           context.alertBox("success", "Item Removed from cart");
-          context?.getCartItem();
+          context?.getCartItems();
           setIsShowTabs(false);
           setActiveTab(null);
         }
@@ -122,7 +122,7 @@ function ProductItem(props) {
       };
       editData(`/api/cart/update-qty`, obj).then((res) => {
         context.alertBox("success", res?.message);
-        context?.getCartItem();
+        context?.getCartItems();
       });
     }
   };
@@ -137,7 +137,7 @@ function ProductItem(props) {
     };
     editData(`/api/cart/update-qty`, obj).then((res) => {
       context.alertBox("success", res?.message);
-      context?.getCartItem();
+      context?.getCartItems();
     });
   };
 

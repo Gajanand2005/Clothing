@@ -1,0 +1,1 @@
+- [x] Edit Client/src/Components/CartPanel/index.jsx to remove absolute positioning from bottomSec and adjust classes for proper flex layout.

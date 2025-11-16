@@ -131,6 +131,11 @@ input[type=number]::-webkit-outer-spin-button{
     overflow: hidden !important;
 }
 
+.addressPanel .MuiPaper-root{
+    width: 500px !important;
+    overflow: hidden !important;
+}
+
 #size-menu .MuiButtonBase-root{
     font-size: 12px !important;
 }
@@ -577,3 +582,4 @@ input[type=number]::-webkit-outer-spin-button{
 }
 .MuiCircularProgress-root{@apply !text-orange-600}
 /* button.btn-org .MuiCircularProgress-root{color: white !important;} */
+

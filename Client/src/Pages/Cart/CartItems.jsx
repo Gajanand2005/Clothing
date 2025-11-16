@@ -39,7 +39,7 @@ const CartItems = (props) => {
       const cartObj = {
         _id: props?.item?._id,
         qty: value,
-        subTotal: props?.item?.price * value,
+        subTotal: Number(props?.item?.price) * value,
         size: selectedSize,
       };
       editData("/api/cart/update-qty", cartObj).then((res) => {
@@ -51,39 +51,22 @@ const CartItems = (props) => {
     }
   };
 
-  const updateCart = (selectedVal, qty,field) => {
-    handleCloseSize(selectedVal);
-    const cartObj = {
-      _id: props?.item?._id,
-      qty: qty,
-      subTotal: props?.item?.price * qty,
-      size: selectedVal,
-    };
-
-if(field==="size"){
-  fetchDataFromApi(`/api/product/${props?.item?.productId}`).then((res)=>{
-    const product = res?.product;
-    const item = product?.size?.filter((size)=>
-  size?.includes(selectedVal)
-    )
-    if(item?.length !== 0){
- editData("/api/cart/update-qty", cartObj).then((res) => {
-      if (res?.error === false) {
-        context.alertBox("success", res?.message);
-      } else{
-        context.alertBox("error", "size not avilabe");
-      }
-    });
+  const updateCart = (selectedVal, qty, field) => {
+    if (field === "size") {
+      fetchDataFromApi(`/api/product/${props?.item?.productId}`).then((res) => {
+        const product = res?.product;
+        if (product?.size?.includes(selectedVal)) {
+          props.onSizeChange && props.onSizeChange(selectedVal);
+        } else {
+          context.alertBox("error", "Size not available");
+        }
+      });
     }
-  })
-
-}
-
   };
 
-  const removeItem= (id)=>{
-    deleteData(`/api/cart/delete-cart-item/${id}`).then((res)=>{
-      context.alertBox("success", "Product removed form cart");
+  const removeItem = (id) => {
+    deleteData(`/api/cart/delete-cart-item/${id}`).then((res) => {
+      context.alertBox("success", "Product removed from cart");
       context?.getCartItems();
     })
   }
