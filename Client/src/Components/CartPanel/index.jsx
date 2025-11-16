@@ -29,7 +29,7 @@ const CartPanel = (props) => {
            <div className="info w-[75%] py-5 relative">
             <Link to={`/product/${item?.productId}`} className='link transition-all'><h4>{item?.productTitle?.substring(0,40)+'...'} </h4></Link>
              <p className='flex items-center gap-5 !mt-2 !mb-2'> Qty: <span>{item?.quantity}</span>
-             <span className='text-orange-600 font-bold'>Price : ₹{item?.price}</span></p>
+             <span className='text-orange-600 font-bold'>Price : {item?.price?.toLocaleString('en-US',{style : 'currency', currency: 'INR'})}</span></p>
              <MdOutlineDeleteForever className='absolute top-[10px] right-[10px] cursor-pointer text-[21px] link transition-all' onClick={()=>removeItem(item?._id)} />
            </div>
          </div>
@@ -67,7 +67,7 @@ const CartPanel = (props) => {
 
         <div className='flex items-center justify-between w-full gap-2'>
           <Link to='/Cart' className='w-[50%] d-block'><Button className='!bg-orange-600 !text-white hover:!bg-black w-full'onClick={()=>context?.toggleCartPanel(false)}>View Cart</Button></Link>
-            <Link to='/CheckOut' className='w-[50%] d-block'><Button className='!bg-orange-600 !text-white hover:!bg-black w-full'>CheckOut </Button></Link>
+            <Link to='/CheckOut' className='w-[50%] d-block'><Button className='!bg-orange-600 !text-white hover:!bg-black w-full'onClick={()=>context?.toggleCartPanel(false)}>CheckOut </Button></Link>
         </div>
       </div>
       </div>

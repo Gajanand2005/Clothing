@@ -18,7 +18,7 @@ import CartPage from "./Pages/Cart/Index.jsx";
 
 import toast, { Toaster } from "react-hot-toast";
 import ForgotPassword from "./Pages/ForgotPassword/Index.jsx";
-import CheckOut from "./Pages/CheckOut/Index.jsx";
+import CheckOut from "./Pages/CheckOut/index.jsx";
 import MyAccount from "./Pages/MyAccount/index.jsx";
 import MyList from "./Pages/MyList/Index.jsx";
 import Order from "./Pages/Orders/Index.jsx";
@@ -92,6 +92,7 @@ const App = () => {
         .then((res) => {
           if (res?.success) {
             setUserData(res?.data);
+            getAddressData();
           } else if (
             res?.message === "You have not login" ||
             res?.message === "jwt expired" ||
@@ -111,7 +112,6 @@ const App = () => {
 
       getCartItems();
       getMyListData();
-      getAddressData();
     } else {
       setIsLogin(false);
     }

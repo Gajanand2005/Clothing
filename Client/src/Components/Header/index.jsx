@@ -240,7 +240,7 @@ const Header = () => {
                   <Tooltip title="Cart" placement="top">
                     <IconButton
                       aria-label="cart"
-                      onClick={context?.toggleCartPanel(true)}
+                      onClick={() => context?.toggleCartPanel(true)}
                     >
                       <StyledBadge badgeContent={context?.cartData?.length !==0 ?context?.cartData?.length : 0} color="secondary">
                         <FaCartShopping  />

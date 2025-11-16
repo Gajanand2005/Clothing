@@ -725,7 +725,7 @@ export async function userDetails(req, res) {
     try {
         const userId = req.userId
         console.log(userId)
-        const user = await UserModel.findById(userId).select('-password -refresh_token')
+        const user = await UserModel.findById(userId).populate('address_details').select('-password -refresh_token')
 
         // Prevent caching to avoid 304 responses
         res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
