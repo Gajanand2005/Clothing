@@ -265,11 +265,11 @@ postData("/api/myList/add",obj).then((res)=>{
         <div className="flex items-center gap-3 sm:gap-4 py-1">
           <span className="oldPrice line-through text-gray-500 text-[12px] sm:text-[14px] md:text-[16px] font-[500]">
             {" "}
-            &#x20b9;{props?.item?.price}
+            {context?.formatPrice(props?.item?.price)}
           </span>
           <span className="oldPrice text-orange-600 font-bold text-[12px] sm:text-[14px] md:text-[16px]">
             {" "}
-            &#x20b9; {props?.item?.oldPrice}
+            {context?.formatPrice(props?.item?.oldPrice)}
           </span>
         </div>
         <div className="w-full !absolute bottom-[15px] left-0 pl-3 pr-3">

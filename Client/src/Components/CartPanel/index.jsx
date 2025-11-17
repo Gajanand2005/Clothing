@@ -29,7 +29,8 @@ const CartPanel = (props) => {
            <div className="info w-[75%] py-5 relative">
             <Link to={`/product/${item?.productId}`} className='link transition-all'><h4>{item?.productTitle?.substring(0,40)+'...'} </h4></Link>
              <p className='flex items-center gap-5 !mt-2 !mb-2'> Qty: <span>{item?.quantity}</span>
-             <span className='text-orange-600 font-bold'>Price : {item?.price?.toLocaleString('en-US',{style : 'currency', currency: 'INR'})}</span></p>
+             <span className='text-orange-600 font-bold'>Price : {context.formatPrice(item?.price)}
+</span></p>
              <MdOutlineDeleteForever className='absolute top-[10px] right-[10px] cursor-pointer text-[21px] link transition-all' onClick={()=>removeItem(item?._id)} />
            </div>
          </div>
@@ -42,12 +43,16 @@ const CartPanel = (props) => {
       <div className='bottomInfo w-full border-t px-4 border-[rgba(0,0,0,0.2)] py-3 flex items-center justify-between flex-col'>
        <div className='flex items-center justify-between w-full'>
          <span className='text-[14px] font-[600]'>{context?.cartData?.length} items</span>
-        <span className='text-orange-600 font-bold'>{
-          (context.cartData?.length !==0 ?
-              context.cartData?.map(item => Number(item.price)* item.quantity).reduce((total, value)=> total+ value, 0) :0)?.toLocaleString('en-Us',{style: 'currency', currency: 'INR'})
-          }
+        <span className='text-orange-600 font-bold'>
+  {context.formatPrice(
+    context.cartData?.length !== 0
+      ? context.cartData
+          ?.map(item => Number(String(item.price).replace(/[^0-9.]/g, "")) * item.quantity)
+          .reduce((total, value) => total + value, 0)
+      : 0
+  )}
+</span>
 
-        </span>
        </div>
         {/* <div className='flex items-center justify-between w-full'>
          <span className='text-[14px] font-[600]'>Shipping</span>
@@ -57,10 +62,16 @@ const CartPanel = (props) => {
        <div className='bottomInfo w-full border-t px-4 border-[rgba(0,0,0,0.2)] py-3 flex items-center justify-between flex-col'>
        <div className='flex items-center justify-between w-full'>
          <span className='text-[14px] font-[600]'>Total (tax excl.)</span>
-        <span className='text-orange-600 font-bold'>{
-          (context.cartData?.length !==0 ?
-              context.cartData?.map(item => Number(item.price)* item.quantity).reduce((total, value)=> total+ value, 0) :0)?.toLocaleString('en-Us',{style: 'currency', currency: 'INR'})
-          }</span>
+        <span className='text-orange-600 font-bold'>
+  {context.formatPrice(
+    context.cartData?.length !== 0
+      ? context.cartData
+          ?.map(item => Number(String(item.price).replace(/[^0-9.]/g, "")) * item.quantity)
+          .reduce((total, value) => total + value, 0)
+      : 0
+  )}
+</span>
+
        </div>
 
         <br />

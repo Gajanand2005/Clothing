@@ -117,6 +117,16 @@ const Header = () => {
             </div>
             <div className="col3 w-full md:w-[35%] flex items-center justify-center md:justify-end pl-0 md:pl-7">
               <ul className="flex items-center justify-center md:justify-end gap-2 md:gap-3 w-full flex-wrap">
+         <select
+  value={context.currency}
+  onChange={(e) => context.setCurrency(e.target.value)}
+  className="border px-2 py-1 rounded cursor-pointer"
+>
+  <option value="INR">₹ INR</option>
+  <option value="USD">$ USD</option>
+  <option value="EUR">€ EUR</option>
+</select>
+      
                 {context?.isLogin === false ? (
                   <li className="list-none">
                     <Link

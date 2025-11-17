@@ -248,6 +248,83 @@ const Footer = () => {
               )}
             </DialogContent>
           </Dialog>
+
+          {/* size chart */}
+          <Dialog
+  open={context?.openSizeChart}
+  fullWidth={true}
+  maxWidth="sm"
+  onClose={() => context?.setOpenSizeChart(false)}
+>
+  <DialogTitle>
+    Size Guide
+    <Button
+      className="!w-[40px] !h-[40px] min-w-[40px] !rounded-full !text-[#000] !absolute top-[10px] right-[10px]"
+      onClick={() => context?.setOpenSizeChart(false)}
+    >
+      <IoClose className="text-[20px]" />
+    </Button>
+  </DialogTitle>
+<DialogContent>
+  <div className="w-full overflow-x-auto">
+    <table className="w-full border-collapse text-left">
+      <thead>
+        <tr className="bg-[#fce8f1]">
+          <th className="border p-3 font-semibold text-[#b74c7f]">Size</th>
+          <th className="border p-3 font-semibold text-[#b74c7f]">Bust (in)</th>
+          <th className="border p-3 font-semibold text-[#b74c7f]">Waist (in)</th>
+          <th className="border p-3 font-semibold text-[#b74c7f]">Hip (in)</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td className="border p-3">XS</td>
+          <td className="border p-3">32 - 33</td>
+          <td className="border p-3">24 - 25</td>
+          <td className="border p-3">34 - 35</td>
+        </tr>
+
+        <tr className="bg-[#fff6fa]">
+          <td className="border p-3">S</td>
+          <td className="border p-3">34 - 35</td>
+          <td className="border p-3">26 - 27</td>
+          <td className="border p-3">36 - 37</td>
+        </tr>
+
+        <tr>
+          <td className="border p-3">M</td>
+          <td className="border p-3">36 - 37</td>
+          <td className="border p-3">28 - 29</td>
+          <td className="border p-3">38 - 39</td>
+        </tr>
+
+        <tr className="bg-[#fff6fa]">
+          <td className="border p-3">L</td>
+          <td className="border p-3">38 - 40</td>
+          <td className="border p-3">30 - 32</td>
+          <td className="border p-3">40 - 42</td>
+        </tr>
+
+        <tr>
+          <td className="border p-3">XL</td>
+          <td className="border p-3">41 - 43</td>
+          <td className="border p-3">33 - 35</td>
+          <td className="border p-3">43 - 45</td>
+        </tr>
+
+        <tr className="bg-[#fff6fa]">
+          <td className="border p-3">XXL</td>
+          <td className="border p-3">44 - 46</td>
+          <td className="border p-3">36 - 38</td>
+          <td className="border p-3">46 - 48</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DialogContent>
+
+</Dialog>
     </>
   );
 };

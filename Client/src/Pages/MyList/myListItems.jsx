@@ -42,10 +42,10 @@ const removeItem = (id)=>{
                   </h3>
                   <div className="flex items-center gap-4 !mt-2 !mb-2">
                     <span className="price text-black text-[15px] font-[600]">
-                     &#x20b9;{props?.item?.price}
+                    {context?.formatPrice(props?.item?.price)}
                     </span>
                     <span className="oldPrice line-through text-gray-500 text-[15px] font-[500]">
-                      &#x20b9;{props?.item?.oldPrice}
+                     ₹{context?.formatPrice(props?.item?.oldPrice)}
                     </span>
                     <span className="price text-orange-600 text-[15px] font-[600]">
                       {props?.item?.discount}% OFF

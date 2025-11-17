@@ -91,12 +91,14 @@ const addToCart = (product, userId, quantity) => {
         </span>
       </div>
       <div className="flex items-center gap-4 py-1 !mt-4">
-        <span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">
-          &#x20b9;{props?.item?.oldPrice}
-        </span>
-        <span className="price text-orange-600 font-bold text-[20px]">
-          &#x20b9;{props?.item?.price}
-        </span>
+    <span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">
+  {context?.formatPrice(props?.item?.oldPrice)}
+</span>
+
+<span className="price text-orange-600 font-bold text-[20px]">
+  {context?.formatPrice(props?.item?.price)}
+</span>
+
 
         <span className="text-[15px]">
           Available In Stock:{" "}
@@ -157,10 +159,13 @@ const addToCart = (product, userId, quantity) => {
           <TbHeartHandshake className="text-[19px]" />
           Add to Wishlist
         </span>
-        <Link to="/size" className="flex items-center gap-3 text-[15px] ">
-          <MdPhotoSizeSelectActual className="text-[19px]" />
-          Size Guide
-        </Link>
+        <span
+  onClick={() => context?.setOpenSizeChart(true)}
+  className="flex items-center gap-3 text-[15px] cursor-pointer"
+>
+  <MdPhotoSizeSelectActual className="text-[19px]" />
+  Size Guide
+</span>
       </div>
     </>
   );

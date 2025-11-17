@@ -15,7 +15,6 @@ import ProductDetailsComponent from "./Components/ProductDetails/Index.jsx";
 import Login from "./Pages/Login/index.jsx";
 import Register from "./Pages/Register/index.jsx";
 import CartPage from "./Pages/Cart/Index.jsx";
-
 import toast, { Toaster } from "react-hot-toast";
 import ForgotPassword from "./Pages/ForgotPassword/Index.jsx";
 import CheckOut from "./Pages/CheckOut/index.jsx";
@@ -23,16 +22,13 @@ import MyAccount from "./Pages/MyAccount/index.jsx";
 import MyList from "./Pages/MyList/Index.jsx";
 import Order from "./Pages/Orders/Index.jsx";
 import Whataap from "./Components/Whataap/Index.jsx";
-
 import HelpCenter from "./Pages/HelpCenter/Index.jsx";
 import OrderTracking from "./Pages/OrderTracking/Index.jsx";
 import { fetchDataFromApi, postData, editData } from "./Utlis/Api.js";
 import Verify from "./Pages/Verify/index.jsx";
 import Address from "./Pages/MyAccount/Address.jsx";
 import Home from "./Pages/Home/Index.jsx";
-
 import Size from "./Pages/SizeGuide/Index.jsx";
-
 const MyContext = createContext();
 
 const App = () => {
@@ -47,6 +43,7 @@ const App = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [userData, setUserData] = useState(null);
   const [catData, setCatData] = useState([]);
+  const [openSizeChart, setOpenSizeChart] = useState(false);
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
     model: "",
@@ -57,6 +54,8 @@ const App = () => {
   const [myListData, setMyListData] = useState([]);
   const [addressData, setAddressData] = useState([]);
   const [addressId, setAddressId]= useState("");
+const [currency, setCurrency] = useState("INR");
+const [currencyRate, setCurrencyRate] = useState(1);
 
   const handleOpenProductDetailsModal = (status, item) => {
     setOpenProductDetailsModel({
@@ -81,6 +80,30 @@ const App = () => {
     }
     setOpenAddressPanel (newOpen);
   };
+
+
+
+useEffect(() => {
+  setCurrencyRate(currencyRates[currency]);
+}, [currency]);
+
+
+const currencyRates = {
+  INR: 1,
+  USD: 0.012,
+  EUR: 0.011,
+};
+
+// global converter
+const formatPrice = (amount) => {
+  const converted = (amount * currencyRate).toFixed(2);
+
+  // return with symbol
+  if (currency === "INR") return "₹" + converted;
+  if (currency === "USD") return "$" + converted;
+  return "€" + converted;
+};
+
 
 
   useEffect(() => {
@@ -250,6 +273,12 @@ fetchDataFromApi(`api/myList/`).then((res)=>{
     addressMode,
     setAddressId,
     addressId,
+    openSizeChart,
+setOpenSizeChart,
+  currency,
+  setCurrency,
+  currencyRate,
+  formatPrice
   };
 
   return (

@@ -29,6 +29,11 @@ const CartItems = (props) => {
     }
   };
 
+const cleanPrice = (price) => {
+  return Number(String(price).replace(/[^0-9.]/g, ""));
+};
+
+
   const handleClickQty = (event) => {
     setQtyAnchorEl(event.currentTarget);
   };
@@ -156,17 +161,25 @@ const CartItems = (props) => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 !mt-2">
-            <span className="price text-black text-[15px] font-[600]">
-              ₹{props?.item?.price}
-            </span>
-            <span className="oldPrice line-through text-gray-500 text-[15px] font-[500]">
-              ₹{props?.item?.oldPrice}
-            </span>
-            <span className="price text-orange-600 text-[15px] font-[600]">
-              {props?.item?.discount}%OFF
-            </span>
-          </div>
+         <div className="flex items-center gap-4 !mt-2">
+
+  {/* SALE PRICE */}
+  <span className="price text-black text-[15px] font-[600]">
+    {context?.formatPrice(cleanPrice(props?.item?.oldPrice))}
+  </span>
+
+  {/* ORIGINAL PRICE */}
+  <span className="oldPrice line-through text-gray-500 text-[15px] font-[500]">
+    {context?.formatPrice(cleanPrice(props?.item?.price))}
+  </span>
+
+  {/* DISCOUNT */}
+  <span className="price text-orange-600 text-[15px] font-[600]">
+    {props?.item?.discount}% OFF
+  </span>
+
+</div>
+
         </div>
       </div>
     </>
