@@ -5,7 +5,7 @@ import AdsBannerSlider from "../../components/AdsBannerSlider/Index";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import ProductSlider from "../../Components/ProductSlider/Index";
+import ProductSlider from "../../Components/ProductSlider/index.jsx";
 import { fetchDataFromApi } from "../../Utlis/Api.js";
 import { MyContext } from "../../App.jsx";
 import ProductLoading from "../../Components/ProductLoading/Index.jsx";
@@ -55,13 +55,16 @@ const Home = () => {
 
   return (
     <div>
-      {homeSlidesData?.data?.length !== 0 && (
-        <HomeSlider data={homeSlidesData} />
-      )}
 
       {context?.catData?.length !== 0 && (
         <HomeCatSlider data={context?.catData} />
       )}
+
+      {homeSlidesData?.data?.length !== 0 && (
+        <HomeSlider data={homeSlidesData} />
+      )}
+
+    
 
       <section className="bg-white py-8">
         <div className="container">
