@@ -5,10 +5,11 @@ import AdsBannerSlider from "../../components/AdsBannerSlider/Index";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import ProductSlider from "../../Components/ProductSlider/index.jsx";
+
 import { fetchDataFromApi } from "../../Utlis/Api.js";
 import { MyContext } from "../../App.jsx";
 import ProductLoading from "../../Components/ProductLoading/Index.jsx";
+import ProductSlider from "../../Components/ProductSlider/Index.jsx";
 
 const Home = () => {
   const [value, setValue] = React.useState(0);

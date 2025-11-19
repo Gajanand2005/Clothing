@@ -93,10 +93,10 @@ function ProductItem({ item }) {
         {/* PRICE */}
         <div className='flex items-center gap-4 py-1'>
           <span className='oldPrice line-through text-gray-500 text-[14px] md:text-[16px] font-[500]'>
-            {context?.formatPrice(props?.item?.oldPrice)}
+            {context?.formatPrice(item?.oldPrice)}
           </span>
           <span className='oldPrice text-orange-600 font-bold text-[14px] md:text-[16px]'>
-            {context?.formatPrice(props?.item?.price)}
+            {context?.formatPrice(item?.price)}
           </span>
         </div>
 
