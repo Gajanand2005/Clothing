@@ -54,7 +54,17 @@ const AddProduct = () => {
   const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
   const [previews, setPreviews] = useState([]);
   const [isLoading, setIsLoading] = useState();
-  const [sizeChart, setSizeChart] = useState(initialSizeChart);
+  const [sizes, setSizes] = useState(['S', 'M', 'L', 'XL', 'XXL']);
+  const [fields, setFields] = useState(['chest', 'shoulder', 'length', 'sleeve']);
+  const [newSize, setNewSize] = useState('');
+  const [newField, setNewField] = useState('');
+  const [sizeChart, setSizeChart] = useState(() => {
+    const chart = {};
+    ['S', 'M', 'L', 'XL', 'XXL'].forEach(size => {
+      chart[size] = { ...initialSizeChart[size] };
+    });
+    return chart;
+  });
   const [showSizeChartEditor, setShowSizeChartEditor] = useState(false);
 
   const history = useNavigate();
@@ -142,9 +152,69 @@ const AddProduct = () => {
     }));
   };
 
+  const addSize = () => {
+    if (newSize) {
+      const newSizes = newSize.split(',').map(s => s.trim()).filter(s => s && !sizes.includes(s));
+      if (newSizes.length > 0) {
+        setSizes([...sizes, ...newSizes]);
+        setSizeChart(prev => {
+          const updated = { ...prev };
+          newSizes.forEach(size => {
+            updated[size] = fields.reduce((acc, field) => ({ ...acc, [field]: '' }), {});
+          });
+          return updated;
+        });
+        setNewSize('');
+      }
+    }
+  };
+
+  const addField = () => {
+    if (newField) {
+      const newFields = newField.split(',').map(f => f.trim()).filter(f => f && !fields.includes(f));
+      if (newFields.length > 0) {
+        setFields([...fields, ...newFields]);
+        setSizeChart(prev => {
+          const updated = { ...prev };
+          Object.keys(updated).forEach(size => {
+            newFields.forEach(field => {
+              updated[size][field] = '';
+            });
+          });
+          return updated;
+        });
+        setNewField('');
+      }
+    }
+  };
+
+  const removeSize = (sizeToRemove) => {
+    if (sizes.length > 1) {
+      setSizes(sizes.filter(s => s !== sizeToRemove));
+      setSizeChart(prev => {
+        const newChart = { ...prev };
+        delete newChart[sizeToRemove];
+        return newChart;
+      });
+    }
+  };
+
+  const removeField = (fieldToRemove) => {
+    if (fields.length > 1) {
+      setFields(fields.filter(f => f !== fieldToRemove));
+      setSizeChart(prev => {
+        const newChart = { ...prev };
+        Object.keys(newChart).forEach(size => {
+          delete newChart[size][fieldToRemove];
+        });
+        return newChart;
+      });
+    }
+  };
+
   const addSizeChartToDescription = () => {
-    const headers = ['Size', 'Chest (in)', 'Shoulder (in)', 'Length (in)', 'Sleeve (in)'];
-    const rows = Object.keys(sizeChart).map(size => [size, sizeChart[size].chest, sizeChart[size].shoulder, sizeChart[size].length, sizeChart[size].sleeve]);
+    const headers = ['Size', ...fields.map(f => `${f} (in)`)];
+    const rows = sizes.map(size => [size, ...fields.map(field => sizeChart[size][field])]);
 
     const colWidths = headers.map((header, i) => Math.max(header.length, ...rows.map(row => row[i].length)));
 
@@ -263,40 +333,24 @@ const AddProduct = () => {
                 {showSizeChartEditor && (
                   <div className="mt-4 p-4 border border-gray-300 rounded-md bg-white">
                     <h4 className="text-[16px] font-[500] mb-3">Edit Size Chart</h4>
-                    <div className="grid grid-cols-5 gap-2 mb-3">
+                    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${fields.length + 2}, 1fr)`, gap: '8px' }} className="mb-3">
                       <div className="font-bold">Size</div>
-                      <div className="font-bold">Chest (in)</div>
-                      <div className="font-bold">Shoulder (in)</div>
-                      <div className="font-bold">Length (in)</div>
-                      <div className="font-bold">Sleeve (in)</div>
+                      {fields.map(f => <div key={f} className="font-bold flex items-center justify-between">{f} (in) <IoClose onClick={() => removeField(f)} className="cursor-pointer text-red-500 text-sm" /></div>)}
+                      <div className="font-bold">Remove</div>
                     </div>
-                    {Object.keys(sizeChart).map(size => (
-                      <div key={size} className="grid grid-cols-5 gap-2 mb-2">
+                    {sizes.map(size => (
+                      <div key={size} style={{ display: 'grid', gridTemplateColumns: `repeat(${fields.length + 2}, 1fr)`, gap: '8px' }} className="mb-2">
                         <div className="font-semibold">{size}</div>
-                        <input
-                          type="text"
-                          value={sizeChart[size].chest}
-                          onChange={(e) => handleSizeChartChange(size, 'chest', e.target.value)}
-                          className="border border-gray-300 rounded p-1 text-sm"
-                        />
-                        <input
-                          type="text"
-                          value={sizeChart[size].shoulder}
-                          onChange={(e) => handleSizeChartChange(size, 'shoulder', e.target.value)}
-                          className="border border-gray-300 rounded p-1 text-sm"
-                        />
-                        <input
-                          type="text"
-                          value={sizeChart[size].length}
-                          onChange={(e) => handleSizeChartChange(size, 'length', e.target.value)}
-                          className="border border-gray-300 rounded p-1 text-sm"
-                        />
-                        <input
-                          type="text"
-                          value={sizeChart[size].sleeve}
-                          onChange={(e) => handleSizeChartChange(size, 'sleeve', e.target.value)}
-                          className="border border-gray-300 rounded p-1 text-sm"
-                        />
+                        {fields.map(field => (
+                          <input
+                            key={field}
+                            type="text"
+                            value={sizeChart[size][field]}
+                            onChange={(e) => handleSizeChartChange(size, field, e.target.value)}
+                            className="border border-gray-300 rounded p-1 text-sm"
+                          />
+                        ))}
+                        <Button onClick={() => removeSize(size)} className="!bg-red-500 !text-white !min-w-[30px] !h-[30px] !p-0">X</Button>
                       </div>
                     ))}
                     <h5 className="text-[14px] font-[500] mb-3 mt-4">Preview</h5>
@@ -304,20 +358,14 @@ const AddProduct = () => {
                       <thead>
                         <tr style={{background:'#f8f8f8'}}>
                           <th style={{border:'5px solid #333', padding:'10px'}}>Size</th>
-                          <th style={{border:'5px solid #333', padding:'10px'}}>Chest (in)</th>
-                          <th style={{border:'5px solid #333', padding:'10px'}}>Shoulder (in)</th>
-                          <th style={{border:'5px solid #333', padding:'10px'}}>Length (in)</th>
-                          <th style={{border:'5px solid #333', padding:'10px'}}>Sleeve (in)</th>
+                          {fields.map(f => <th key={f} style={{border:'5px solid #333', padding:'10px'}}>{f} (in)</th>)}
                         </tr>
                       </thead>
                       <tbody>
-                        {Object.keys(sizeChart).map(size => (
+                        {sizes.map(size => (
                           <tr key={size}>
                             <td style={{border:'5px solid #333', padding:'10px'}}>{size}</td>
-                            <td style={{border:'5px solid #333', padding:'10px'}}>{sizeChart[size].chest}</td>
-                            <td style={{border:'5px solid #333', padding:'10px'}}>{sizeChart[size].shoulder}</td>
-                            <td style={{border:'5px solid #333', padding:'10px'}}>{sizeChart[size].length}</td>
-                            <td style={{border:'5px solid #333', padding:'10px'}}>{sizeChart[size].sleeve}</td>
+                            {fields.map(field => <td key={field} style={{border:'5px solid #333', padding:'10px'}}>{sizeChart[size][field]}</td>)}
                           </tr>
                         ))}
                       </tbody>
@@ -328,6 +376,28 @@ const AddProduct = () => {
                     >
                       Add Size Chart to Description
                     </Button>
+                    <div className="mt-4 flex gap-4">
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="New Size(s) (e.g., XXXL, 2XL)"
+                          value={newSize}
+                          onChange={(e) => setNewSize(e.target.value)}
+                          className="border border-gray-300 rounded p-1 text-sm mr-2"
+                        />
+                        <Button onClick={addSize} className="!bg-green-600 !text-white">Add Row</Button>
+                      </div>
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="New Measurement(s) (e.g., waist, hip, inseam)"
+                          value={newField}
+                          onChange={(e) => setNewField(e.target.value)}
+                          className="border border-gray-300 rounded p-1 text-sm mr-2"
+                        />
+                        <Button onClick={addField} className="!bg-green-600 !text-white">Add Column</Button>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
