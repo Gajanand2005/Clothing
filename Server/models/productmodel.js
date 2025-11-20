@@ -94,6 +94,10 @@ const productSchema = mongoose.Schema({
             default:null
         }
     ],
+    sizeChart:{
+        type:String,
+        default:''
+    },
     dateCreated:{
         type:Date,
         default:Date.now

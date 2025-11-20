@@ -104,6 +104,7 @@ export async function createProduct(req, res) {
            let product = new ProductModel({
                 name: req.body.name,
                 description: req.body.description,
+                sizeChart: req.body.sizeChart,
                 images: req.body.images,
                 brand: req.body.brand,
                 price: req.body.price,
@@ -859,6 +860,7 @@ export async function updateProduct(request, response) {
             {
                 name: request.body.name,
                 description: request.body.description,
+                sizeChart: request.body.sizeChart,
                 images: request.body.images,
                 brand: request.body.brand,
                 price: request.body.price,

@@ -19,6 +19,7 @@ const EditProduct = () => {
   const [formFields, setFormFields] = useState({
     name: "",
     description: "",
+    sizeChart: "",
     images: [],
     brand: "",
     price: "",
@@ -44,6 +45,14 @@ const EditProduct = () => {
   const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
   const [previews, setPreviews] = useState([]);
     const [isLoading, setIsLoading] = useState();
+  const [sizeChart, setSizeChart] = useState({
+    S: { chest: '36–21', shoulder: '16.5–17', length: '26–27', sleeve: '7–8' },
+    M: { chest: '38–40', shoulder: '17–17.5', length: '27–28', sleeve: '8–9' },
+    L: { chest: '40–42', shoulder: '17.5–18', length: '28–29', sleeve: '9–10' },
+    XL: { chest: '42–44', shoulder: '18–18.5', length: '29–30', sleeve: '10–11' },
+    XXL: { chest: '44–46', shoulder: '18.5–19', length: '30–31', sleeve: '11–12' },
+  });
+  const [showSizeChartEditor, setShowSizeChartEditor] = useState(false);
   const history = useNavigate();
 
   const context = useContext(MyContext);
@@ -60,25 +69,26 @@ const EditProduct = () => {
 
   if(context?.isOpenFullScreenPanel?.id){
     fetchDataFromApi(`/api/product/${ context?.isOpenFullScreenPanel?.id}`).then((res)=>{
-    setFormFields({ 
-  name: res?.product?.name, 
-  description: res?.product?.description, 
-  images: res?.product?.images, 
-  brand: res?.product?.brand, 
-  price: res?.product?.price, 
-  oldPrice: res?.product?.oldPrice, 
-  category: res?.product?.category, 
-  catName: res?.product?.catName, 
-  catId: res?.product?.catId, 
-  subCatId: res?.product?.subCatId, 
-  subCat: res?.product?.subCat, 
-  thirdsubCat: res?.product?.thirdsubCat, 
-  thirdsubCatId: res?.product?.thirdsubCatId, 
-  countInStock: res?.product?.countInStock, 
-  isFeatured: res?.product?.isFeatured, 
-  discount: res?.product?.discount, 
-  size: res?.product?.size, 
-})
+    setFormFields({
+    name: res?.product?.name,
+    description: res?.product?.description,
+    sizeChart: res?.product?.sizeChart,
+    images: res?.product?.images,
+    brand: res?.product?.brand,
+    price: res?.product?.price,
+    oldPrice: res?.product?.oldPrice,
+    category: res?.product?.category,
+    catName: res?.product?.catName,
+    catId: res?.product?.catId,
+    subCatId: res?.product?.subCatId,
+    subCat: res?.product?.subCat,
+    thirdsubCat: res?.product?.thirdsubCat,
+    thirdsubCatId: res?.product?.thirdsubCatId,
+    countInStock: res?.product?.countInStock,
+    isFeatured: res?.product?.isFeatured,
+    discount: res?.product?.discount,
+    size: res?.product?.size,
+  })
 
   setProductCat(res?.product?.catId);
 setProductSubCat(res?.product?.subCatId);
@@ -172,6 +182,39 @@ const handleChangeProductThirdLavelCat =(event)=> {
         formFields.images = imageArr;
       }, 100);
     });
+  };
+
+  const handleSizeChartChange = (size, field, value) => {
+    setSizeChart(prev => ({
+      ...prev,
+      [size]: {
+        ...prev[size],
+        [field]: value
+      }
+    }));
+  };
+
+  const addSizeChartToDescription = () => {
+    const headers = ['Size', 'Chest (in)', 'Shoulder (in)', 'Length (in)', 'Sleeve (in)'];
+    const rows = Object.keys(sizeChart).map(size => [size, sizeChart[size].chest, sizeChart[size].shoulder, sizeChart[size].length, sizeChart[size].sleeve]);
+
+    const colWidths = headers.map((header, i) => Math.max(header.length, ...rows.map(row => row[i].length)));
+
+    const createRow = (cells) => '| ' + cells.map((cell, i) => cell.padEnd(colWidths[i])).join(' | ') + ' |';
+    const separator = '+' + colWidths.map(w => '-'.repeat(w + 2)).join('+') + '+';
+
+    const tableText = [
+      separator,
+      createRow(headers),
+      separator,
+      ...rows.map(row => createRow(row)),
+      separator
+    ].join('\n');
+
+    setFormFields(prev => ({
+      ...prev,
+      sizeChart: tableText
+    }));
   };
 
 
@@ -274,11 +317,93 @@ const handleSubmit = (e) => {
                 </h3>
                 <textarea
                   type="text"
-                  className="w-full h-[140px] border border-[rgba(0,0,0,0.2)] focus:outline-none focus:border-[rgba(0,0,0,0.5)] rounded-md p-3 text-sm bg-[#fafafa]"
+                  className="w-full h-[140px] border border-[rgba(0,0,0,0.2)] focus:outline-none focus:border-[rgba(0,0,0,0.5)] rounded-md p-3 text-sm bg-[#fafafa] font-mono"
                   name="description"
                   value={formFields.description}
                   onChange={onChangeInput}
                 />
+                {formFields.sizeChart && (
+                  <div className="mt-4 p-4 border border-gray-300 rounded-md bg-gray-50">
+                    <h4 className="text-[16px] font-[500] mb-2">Size Chart:</h4>
+                    <pre className="whitespace-pre-wrap font-mono text-sm">{formFields.sizeChart}</pre>
+                  </div>
+                )}
+                <Button
+                  onClick={() => setShowSizeChartEditor(!showSizeChartEditor)}
+                  className="!mt-2 !bg-gray-500 !text-white"
+                >
+                  {showSizeChartEditor ? 'Hide Size Chart Editor' : 'Show Size Chart Editor'}
+                </Button>
+                {showSizeChartEditor && (
+                  <div className="mt-4 p-4 border border-gray-300 rounded-md bg-white">
+                    <h4 className="text-[16px] font-[500] mb-3">Edit Size Chart</h4>
+                    <div className="grid grid-cols-5 gap-2 mb-3">
+                      <div className="font-bold">Size</div>
+                      <div className="font-bold">Chest (in)</div>
+                      <div className="font-bold">Shoulder (in)</div>
+                      <div className="font-bold">Length (in)</div>
+                      <div className="font-bold">Sleeve (in)</div>
+                    </div>
+                    {Object.keys(sizeChart).map(size => (
+                      <div key={size} className="grid grid-cols-5 gap-2 mb-2">
+                        <div className="font-semibold">{size}</div>
+                        <input
+                          type="text"
+                          value={sizeChart[size].chest}
+                          onChange={(e) => handleSizeChartChange(size, 'chest', e.target.value)}
+                          className="border border-gray-300 rounded p-1 text-sm"
+                        />
+                        <input
+                          type="text"
+                          value={sizeChart[size].shoulder}
+                          onChange={(e) => handleSizeChartChange(size, 'shoulder', e.target.value)}
+                          className="border border-gray-300 rounded p-1 text-sm"
+                        />
+                        <input
+                          type="text"
+                          value={sizeChart[size].length}
+                          onChange={(e) => handleSizeChartChange(size, 'length', e.target.value)}
+                          className="border border-gray-300 rounded p-1 text-sm"
+                        />
+                        <input
+                          type="text"
+                          value={sizeChart[size].sleeve}
+                          onChange={(e) => handleSizeChartChange(size, 'sleeve', e.target.value)}
+                          className="border border-gray-300 rounded p-1 text-sm"
+                        />
+                      </div>
+                    ))}
+                    <h5 className="text-[14px] font-[500] mb-3 mt-4">Preview</h5>
+                    <table style={{width:'100%', borderCollapse:'collapse', textAlign:'center', fontSize:'14px', border:'5px solid #333'}}>
+                      <thead>
+                        <tr style={{background:'#f8f8f8'}}>
+                          <th style={{border:'5px solid #333', padding:'10px'}}>Size</th>
+                          <th style={{border:'5px solid #333', padding:'10px'}}>Chest (in)</th>
+                          <th style={{border:'5px solid #333', padding:'10px'}}>Shoulder (in)</th>
+                          <th style={{border:'5px solid #333', padding:'10px'}}>Length (in)</th>
+                          <th style={{border:'5px solid #333', padding:'10px'}}>Sleeve (in)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.keys(sizeChart).map(size => (
+                          <tr key={size}>
+                            <td style={{border:'5px solid #333', padding:'10px'}}>{size}</td>
+                            <td style={{border:'5px solid #333', padding:'10px'}}>{sizeChart[size].chest}</td>
+                            <td style={{border:'5px solid #333', padding:'10px'}}>{sizeChart[size].shoulder}</td>
+                            <td style={{border:'5px solid #333', padding:'10px'}}>{sizeChart[size].length}</td>
+                            <td style={{border:'5px solid #333', padding:'10px'}}>{sizeChart[size].sleeve}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <Button
+                      onClick={addSizeChartToDescription}
+                      className="!mt-3 !bg-blue-600 !text-white"
+                    >
+                      Add Size Chart to Description
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
             {/* // Product Category Logic */}

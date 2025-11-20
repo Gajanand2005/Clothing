@@ -131,6 +131,12 @@ const ProductDetails = () => {
               {activeTab == 0 && (
                 <div className="shadow-md w-full py-5 px-8 rounded-md">
                   {productData?.description}
+                  {productData?.sizeChart && (
+                    <div className="mt-4">
+                      <h3 className="text-[18px] font-[600] mb-2">Size Chart</h3>
+                      <pre className="whitespace-pre-wrap font-mono text-sm bg-gray-50 p-4 rounded border">{productData.sizeChart}</pre>
+                    </div>
+                  )}
                 </div>
               )}
 
