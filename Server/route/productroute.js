@@ -1,7 +1,7 @@
 import {Router} from 'express'
 import auth from '../middleware/auth.js';
 import upload from '../middleware/multer.js';
-import {createProduct, getAllProducts, getAllProductsByCatId, uploadImages,getAllProductsByCatName, getAllProductsBySubCatId,getAllProductsBySubCatName,getAllProductsByThirdLavelCatId, getAllProductsByThirdLavelCatName, getAllProductsByPrice, getAllProductsByRating, getAllProductsCount, getAllFeaturedProducts, deleteProduct, getProducts, removeImageFromCloudinary, updateProduct, deleteMultipleProduct, createProductSize, deleteProductSize, updateProductSize, deleteMultipleProductSize, getProductSize, getProductSizeById, filters, sortBy } from '../controllers/productcontroller.js';
+import {createProduct, getAllProducts, getAllProductsByCatId, uploadImages,getAllProductsByCatName, getAllProductsBySubCatId,getAllProductsBySubCatName,getAllProductsByThirdLavelCatId, getAllProductsByThirdLavelCatName, getAllProductsByPrice, getAllProductsByRating, getAllProductsCount, getAllFeaturedProducts, deleteProduct, getProducts, removeImageFromCloudinary, updateProduct, deleteMultipleProduct, createProductSize, deleteProductSize, updateProductSize, deleteMultipleProductSize, getProductSize, getProductSizeById, filters, sortBy, searchProductController } from '../controllers/productcontroller.js';
 
 const productRouter = Router();
 
@@ -44,6 +44,8 @@ productRouter.put('/productSize/:id',auth,updateProductSize);
 productRouter.delete('/productSize/deleteMultipleSize',deleteMultipleProductSize);
 productRouter.get('/productSize/get',getProductSize);
 productRouter.get('/productSize/:id',getProductSizeById);
+
+productRouter.post('/search/get' ,searchProductController)
 
 
 export default productRouter; 

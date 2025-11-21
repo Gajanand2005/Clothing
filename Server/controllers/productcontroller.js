@@ -1156,6 +1156,50 @@ export async function sortBy(request, response) {
 
 
 
+export async function searchProductController(request,response) { 
+    try{
+         
+            const {query,page , limit }=request.body;
+
+        if(!query){
+            return response.status(400).json({
+                error:true,
+                success:false,
+                message:"Query is required"
+            })
+        }
+
+                const products = await ProductModel.find({
+                  $or :[
+                    {name:{$regex : query,$options: "i"}},
+                    {brand:{$regex : query,$options: "i"}},
+                    {catName:{$regex : query,$options: "i"}},
+                    {subCat:{$regex : query,$options: "i"}},
+                    {thirdsubCat:{$regex : query,$options: "i"}},
+                  ]  
+                }).populate("category").skip((page - 1) * limit).limit(parseInt(limit));
+                    
+                const total = await products?.length
+
+
+                return response.status(200).json({
+                    error:false,
+                    success:true,
+                    product:products,
+                    total,
+                    page: parseInt(page),
+                   totalPages: Math.ceil(total / limit),
+                })
+
+
+    }catch (error) {
+    return response.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+}
 
 
 
@@ -1166,33 +1210,5 @@ export async function sortBy(request, response) {
 
 
 
-//sort by Ui Tech
-// const sortedItems = (products,sortBy,order) => {
-//   return products.sort((a,b)=>{
-//     if(sortBy === 'name'){
-
-//         return order === 'asc' ? a.name.localCompare(b.name) : b.name.localCompare(a.name)
-//     }
-
-//     if(sortBy ==="price"){
-//         return order = 'asc' ? a.price -b.price : b.price - a.price
-//     }
-//     return ; 
-//   })
-// }
-
-// export async function sortBy(request, response) {
-//     const{products,sortBy,order}=request.body
-//     const sortedItems = sortedItems([...products?.products], sortBy , order)
 
 
-// return response.status(200).json({
-//     error:false,
-//     success:true,
-//     products:sortedItems,
-//     page:0,
-//     totalPages:0
-// })
-
-
-// }

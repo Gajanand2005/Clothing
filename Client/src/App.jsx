@@ -1,17 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
-import Header from "./Components/Header/Index.jsx";
 import Footer from "./Components/Footer/Index.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductListing from "./Pages/ProductListing/Index.jsx";
 import ProductDetails from "./Pages/ProductDetails/index.jsx";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { IoClose } from "react-icons/io5";
-import ProductDetailsComponent from "./Components/ProductDetails/Index.jsx";
 import Login from "./Pages/Login/index.jsx";
 import Register from "./Pages/Register/index.jsx";
 import CartPage from "./Pages/Cart/Index.jsx";
@@ -29,8 +20,10 @@ import Verify from "./Pages/Verify/index.jsx";
 import Address from "./Pages/MyAccount/Address.jsx";
 import Home from "./Pages/Home/Index.jsx";
 import Size from "./Pages/SizeGuide/Index.jsx";
-const MyContext = createContext();
+import Header from "./Components/Header/index.jsx";
 
+
+const MyContext = createContext();
 const App = () => {
   const [openProductDetailsModal, setOpenProductDetailsModel] = useState({
     open: false,
@@ -54,6 +47,7 @@ const App = () => {
   const [myListData, setMyListData] = useState([]);
   const [addressData, setAddressData] = useState([]);
   const [addressId, setAddressId]= useState("");
+  const [searchData, setSearchData]= useState([]);
 const [currency, setCurrency] = useState("INR");
 const [currencyRate, setCurrencyRate] = useState(1);
 
@@ -278,7 +272,9 @@ setOpenSizeChart,
   currency,
   setCurrency,
   currencyRate,
-  formatPrice
+  formatPrice,
+  searchData,
+  setSearchData,
   };
 
   return (
