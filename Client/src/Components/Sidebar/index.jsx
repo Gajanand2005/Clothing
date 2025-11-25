@@ -35,6 +35,9 @@ const context = useContext(MyContext)
 const location = useLocation();
 
 const  handleCheckboxChange =(field,value)=>{
+
+context?.setSearchData([]);
+
 const currentValues = filters[field] || []
 const updatedValues = currentValues?.includes(value) ?
 currentValues.filter((item)=> item !== value):[...currentValues,value];
@@ -44,14 +47,76 @@ setFilters((prev)=>({
   [field]:updatedValues
 }))
 
-if(field === "catId"){
-  setFilters((prev)=>({
-  ...prev,
- subCatId :[],
- thirdsubCatId:[]
-}))
+if (field === "catId") {
+  setFilters(prev => ({
+    ...prev,
+    catId: updatedValues,
+    subCatId: [],
+    thirdsubCatId: [],
+    page: 1
+  }));
+  return;
 }
+
 }
+
+
+const filterData =()=>{
+  props.setIsLoading(true);
+
+  // Check if URL has search query
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get("q");
+
+  if(searchQuery && context?.searchData?.products?.length > 0){
+    props.setProductData(context?.searchData); 
+    props.setIsLoading(false);
+    props.setTotalPages(context?.searchData?.totalPages)
+    window.scrollTo(0,0) 
+  } else if(context?.searchData?.products?.length > 0){
+    props.setProductData(context?.searchData); 
+    props.setIsLoading(false);
+    props.setTotalPages(context?.searchData?.totalPages)
+    window.scrollTo(0,0) 
+  } else {
+    postData(`/api/product/filters`,filters).then((res)=>{
+      props.setProductData(res);  
+      props.setIsLoading(false);
+      props.setTotalPages(res?.totalPages)
+      window.scrollTo(0,0)
+    })
+  }
+}
+
+
+// const filterData = () => {
+//   props.setIsLoading(true);
+
+//   // If mode is search → call search API
+//   if (context?.searchText && context?.searchText !== "") {
+//     postData(`/api/product/search/get`, {
+//       query: context?.searchText,
+//       page: props.page,
+//       limit: 25
+//     }).then((res) => {
+//       props.setProductData(res);
+//       props.setIsLoading(false);
+//       props.setTotalPages(res?.totalPages);
+//       window.scrollTo(0, 0);
+//     });
+//     return;
+//   }
+
+//   // Otherwise → normal filter API
+//   postData(`/api/product/filters`, filters).then((res) => {
+//     props.setProductData(res);
+//     props.setIsLoading(false);
+//     props.setTotalPages(res?.totalPages);
+//     window.scrollTo(0, 0);
+//   });
+// };
+
+
 
 useEffect(() => {
 
@@ -94,18 +159,61 @@ setTimeout(() => {
 }, 200);
 
 
+context?.setSearchData([])
 }, [location])
 
 
-const filterData =()=>{
-  props.setIsLoading(true);
-  postData(`/api/product/filters`,filters).then((res)=>{
-    props.setProductData(res);  
-    props.setIsLoading(false);
-    props.setTotalPages(res?.totalPages)
-    window.scrollTo(0,0)
-  })
-}
+
+
+// useEffect(() => {
+//   const queryParameters = new URLSearchParams(location.search);
+
+//   if (location.search.includes("catId")) {
+//     const id = queryParameters.get("catId");
+//     setFilters({
+//       catId: [id],
+//       subCatId: [],
+//       thirdsubCatId: [],
+//       minPrice: "",
+//       maxPrice: "",
+//       page: 1,
+//       limit: 25
+//     });
+//     return;
+//   }
+
+//   if (location.search.includes("subCatId")) {
+//     const id = queryParameters.get("subCatId");
+//     setFilters({
+//       catId: [],
+//       subCatId: [id],
+//       thirdsubCatId: [],
+//       minPrice: "",
+//       maxPrice: "",
+//       page: 1,
+//       limit: 25
+//     });
+//     return;
+//   }
+
+//   if (location.search.includes("thirdsubCatId")) {
+//     const id = queryParameters.get("thirdsubCatId");
+//     setFilters({
+//       catId: [],
+//       subCatId: [],
+//       thirdsubCatId: [id],
+//       minPrice: "",
+//       maxPrice: "",
+//       page: 1,
+//       limit: 25
+//     });
+//     return;
+//   }
+
+// }, [location]);
+
+
+
 
 
 useEffect(() => {

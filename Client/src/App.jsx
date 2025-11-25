@@ -21,6 +21,7 @@ import Address from "./Pages/MyAccount/Address.jsx";
 import Home from "./Pages/Home/Index.jsx";
 import Size from "./Pages/SizeGuide/Index.jsx";
 import Header from "./Components/Header/index.jsx";
+import SearchPage from "./Pages/Search/index.jsx";
 
 
 const MyContext = createContext();
@@ -318,6 +319,7 @@ setOpenSizeChart,
               element={<HelpCenter />}
             />
             <Route path={"/address"} exact={true} element={<Address />} />
+            <Route path={"/search"} exact={true} element={<SearchPage />} />
             <Route path={"/size"} exact={true} element={<Size />} />
           </Routes>
           <Whataap />

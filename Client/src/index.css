@@ -583,3 +583,8 @@ input[type=number]::-webkit-outer-spin-button{
 .MuiCircularProgress-root{@apply !text-orange-600}
 /* button.btn-org .MuiCircularProgress-root{color: white !important;} */
 
+.searchBox .MuiCircularProgress-root{
+  width: 20px !important;
+  height:20px !important;
+}
+

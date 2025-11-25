@@ -19,6 +19,7 @@ productRouter.post('/uploadImages', auth, (req, res, next) => {
 }, uploadImages);
 productRouter.post('/create', auth, createProduct);
 productRouter.post('/filters',filters);
+productRouter.post('/search/get' ,searchProductController)
 productRouter.post('/sortBy',sortBy);
 productRouter.get('/getAllProducts',  getAllProducts);
 productRouter.get('/getAllProductsByCatId/:id',  getAllProductsByCatId);
@@ -45,7 +46,6 @@ productRouter.delete('/productSize/deleteMultipleSize',deleteMultipleProductSize
 productRouter.get('/productSize/get',getProductSize);
 productRouter.get('/productSize/:id',getProductSizeById);
 
-productRouter.post('/search/get' ,searchProductController)
 
 
 export default productRouter; 

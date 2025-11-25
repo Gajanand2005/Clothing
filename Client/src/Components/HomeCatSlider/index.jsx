@@ -29,7 +29,7 @@ const HomeCatSlider = (props) => {
         >
           {props?.data?.map((cat, index) => (
             <SwiperSlide key={index}>
-              <Link to="/" className="block">
+              <Link to="/productlisting" className="block">
                 <div className="item text-center flex flex-col items-center justify-center">
                   <div className="relative flex items-center justify-center">
                     <img
