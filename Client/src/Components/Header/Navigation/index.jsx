@@ -53,7 +53,7 @@ const context = useContext(MyContext)
                   return (
                     <li className="list-none relative" key={index}>
                       <Link
-                        to="/ProductListing"
+                        to={`/productListing?catId=${cat?._id}`}
                         className="link transition text-[16px] !font-[500]"
                       >
                         <Button className="link transition !font-[500] !font-bold !text-[rgba(0,0,0,0.7)] hover:!text-[#ff5252]">
@@ -69,7 +69,7 @@ const context = useContext(MyContext)
                                   className="list-none w-full relative"
                                   key={index_}
                                 >
-                                  <Link to="/ProductListing" className="w-full">
+                                  <Link to={`/productListing?subCatId=${subCat?._id}`} className="w-full">
                                     <Button className="!text-[rgba(0,0,0,0.8)] w-full !text-left !justify-start !rounded-none">
                                       {subCat?.name}
                                     </Button>
@@ -85,7 +85,7 @@ const context = useContext(MyContext)
                                                 key={index__}
                                               >
                                                 <Link
-                                                  to="/ProductListing"
+                                                  to={`/productListing?thirdsubCatId=${thirdLavelCat?._id}`} 
                                                   className="w-full"
                                                 >
                                                   <Button className="!text-[rgba(0,0,0,0.8)] w-full !text-left !justify-start !rounded-none">

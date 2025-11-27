@@ -200,7 +200,7 @@ const CartPage = () => {
                   <h4 className="!mt-2 text-[20px] font-[600] text-blue-300">
                     Your Cart is Currently empty
                   </h4>
-                  <Link to="/productlisting">
+                  <Link to="/productListing">
                     <Button
                       className="!bg-orange-600 !text-white hover:!bg-black !mt-3"
                       onClick={() => context?.toggleCartPanel(false)}
