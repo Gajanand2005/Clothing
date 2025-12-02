@@ -22,6 +22,8 @@ import Home from "./Pages/Home/Index.jsx";
 import Size from "./Pages/SizeGuide/Index.jsx";
 import Header from "./Components/Header/index.jsx";
 import SearchPage from "./Pages/Search/index.jsx";
+import Success from "./Pages/Orders/success.jsx";
+
 
 
 const MyContext = createContext();
@@ -308,6 +310,7 @@ setOpenSizeChart,
             <Route path={"/my-account"} exact={true} element={<MyAccount />} />
             <Route path={"/my-list"} exact={true} element={<MyList />} />
             <Route path={"/my-order"} exact={true} element={<Order />} />
+            <Route path={"/order/success"} exact={true} element={<Success/>} />
             <Route
               path={"/order-tracking"}
               exact={true}

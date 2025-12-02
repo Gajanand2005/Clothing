@@ -251,9 +251,11 @@ const CartPage = () => {
               </p>
 
               <br />
+              <Link to='/checkout'>
               <Button className="!bg-orange-600 !rounded-md !text-white hover:!bg-black w-full flex gap-3">
                 CheckOut <LuBaggageClaim className="text-[20px]" />
               </Button>
+              </Link>
             </div>
           </div>
 

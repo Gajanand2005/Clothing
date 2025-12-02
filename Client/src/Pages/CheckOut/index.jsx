@@ -100,10 +100,10 @@ const CheckOut = () => {
               context?.getCartItems();
 
             })
-            history("/");
           }else{
             context.alertBox("error", res?.message);
           }
+           history("/order/success");
         })
       },
 
@@ -140,10 +140,10 @@ const CheckOut = () => {
               context?.getCartItems();
 
             })
-            history("/");
           }else{
             context.alertBox("error", res?.message);
           }
+          history("/order/success");
         })
   }
 
