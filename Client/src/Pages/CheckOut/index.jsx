@@ -116,6 +116,37 @@ const CheckOut = () => {
     pay.open();
   };
 
+
+  const cashOnDelivery = (e) =>{
+     const user = context?.userData;
+
+     const payLoad = {
+          userId: user?._id,
+          products: context?.cartData,
+          paymentId: '',
+          payment_status: "CASH ON DELIVERY",
+          delivery_address: selectedAddress,
+          totalAmt: totalAmount,
+          data: new Date().toLocaleString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+          }),
+        };
+         postData(`/api/order/create`,payLoad).then((res)=>{
+          context.alertBox("success", res?.message);
+          if(res?.error === false){
+            deleteData(`/api/cart/emptyCart/${user?._id}`).then((res)=>{
+              context?.getCartItems();
+
+            })
+            history("/");
+          }else{
+            context.alertBox("error", res?.message);
+          }
+        })
+  }
+
   return (
     <>
       <section className="py-10 ">
@@ -278,7 +309,7 @@ const CheckOut = () => {
                     {context.formatPrice(totalPrice)}
                   </span>
                 </div>
-
+                <div className="flex items-center flex-col gap-3 mb-2">
                 <Button
                   type="submit"
                   className="!bg-orange-600 flex !text-white w-full items-center text-[19px] hover:!bg-black gap-2"
@@ -286,6 +317,14 @@ const CheckOut = () => {
                   Checkout
                   <RiShoppingBag3Line className="text-[19px]" />
                 </Button>
+                 <Button
+                  type="button"
+                  className="!bg-orange-600 flex !text-white w-full items-center flex items-center text-[19px] hover:!bg-black gap-2" onClick={cashOnDelivery}
+                >
+                  Cash on Delivery
+                  <RiShoppingBag3Line className="text-[19px]" />
+                </Button>
+                </div>
               </div>
             </div>
           </div>

@@ -14,6 +14,24 @@ export const addToCartItemController = async(req, res)=>{
             })
         }
 
+        // Fetch the product to check current stock
+        const product = await ProductModel.findById(productId);
+        if (!product) {
+            return res.status(404).json({
+                message: "Product not found",
+                error: true,
+                success: false
+            });
+        }
+
+        if (product.countInStock <= 0) {
+            return res.status(400).json({
+                message: "Product is out of stock",
+                error: true,
+                success: false
+            });
+        }
+
         const checkItemCart = await CartProductModel.findOne({
             userId : userId,
             productId : productId

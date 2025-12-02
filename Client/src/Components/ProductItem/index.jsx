@@ -27,7 +27,11 @@ function ProductItem({item}) {
 
   const addToCart = (product, userId, quantity) => {
 
-   
+    if (product?.countInStock <= 0) {
+      context?.alertBox("error", "Product is out of stock");
+      return;
+    }
+
     const productItem = {
      _id:product?._id,
       name: product?.name,
@@ -267,7 +271,15 @@ postData("/api/myList/add",obj).then((res)=>{
           </span>
         </div>
         <div className="w-full !absolute bottom-[15px] left-0 pl-3 pr-3">
-          {isAdded === false ? (
+          {item?.countInStock <= 0 ? (
+            <Button
+              className="btn-org btn-border flex w-full btn-sm gap-2 !bg-gray-500 !text-white"
+              size="small"
+              disabled
+            >
+              Notify Me
+            </Button>
+          ) : isAdded === false ? (
             <Button
               className="btn-org btn-border flex w-full btn-sm gap-2"
               size="small"
