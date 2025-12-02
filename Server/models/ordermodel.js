@@ -10,14 +10,22 @@ const orderSchema = new mongoose.Schema({
         required: [true, "Provide orderId"],
         unique: true
     },
-    productId: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Product'
-    },
-    product_details: {
+    products: [{
+        productId: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Product'
+        },
+        quantity: {
+            type: Number,
+            required: true
+        },
+        price: {
+            type: Number,
+            required: true
+        },
         name: String,
         image: Array
-    },
+    }],
     paymentId: {
         type: String,
         default: ""
@@ -37,9 +45,13 @@ const orderSchema = new mongoose.Schema({
     totalAmt: {
         type: Number,
         default: 0
+    },
+    order_status: {
+        type: String,
+        default: "pending"
     }
-    
-},  
+},
+  
    {
       timestamps: true 
    }

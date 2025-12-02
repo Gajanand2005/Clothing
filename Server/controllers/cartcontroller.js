@@ -209,3 +209,25 @@ export const deleteCartItemQtyController = async (req,res)=>{
        }) 
     }
 }
+
+
+export const emptyCartController = async (req,res)=>{
+    try {
+        const userId = req.userId;
+        
+        await CartProductModel.deleteMany({userId : userId});
+
+        return res.status(200).json({
+            message : "Cart is empty",
+            error : false,
+            success: true,
+        })
+         
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error : true,
+            success: false
+        })
+    }
+}
