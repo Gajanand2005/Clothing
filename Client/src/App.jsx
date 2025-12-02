@@ -23,6 +23,7 @@ import Size from "./Pages/SizeGuide/Index.jsx";
 import Header from "./Components/Header/index.jsx";
 import SearchPage from "./Pages/Search/index.jsx";
 import Success from "./Pages/Orders/success.jsx";
+import Failed from "./Pages/Orders/failed.jsx";
 
 
 
@@ -311,6 +312,7 @@ setOpenSizeChart,
             <Route path={"/my-list"} exact={true} element={<MyList />} />
             <Route path={"/my-order"} exact={true} element={<Order />} />
             <Route path={"/order/success"} exact={true} element={<Success/>} />
+            <Route path={"/order/failed"} exact={true} element={<Failed/>} />
             <Route
               path={"/order-tracking"}
               exact={true}

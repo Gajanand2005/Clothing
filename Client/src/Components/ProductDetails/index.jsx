@@ -30,10 +30,16 @@ const ProductDetailsComponent = (props) => {
 
 
 
-//add to cart Ai version 
+//add to cart Ai version
 const addToCart = (product, userId, quantity) => {
   if (!userId) {
     context?.alertBox("error", "Please login first");
+    return;
+  }
+
+  // Stock validation
+  if (quantity > product?.countInStock) {
+    context?.alertBox("error", "The requested quantity exceeds available stock.");
     return;
   }
 
@@ -42,7 +48,7 @@ const addToCart = (product, userId, quantity) => {
     if (selectedTabName === null) {
       setTabError(true);
       setIsLoading(false);
-      return; 
+      return;
     }
   }{
 

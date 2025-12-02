@@ -1,7 +1,7 @@
  import React from 'react'
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "./Pages/Dashboard/Index.jsx";
+import Dashboard from "./pages/Dashboard/Index.jsx";
 import Header from "./Components/Header/Index.jsx";
 import Sidebar from "./Components/Sidebar/Index.jsx";
 import { createContext, useState } from "react";
@@ -12,7 +12,7 @@ import Products from "./pages/Products/Index.jsx";
 import toast, {Toaster} from 'react-hot-toast'; 
 
 import Slide from '@mui/material/Slide';
-import Button from '@mui/material/Button';
+
 
 
 import Users from './pages/Users/Index.jsx';

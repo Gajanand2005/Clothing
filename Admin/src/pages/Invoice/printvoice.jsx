@@ -3,7 +3,7 @@ import { RiPrinterFill } from "react-icons/ri";
 import { Button } from '@mui/material';
 import Invoice from './invoice';
 
-const PrintVoice = () => {
+const PrintVoice = ({ order }) => {
   const componentRef = useRef();
 
   const handlePrint = () => {
@@ -58,7 +58,7 @@ const PrintVoice = () => {
               margin-top: 20px;
               font-size: 14px;
             }
-            
+
             table th {
               background: #4A90E2;
               color: white;
@@ -121,7 +121,7 @@ const PrintVoice = () => {
     <div style={{ padding: "20px" }}>
       <div style={{ display: "none" }}>
         <div ref={componentRef}>
-          <Invoice />
+          <Invoice order={order} />
         </div>
       </div>
 

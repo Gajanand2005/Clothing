@@ -47,7 +47,7 @@ export const getOrdersDetailsController = async (req, res)=>{
     try {
         const userId = req.userId;
 
-        const orderlist = await OrderModel.find({userId: userId}).sort({createdAt: -1}).populate('delivery_address, userId')
+        const orderlist = await OrderModel.find({userId: userId}).sort({createdAt: -1}).populate('delivery_address userId products.productId')
 
         return res.json({
             message: "Order list fetched successfully",
@@ -63,4 +63,34 @@ export const getOrdersDetailsController = async (req, res)=>{
             success: false
         })
     }
+}
+
+export const updateOrderStatusController = async (req, res)=>{
+    const { id } = req.params;
+    const { order_status } = req.body;
+
+
+   try {
+     const updateOrder = await OrderModel.findByIdAndUpdate(
+        id,
+        {
+            order_status: order_status
+
+        },
+        { new: true }
+    )
+     return res.json({
+        message: "Order status updated successfully",
+        data: updateOrder,
+        error: false,
+        success: true,
+    })
+   } catch (error) {
+    return res.status(500).json({
+        message: error.message || error,
+        error : true,
+        success: false
+    })
+   }
+
 }

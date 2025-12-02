@@ -13,7 +13,7 @@ const orderSchema = new mongoose.Schema({
     products: [{
         productId: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Product'
+            ref: 'product'
         },
         quantity: {
             type: Number,

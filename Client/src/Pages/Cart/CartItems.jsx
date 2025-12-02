@@ -40,6 +40,11 @@ const cleanPrice = (price) => {
   const handleCloseQty = (value) => {
     setQtyAnchorEl(null);
     if (value !== null) {
+      // Stock validation
+      if (value > props?.item?.countInStock) {
+        context.alertBox("error", "The requested quantity exceeds available stock.");
+        return;
+      }
       setSelectedQty(value);
       const cartObj = {
         _id: props?.item?._id,

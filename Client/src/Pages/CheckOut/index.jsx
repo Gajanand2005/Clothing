@@ -6,6 +6,7 @@ import { PiPlusBold } from "react-icons/pi";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import { deleteData, postData } from "../../Utlis/Api";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -19,6 +20,8 @@ const CheckOut = () => {
   const [isChecked, setIsChecked] = useState(0);
   const [selectedAddress, setSelectedAddress] = useState("");
   const [totalAmount, setTotalAmount] = useState();
+
+  const history = useNavigate();
 
   const totalPrice = useMemo(() => {
     return (
@@ -62,6 +65,13 @@ const CheckOut = () => {
   const checkout = (e) => {
     e.preventDefault();
 
+    // Check stock availability
+    const outOfStockItems = context?.cartData?.filter(item => item.quantity > item.countInStock);
+    if (outOfStockItems?.length > 0) {
+      context.alertBox("error", "Some items in your cart are out of stock or exceed available quantity. Please update your cart.");
+      return;
+    }
+
     var options = {
       key: VITE_APP_RAZORPAY_KEY_ID,
       key_secret: VITE_APP_RAZORPAY_KEY_SECRET,
@@ -98,12 +108,12 @@ const CheckOut = () => {
           if(res?.error === false){
             deleteData(`/api/cart/emptyCart/${user?._id}`).then((res)=>{
               context?.getCartItems();
-
             })
+            history("/order/success");
           }else{
+            history("/order/failed");
             context.alertBox("error", res?.message);
           }
-           history("/order/success");
         })
       },
 
@@ -113,11 +123,21 @@ const CheckOut = () => {
     };
 
     var pay = new window.Razorpay(options);
+    pay.on('payment.failed', function (response){
+      history("/order/failed");
+    });
     pay.open();
   };
 
 
   const cashOnDelivery = (e) =>{
+     // Check stock availability
+     const outOfStockItems = context?.cartData?.filter(item => item.quantity > item.countInStock);
+     if (outOfStockItems?.length > 0) {
+       context.alertBox("error", "Some items in your cart are out of stock or exceed available quantity. Please update your cart.");
+       return;
+     }
+
      const user = context?.userData;
 
      const payLoad = {
@@ -313,14 +333,16 @@ const CheckOut = () => {
                 <Button
                   type="submit"
                   className="!bg-orange-600 flex !text-white w-full items-center text-[19px] hover:!bg-black gap-2"
+                  disabled={context?.cartData?.length === 0}
                 >
                   Checkout
                   <RiShoppingBag3Line className="text-[19px]" />
                 </Button>
                  <Button
-                  type="button"
-                  className="!bg-orange-600 flex !text-white w-full items-center flex items-center text-[19px] hover:!bg-black gap-2" onClick={cashOnDelivery}
-                >
+                   type="button"
+                   className="!bg-orange-600 flex !text-white w-full items-center flex items-center text-[19px] hover:!bg-black gap-2" onClick={cashOnDelivery}
+                   disabled={context?.cartData?.length === 0}
+                 >
                   Cash on Delivery
                   <RiShoppingBag3Line className="text-[19px]" />
                 </Button>
