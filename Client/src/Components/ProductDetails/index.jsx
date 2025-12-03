@@ -165,13 +165,13 @@ const addToCart = (product, userId, quantity) => {
           <TbHeartHandshake className="text-[19px]" />
           Add to Wishlist
         </span>
-        <span
+        {/* <span
   onClick={() => context?.setOpenSizeChart(true)}
   className="flex items-center gap-3 text-[15px] cursor-pointer"
 >
   <MdPhotoSizeSelectActual className="text-[19px]" />
   Size Guide
-</span>
+</span> */}
       </div>
     </>
   );

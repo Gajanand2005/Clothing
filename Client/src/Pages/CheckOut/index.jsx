@@ -71,8 +71,8 @@ const CheckOut = () => {
       context.alertBox("error", "Some items in your cart are out of stock or exceed available quantity. Please update your cart.");
       return;
     }
-
-    var options = {
+     if(userData?.address_details?.length !==0){
+       var options = {
       key: VITE_APP_RAZORPAY_KEY_ID,
       key_secret: VITE_APP_RAZORPAY_KEY_SECRET,
       amount: parseInt(totalAmount * 100),
@@ -89,8 +89,8 @@ const CheckOut = () => {
         const paymentId = response.razorpay_payment_id;
 
         const user = context?.userData;
-
-        const payLoad = {
+       
+            const payLoad = {
           userId: user?._id,
           products: context?.cartData,
           paymentId: paymentId,
@@ -115,6 +115,8 @@ const CheckOut = () => {
             context.alertBox("error", res?.message);
           }
         })
+        
+      
       },
 
       theme: {
@@ -127,6 +129,10 @@ const CheckOut = () => {
       history("/order/failed");
     });
     pay.open();
+     }else{
+      context.alertBox("error", "Please add address");
+     }
+   
   };
 
 
@@ -140,7 +146,8 @@ const CheckOut = () => {
 
      const user = context?.userData;
 
-     const payLoad = {
+     if(userData?.address_details?.length !==0){
+       const payLoad = {
           userId: user?._id,
           products: context?.cartData,
           paymentId: '',
@@ -165,6 +172,11 @@ const CheckOut = () => {
           }
           history("/order/success");
         })
+     }else{
+      context.alertBox("error", "Please add address");
+     }
+
+    
   }
 
   return (

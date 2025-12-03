@@ -24,6 +24,8 @@ import Header from "./Components/Header/index.jsx";
 import SearchPage from "./Pages/Search/index.jsx";
 import Success from "./Pages/Orders/success.jsx";
 import Failed from "./Pages/Orders/failed.jsx";
+import Delivery from "./Components/Footer/Delivery.jsx";
+import Aboutus from "./Components/Footer/Aboutus.jsx";
 
 
 
@@ -287,45 +289,42 @@ setOpenSizeChart,
         <MyContext.Provider value={value}>
           <Header />
           <Routes>
-            <Route path={"/"} exact={true} element={<Home />} />
+            <Route path={"/"} element={<Home />} />
             <Route
               path={"/productListing"}
-              exact={true}
               element={<ProductListing />}
             />
             <Route
               path={"/product/:id"}
-              exact={true}
               element={<ProductDetails />}
             />
-            <Route path={"/login"} exact={true} element={<Login />} />
-            <Route path={"/register"} exact={true} element={<Register />} />
-            <Route path={"/cart"} exact={true} element={<CartPage />} />
-            <Route path={"/Verify"} exact={true} element={<Verify />} />
+            <Route path={"/login"} element={<Login />} />
+            <Route path={"/register"} element={<Register />} />
+            <Route path={"/cart"} element={<CartPage />} />
+            <Route path={"/Verify"} element={<Verify />} />
             <Route
               path={"/forgot-Password"}
-              exact={true}
               element={<ForgotPassword />}
             />
-            <Route path={"/checkout"} exact={true} element={<CheckOut />} />
-            <Route path={"/my-account"} exact={true} element={<MyAccount />} />
-            <Route path={"/my-list"} exact={true} element={<MyList />} />
-            <Route path={"/my-order"} exact={true} element={<Order />} />
-            <Route path={"/order/success"} exact={true} element={<Success/>} />
-            <Route path={"/order/failed"} exact={true} element={<Failed/>} />
+            <Route path={"/checkout"} element={<CheckOut />} />
+            <Route path={"/my-account"} element={<MyAccount />} />
+            <Route path={"/my-list"} element={<MyList />} />
+            <Route path={"/my-order"} element={<Order />} />
+            <Route path={"/order/success"} element={<Success/>} />
+            <Route path={"/order/failed"} element={<Failed/>} />
             <Route
               path={"/order-tracking"}
-              exact={true}
               element={<OrderTracking />}
             />
             <Route
               path={"/help-center"}
-              exact={true}
               element={<HelpCenter />}
             />
-            <Route path={"/address"} exact={true} element={<Address />} />
-            <Route path={"/search"} exact={true} element={<SearchPage />} />
-            <Route path={"/size"} exact={true} element={<Size />} />
+            <Route path={"/address"} element={<Address />} />
+            <Route path={"/search"} element={<SearchPage />} />
+            <Route path={"/size"} element={<Size />} />
+            <Route path={"/delivery"} element={<Delivery />} />
+            <Route path={"/AboutUs"} element={<Aboutus />} />
           </Routes>
           <Whataap />
           <Footer />

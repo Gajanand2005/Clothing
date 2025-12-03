@@ -1,13 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import MyListItems from "./MyListItems";
 import AccountSidebar from "../../Components/AccountSidebar";
 import { MyContext } from "../../App";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MyList = () => {
   const context = useContext(MyContext);
+  const history = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token === null) {
+      history("/login");
+    }
+  }, [context?.isLogin]);
 
   return (
     <>

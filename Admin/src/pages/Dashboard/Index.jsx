@@ -2,6 +2,14 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { FaPlus } from "react-icons/fa6";
+import { AiTwotoneGift } from "react-icons/ai";
+import { IoStatsChartSharp } from "react-icons/io5";
+import { FaChartPie } from "react-icons/fa6";
+import { BsBarChartFill } from "react-icons/bs";
+import { RiBarChartFill } from "react-icons/ri";
+import { HiChartBar } from "react-icons/hi2";
+import { PiPiggyBankDuotone } from "react-icons/pi";
+import { SiPiapro } from "react-icons/si";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -225,6 +233,7 @@ const Dashboard = () => {
    }
    
    useEffect(() => {
+    getChartData();
      fetchDataFromApi('/api/order/order-list').then((res)=>{
        if(res?.error===false){
        setOrders(res?.data);
@@ -234,82 +243,9 @@ const Dashboard = () => {
 
 
   const [page, setPage] = React.useState(0);
-
-  const [chart1Data, setChart1Data] = useState([
-    {
-      name: "Jan",
-      Total_Users: 4000,
-      Total_Sales: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Feb",
-      Total_Users: 3000,
-      Total_Sales: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Mar",
-      Total_Users: 2000,
-      Total_Sales: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Apr",
-      Total_Users: 2780,
-      Total_Sales: 3908,
-      amt: 2000,
-    },
-    {
-      name: "May",
-      Total_Users: 1890,
-      Total_Sales: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Jun",
-      Total_Users: 2390,
-      Total_Sales: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Jul",
-      Total_Users: 7490,
-      Total_Sales: 4300,
-      amt: 2100,
-    },
-    {
-      name: "Aug",
-      Total_Users: 4490,
-      Total_Sales: 8300,
-      amt: 2100,
-    },
-    {
-      name: "Sep",
-      Total_Users: 3490,
-      Total_Sales: 6300,
-      amt: 2100,
-    },
-    {
-      name: "Oct",
-      Total_Users: 5090,
-      Total_Sales: 3300,
-      amt: 2100,
-    },
-    {
-      name: "Nov",
-      Total_Users: 0,
-      Total_Sales: 0,
-      amt: 0,
-    },
-    {
-      name: "Dec",
-      Total_Users: 0,
-      Total_Sales: 0,
-      amt: 0,
-    },
-  ]);
-
+ const [chartData, setChartData]=useState([]);
+ const [year, setYear]=useState(new Date().getFullYear())
+  
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
@@ -433,6 +369,88 @@ const Dashboard = () => {
     setcategoryFilterValue(event.target.value);
   };
 
+  const totalSales = orders.reduce((sum, order) => sum + (order.totalAmt || 0), 0);
+
+  const boxesData = [
+    {
+      title: "New Orders",
+      value: orders.length.toString(),
+      icon1: AiTwotoneGift,
+      icon2: IoStatsChartSharp,
+      color: "#ff0000",
+      size1: "40px",
+      size2: "40px"
+    },
+    {
+      title: "Sales",
+      value: `₹${totalSales}`,
+      icon1: FaChartPie,
+      icon2: BsBarChartFill,
+      color: "#0000ff",
+      size1: "40px",
+      size2: "40px"
+    },
+    {
+      title: "Revenue",
+      value: `₹${totalSales}`,
+      icon1: PiPiggyBankDuotone,
+      icon2: RiBarChartFill,
+      color: "#00ff00",
+      size1: "55px",
+      size2: "40px"
+    },
+    {
+      title: "Products",
+      value: productData.length.toString(),
+      icon1: SiPiapro,
+      icon2: HiChartBar,
+      color: "#bf00ff",
+      size1: "40px",
+      size2: "40px"
+    }
+  ];
+
+  const getChartData = (year = new Date().getFullYear()) => {
+    Promise.all([
+      fetchDataFromApi(`/api/order/sales?year=${year}`),
+      fetchDataFromApi(`/api/order/users?year=${year}`)
+    ]).then(([salesRes, usersRes]) => {
+      const salesMap = {};
+      if (salesRes?.monthlySales?.length !== 0) {
+        salesRes.monthlySales.forEach(item => {
+          salesMap[item.name] = { Total_Sales: parseInt(item.totalSales) };
+        });
+      }
+
+      const data = [];
+      if (usersRes?.TotalUsers?.length !== 0) {
+        usersRes.TotalUsers.forEach(item => {
+          const name = item.name;
+          const totalUsers = parseInt(item.TotalUsers);
+          if (salesMap[name]) {
+            data.push({ name, Total_Sales: salesMap[name].Total_Sales, Total_Users: totalUsers });
+            delete salesMap[name];
+          } else {
+            data.push({ name, Total_Sales: 0, Total_Users: totalUsers });
+          }
+        });
+      }
+
+      // Add remaining sales
+      Object.keys(salesMap).forEach(name => {
+        data.push({ name, Total_Sales: salesMap[name].Total_Sales, Total_Users: 0 });
+      });
+
+      setChartData(data);
+    });
+  }
+
+  const handleChangeYear = (event)=>{
+    setYear(event.target.value)
+    getChartData(event.target.value)
+  }
+
+
   return (
     <>
       <div className="w-full py-2 px-5 border border-[rgba(0,0,0,0.1)] rounded-md bg-white flex items-center justify-between mb-6 gap-8">
@@ -455,7 +473,7 @@ const Dashboard = () => {
         <img src={dashboard} className="w-[250px]" alt="Dashboard" />
       </div>
 
-      <DashboardBoxes />
+      <DashboardBoxes data={boxesData} />
 
       <div className="card my-5 shadow-md sm:rounded-lg bg-white">
         <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
@@ -857,8 +875,10 @@ const Dashboard = () => {
         </div>
 
         <ResponsiveContainer width="100%" height={400}>
-          <LineChart
-            data={chart1Data}
+          {
+            chartData?.length !==0 &&
+            <LineChart
+            data={chartData}
             margin={{
               top: 5,
               right: 0,
@@ -885,6 +905,8 @@ const Dashboard = () => {
               strokeWidth={3}
             />
           </LineChart>
+          }
+          
         </ResponsiveContainer>
       </div>
     </>

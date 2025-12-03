@@ -1,6 +1,5 @@
 import { Button } from '@mui/material'
-import React, { useState, useMemo, useContext } from 'react'
-import { MdOutlineAddAlarm } from "react-icons/md";
+import React, { useState, useContext, useEffect } from 'react'
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -20,6 +19,8 @@ import SearchBox from '../../Components/SearchBox/Index';
 import { MyContext } from '../../App';
 import { Link } from 'react-router-dom';
 import { SlCalender } from "react-icons/sl";
+import CircularProgress from '@mui/material/CircularProgress';
+import { fetchDataFromApi } from '../../../Utlis/Api.js';
 
 
 
@@ -31,58 +32,39 @@ const columns = [
   { id: "action", label: "CREATED", minWidth: 100 },
 ];
 
-function createData(id,  userName,userEmail, userPh,  oldPrice, currentPrice, salesPercent) {
-  const sales = (
-    <div className="flex items-center gap-3">
-      <ProgressBar
-        value={salesPercent}
-        type={
-          salesPercent >= 70
-            ? "success"
-            : salesPercent >= 40
-              ? "warning"
-              : "error"
-        }
-      />
-      <span className="text-gray-700 font-medium">{salesPercent}%</span>
-    </div>
-  );
-
+function createData(user, index) {
   const action = (
     <div className="flex items-center gap-1">
       <TooltipMUI title="Created" placement="top">
         <Button className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]">
-         
-          <SlCalender  className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+          <SlCalender className="text-[rgba(0,0,0,0.7)] text-[20px]" />
         </Button>
-        10-10-2023
+        {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
       </TooltipMUI>
-
-    </div>
-  );
-
-  const priceColumn = (
-    <div className="flex flex-col gap-1">
-      <span className="oldPrice line-through text-gray-500 text-[14px] font-[500]">{oldPrice}</span>
-      <span className="price text-blue-600 text-[14px] font-[600]">{currentPrice}</span>
     </div>
   );
 
   const userImg = (
     <div className="flex items-center gap-4 w-[120px]">
-      <Link to="/products/485789">
+      <Link to={`/users/${user._id}`}>
         <div className="img w-[55px] h-[55px] rounded-md overflow-hidden group">
           <img
-            src="https://imgs.search.brave.com/XU02EQY1eIHc1fmfy8XyKpyeq5l5mLEjMKoA4412ajI/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/aWNvbnNob2NrLmNv/bS9pbWFnZS9JbXBy/ZXNzaW9ucy9EYXRh/YmFzZS91c2Vy"
+            src={user?.avatar || user?.images?.[0] || "https://imgs.search.brave.com/XU02EQY1eIHc1fmfy8XyKpyeq5l5mLEjMKoA4412ajI/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/aWNvbnNob2NrLmNv/bS9pbWFnZS9JbXBy/ZXNzaW9ucy9EYXRh/YmFzZS91c2Vy"}
             className="w-full group-hover:scale-105 transition-all"
           />
         </div>
       </Link>
-
     </div>
   );
 
-  return { id, userImg: userImg, userName,  price: priceColumn, sales, action, userEmail, userPh };
+  return {
+    id: index + 1,
+    userImg,
+    userName: user?.name || 'N/A',
+    userEmail: user?.email || 'N/A',
+    userPh: user?.mobile || 'N/A',
+    action
+  };
 }
 
 const orderColumns = [
@@ -96,99 +78,37 @@ const orderColumns = [
 ];
 
 const Users = () => {
-    const [isOpenOrderProduct, setIsOpenOrderProduct]= useState(null);
-  
-  const isShowOrderdProduct =(index)=>{
-    if(isOpenOrderProduct===index){
+  const [isOpenOrderProduct, setIsOpenOrderProduct] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isShowOrderdProduct = (index) => {
+    if (isOpenOrderProduct === index) {
       setIsOpenOrderProduct(null);
-    }else{
+    } else {
       setIsOpenOrderProduct(index);
-  
     }
-  }
+  };
+
+  const getUsers = () => {
+    setIsLoading(true);
+    fetchDataFromApi("/api/user/getAllUsers").then((res) => {
+      if (res?.error === false) {
+        setUsers(res?.data?.map(user => ({ ...user, checked: false })) || []);
+      }
+      setIsLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   const [openRow, setOpenRow] = React.useState(null);
-  const [rows, setRows] = React.useState([
-    createData(1, "Kapil", "Kunal@gmail.com", "789654123", "789654123", "₹299", "85", "2025-10-28"),
-
-  ]);
+  const rows = users.map((user, index) => createData(user, index));
 
   const [page, setPage] = React.useState(0);
 
-  const [chart1Data, setChart1Data] = useState([
-    {
-      name: 'Jan',
-      Total_Users: 4000,
-      Total_Sales: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Feb',
-      Total_Users: 3000,
-      Total_Sales: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Mar',
-      Total_Users: 2000,
-      Total_Sales: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Apr',
-      Total_Users: 2780,
-      Total_Sales: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'May',
-      Total_Users: 1890,
-      Total_Sales: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Jun',
-      Total_Users: 2390,
-      Total_Sales: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Jul',
-      Total_Users: 7490,
-      Total_Sales: 4300,
-      amt: 2100,
-    },
-     {
-      name: 'Aug',
-      Total_Users: 4490,
-      Total_Sales: 8300,
-      amt: 2100,
-    },
-     {
-      name: 'Sep',
-      Total_Users: 3490,
-      Total_Sales: 6300,
-      amt: 2100,
-    },
-     {
-      name: 'Oct',
-      Total_Users: 5090,
-      Total_Sales: 3300,
-      amt: 2100,
-    },
-     {
-      name: 'Nov',
-      Total_Users: 0,
-      Total_Sales: 0,
-      amt: 0,
-    },
-     {
-      name: 'Dec',
-      Total_Users: 0,
-      Total_Sales: 0,
-      amt: 0,
-    },
-  ])
 
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const handleChangePage = (event, newPage) => setPage(newPage);
@@ -201,16 +121,16 @@ const Users = () => {
     const checked = event.target.checked;
     const start = page * rowsPerPage;
     const end = start + rowsPerPage;
-    const updatedRows = rows.map((row, index) => {
-      if (index >= start && index < end) return { ...row, isSelected: checked };
-      return row;
+    const updatedUsers = users.map((user, index) => {
+      if (index >= start && index < end) return { ...user, checked };
+      return user;
     });
-    setRows(updatedRows);
+    setUsers(updatedUsers);
   };
 
-  const allPageRowsSelected = rows
+  const allPageRowsSelected = users
     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .every((row) => row.isSelected);
+    .every((user) => user.checked);
 
   const [orderRows, setOrderRows] = React.useState([
     {
@@ -290,28 +210,38 @@ const Users = () => {
               </TableHead>
 
               <TableBody>
-                {rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      <TableCell padding="checkbox" sx={{ pl: 2 }}>
-                        <Checkbox
-                          checked={row.isSelected || false}
-                          onChange={(e) => {
-                            const updatedRows = [...rows];
-                            updatedRows[page * rowsPerPage + index].isSelected = e.target.checked;
-                            setRows(updatedRows);
-                          }}
-                          color="primary"
-                        />
-                      </TableCell>
-                      {columns.map((column) => (
-                        <TableCell key={column.id} align={column.align}>
-                          {row[column.id]}
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={columns.length + 1}>
+                      <div className="flex items-center justify-center w-full min-h-[400px]">
+                        <CircularProgress color="inherit" />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  rows
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => (
+                      <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                        <TableCell padding="checkbox" sx={{ pl: 2 }}>
+                          <Checkbox
+                            checked={users[page * rowsPerPage + index]?.checked || false}
+                            onChange={(e) => {
+                              const updatedUsers = [...users];
+                              updatedUsers[page * rowsPerPage + index].checked = e.target.checked;
+                              setUsers(updatedUsers);
+                            }}
+                            color="primary"
+                          />
                         </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
+                        {columns.map((column) => (
+                          <TableCell key={column.id} align={column.align}>
+                            {row[column.id]}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                )}
               </TableBody>
             </Table>
           </TableContainer>
@@ -319,7 +249,7 @@ const Users = () => {
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={rows.length}
+            count={users.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

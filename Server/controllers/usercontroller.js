@@ -725,7 +725,7 @@ export async function userDetails(req, res) {
     try {
         const userId = req.userId
         console.log(userId)
-        const user = await UserModel.findById(userId).populate('address_details').select('-password -refresh_token')
+        const user = await UserModel.findById(userId).populate('address_details').select('name email mobile avatar role status address_details orderHistory createdAt updatedAt')
 
         // Prevent caching to avoid 304 responses
         res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -776,6 +776,24 @@ export async function addReview(req, res) {
             error: true,
             success: false
         })
+    }
+}
+
+// get all users
+export async function getAllUsers(req, res) {
+    try {
+        const users = await UserModel.find({}).select('name email mobile avatar role status address_details orderHistory createdAt updatedAt');
+        return res.status(200).json({
+            error: false,
+            success: true,
+            data: users
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Something is wrong",
+            error: true,
+            success: false
+        });
     }
 }
 

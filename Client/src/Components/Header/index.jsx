@@ -90,7 +90,7 @@ const Header = () => {
                   </li>
                   <li className="list-none">
                     <Link
-                      to="/order-tracking"
+                      to="/my-order"
                       className="text-[9px] sm:text-[11px] lg:text-[13px] link font-[500] transition"
                     >
                       Order Tracking

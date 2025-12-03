@@ -95,10 +95,9 @@ const Footer = () => {
             <div>
               <h3 className="text-base font-semibold mb-3">Support</h3>
               <ul className="space-y-1 text-gray-700 text-sm">
-                <li>Delivery</li>
+                <li><Link to='/delivery'>Delivery</Link></li>
                 <li>Privacy Policy</li>
-                <li>Terms and conditions of use</li>
-                <li>About us</li>
+                <li><Link to='/AboutUs'>AboutUs</Link></li>
                 <li>Secure payment</li>
                 <li>Login</li>
               </ul>
@@ -113,7 +112,7 @@ const Footer = () => {
                 Subscribe to our latest trendy collection to get special
                 discounts
               </p>
-              <form className="flex flex-col gap-3">
+              {/* <form className="flex flex-col gap-3">
                 <input
                   type="email"
                   placeholder="Your Email Address"
@@ -129,7 +128,7 @@ const Footer = () => {
                   <input type="checkbox" />I agree to the terms and conditions
                   and the privacy policy
                 </label>
-              </form>
+              </form> */}
             </div>
           </div>
 

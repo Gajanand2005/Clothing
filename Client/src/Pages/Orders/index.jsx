@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import AccountSidebar from '../../components/AccountSidebar/Index';
+import AccountSidebar from '../../Components/AccountSidebar/index';
 import Button from '@mui/material/Button';
 import { FaAngleDown } from "react-icons/fa6";
-import Badge from '../../components/Badge/Index';
+import Badge from '../../Components/Badge/Index';
 import { FaAngleUp } from "react-icons/fa6";
 import { fetchDataFromApi } from '../../Utlis/Api';
+import { useNavigate } from 'react-router-dom';
 
 const Order = () => {
+  const history = useNavigate();
 
   const [isOpenOrderProduct, setIsOpenOrderProduct]= useState(null);
   const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token === null) {
+      history("/login");
+    }
+  }, []);
 
 const isShowOrderdProduct =(index)=>{
   if(isOpenOrderProduct===index){

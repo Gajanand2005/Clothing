@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { addReview, authWithGoogle, forgotPasswordController, getReviews, loginUserController, logoutController, refreshToken, registerUserController, removeImageFromCloudinary, resetPassword, updateUserDetails, userAvatarController, userDetails, verifyEmailController, verifyForgotPasswordOtp } from '../controllers/usercontroller.js';
+import { addReview, authWithGoogle, forgotPasswordController, getAllUsers, getReviews, loginUserController, logoutController, refreshToken, registerUserController, removeImageFromCloudinary, resetPassword, updateUserDetails, userAvatarController, userDetails, verifyEmailController, verifyForgotPasswordOtp } from '../controllers/usercontroller.js';
 import auth from '../middleware/auth.js';
 import upload from '../middleware/multer.js';
 const userRouter = Router()
@@ -30,4 +30,5 @@ userRouter.post('/refresh-token', refreshToken)
 userRouter.get('/user-details', auth, userDetails);
 userRouter.post('/addReview', auth, addReview);
 userRouter.get('/getReviews', getReviews);
+userRouter.get('/getAllUsers', auth, getAllUsers);
 export default userRouter;

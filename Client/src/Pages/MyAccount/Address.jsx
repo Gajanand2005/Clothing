@@ -3,6 +3,7 @@ import AccountSidebar from "../../Components/AccountSidebar";
 import Radio from "@mui/material/Radio";
 import { useContext } from "react";
 import { MyContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
@@ -23,6 +24,8 @@ import AddressBox from "./AddressBox";
 const label = { inputProps: { "aria-label": "Radio demo" } };
 
 const Address = () => {
+  const history = useNavigate();
+
   const [address, setAddress] = useState([]);
   const [status, setStatus] = useState(false);
   const [phone, setPhone] = useState("");
@@ -32,6 +35,13 @@ const Address = () => {
   const [addressType, setAddressType] = useState("");
   const [mode, setMode] = useState("add");
   const [addressId, setAddressId]= useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token === null) {
+      history("/login");
+    }
+  }, []);
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);

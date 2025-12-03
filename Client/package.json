@@ -17,6 +17,7 @@
     "@mui/styled-engine-sc": "^7.3.2",
     "axios": "^1.13.1",
     "firebase": "^12.5.0",
+    "framer-motion": "^12.23.25",
     "react": "^19.2.0",
     "react-collapse": "^5.1.1",
     "react-dom": "^19.2.0",
