@@ -11,8 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const VITE_APP_RAZORPAY_KEY_ID = import.meta.env.VITE_APP_RAZORPAY_KEY_ID;
-const VITE_APP_RAZORPAY_KEY_SECRET = import.meta.env
-  .VITE_APP_RAZORPAY_KEY_SECRET;
+const VITE_APP_RAZORPAY_KEY_SECRET = import.meta.env.VITE_APP_RAZORPAY_KEY_SECRET;
 
 const CheckOut = () => {
   const context = useContext(MyContext);
@@ -58,9 +57,9 @@ const CheckOut = () => {
 
   useEffect(()=>{
 
-    setSelectedAddress(context?.userData?.address_details[0]?._id);
+    setSelectedAddress(context?.addressData[0]?._id);
 
-  }, [context?.userData?.address_details]);
+  }, [context?.addressData]);
 
   const checkout = (e) => {
     e.preventDefault();
@@ -71,7 +70,7 @@ const CheckOut = () => {
       context.alertBox("error", "Some items in your cart are out of stock or exceed available quantity. Please update your cart.");
       return;
     }
-     if(userData?.address_details?.length !==0){
+     if(context?.addressData?.length !==0){
        var options = {
       key: VITE_APP_RAZORPAY_KEY_ID,
       key_secret: VITE_APP_RAZORPAY_KEY_SECRET,
@@ -146,7 +145,7 @@ const CheckOut = () => {
 
      const user = context?.userData;
 
-     if(userData?.address_details?.length !==0){
+     if(context?.addressData?.length !==0){
        const payLoad = {
           userId: user?._id,
           products: context?.cartData,
@@ -211,8 +210,8 @@ const CheckOut = () => {
                 <RadioGroup>
                   <div className="flex flex-col gap-4">
                     {/* Address List */}
-                    {userData?.address_details?.length > 0 ? (
-                      userData?.address_details?.map((address, index) => {
+                    {context?.addressData?.length > 0 ? (
+                      context?.addressData?.map((address, index) => {
                         return (
                           <label
                             className={`flex gap-3 p-4 border border-[rgba(0,0,0,0.1)] rounded-md relative ${
@@ -251,7 +250,7 @@ const CheckOut = () => {
                               </p>
 
                               <p className="!mt-0 !mb-0 capitalize font-[600]">
-                                +{userData?.mobile}
+                                +{address?.mobile}
                               </p>
                             </div>
 
