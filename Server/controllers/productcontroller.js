@@ -157,7 +157,7 @@ export async function getAllProducts(req,res){
     try {
 
         const page = parseInt(req.query.page) || 1;
-        const perPage = parseInt(req.query.perPage) || 10;
+        const perPage = parseInt(req.query.perPage) || 10000;
         const totalPosts = await ProductModel.countDocuments();
         const totalPages = Math.ceil(totalPosts/ perPage);
 

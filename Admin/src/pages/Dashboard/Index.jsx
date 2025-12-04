@@ -4,12 +4,11 @@ import Button from "@mui/material/Button";
 import { FaPlus } from "react-icons/fa6";
 import { AiTwotoneGift } from "react-icons/ai";
 import { IoStatsChartSharp } from "react-icons/io5";
-import { FaChartPie } from "react-icons/fa6";
+import { FaChartPie, FaBoxOpen } from "react-icons/fa6";
 import { BsBarChartFill } from "react-icons/bs";
 import { RiBarChartFill } from "react-icons/ri";
 import { HiChartBar } from "react-icons/hi2";
 import { PiPiggyBankDuotone } from "react-icons/pi";
-import { SiPiapro } from "react-icons/si";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -160,7 +159,9 @@ const Dashboard = () => {
   const [sortedIds, setSortedIds] = useState([]);
   const context = useContext(MyContext);
   const [productData, setProductData] = useState([]);
+  const [totalProducts, setTotalProducts] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [salesMap, setSalesMap] = useState({});
   const [productCat, setProductCat] = useState("");
   const [productSubCat, setProductSubCat] = useState("");
   const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
@@ -171,6 +172,7 @@ const Dashboard = () => {
     setProductCat(event.target.value);
     setProductSubCat("");
     setProductThirdLavelCat("");
+    setPage(0);
     fetchDataFromApi(
       `/api/product/getAllProductsByCatId/${event.target.value}`
     ).then((res) => {
@@ -187,6 +189,7 @@ const Dashboard = () => {
     setProductSubCat(event.target.value);
     setProductCat("");
     setProductThirdLavelCat("");
+    setPage(0);
     setIsLoading(true);
     fetchDataFromApi(
       `/api/product/getAllProductsBySubCatId/${event.target.value}`
@@ -204,7 +207,8 @@ const Dashboard = () => {
         setProductThirdLavelCat(event.target.value);
         setProductCat('');
           setProductSubCat('');
-          
+          setPage(0);
+
         setIsLoading(true)
         fetchDataFromApi(
           `/api/product/getAllProductsByThirdLavelCatId/${event.target.value}`
@@ -214,7 +218,7 @@ const Dashboard = () => {
              setTimeout(() => {
               setIsLoading(false)
             }, 500);
-          
+
           }
         });
       };
@@ -264,6 +268,7 @@ const Dashboard = () => {
         }
        setTimeout(() =>{
          setProductData(productArr);
+         setTotalProducts(res?.products?.length);
          setIsLoading(false)
        },500)
       }
@@ -401,8 +406,8 @@ const Dashboard = () => {
     },
     {
       title: "Products",
-      value: productData.length.toString(),
-      icon1: SiPiapro,
+      value: totalProducts.toString(),
+      icon1: FaBoxOpen,
       icon2: HiChartBar,
       color: "#bf00ff",
       size1: "40px",
@@ -477,7 +482,13 @@ const Dashboard = () => {
 
       <div className="card my-5 shadow-md sm:rounded-lg bg-white">
         <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
-          <h2 className="text-[18px] font-[600]">Products</h2>
+          <div>
+            <h2 className="text-[18px] font-[600]">Products</h2>
+            <p className="!mt-0">
+              There are
+              <span className="font-bold text-orange-600 ">{productData?.length}</span> Products
+            </p>
+          </div>
           <div className="col w-[35%] ml-auto flex items-center justify-end gap-3">
             {sortedIds?.length !== 0 && (
               <Button

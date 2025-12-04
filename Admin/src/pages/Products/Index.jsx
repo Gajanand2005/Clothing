@@ -17,7 +17,7 @@ import Checkbox from "@mui/material/Checkbox";
 import ProgressBar from "../../Components/ProgressBar";
 import SearchBox from "../../Components/SearchBox/Index";
 import { MyContext } from "../../App";
-import { data, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { AiTwotoneDelete } from "react-icons/ai";
@@ -213,7 +213,7 @@ const Product = () => {
 
   const getProducts = async () => {
     setIsLoading(true)
-    fetchDataFromApi("/api/product/getAllProducts").then((res) => {
+    fetchDataFromApi("/api/product/getAllProducts?perPage=10000").then((res) => {
       let productArr = [];
       if (res?.error === false) {
         for (let i = 0; i < res?.products?.length; i++) {

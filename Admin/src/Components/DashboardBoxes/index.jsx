@@ -5,12 +5,11 @@ import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { AiTwotoneGift } from "react-icons/ai";
 import { IoStatsChartSharp } from "react-icons/io5";
-import { FaChartPie } from "react-icons/fa6";
+import { FaChartPie, FaBoxOpen } from "react-icons/fa6";
 import { BsBarChartFill } from "react-icons/bs";
 import { RiBarChartFill } from "react-icons/ri";
 import { HiChartBar } from "react-icons/hi2";
 import { PiPiggyBankDuotone } from "react-icons/pi";
-import { SiPiapro } from "react-icons/si";
 
 const DashboardBoxes = ({ data }) => {
   const defaultData = [
@@ -44,7 +43,7 @@ const DashboardBoxes = ({ data }) => {
     {
       title: "Products",
       value: "540",
-      icon1: SiPiapro,
+      icon1: FaBoxOpen,
       icon2: HiChartBar,
       color: "#bf00ff",
       size1: "40px",
