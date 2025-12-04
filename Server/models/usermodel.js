@@ -80,6 +80,10 @@ const userSchema = mongoose.Schema({
     signUpWithGoogle:{
         type:Boolean,
         default: false
+    },
+    forgotPasswordVerified:{
+        type:Boolean,
+        default: false
     }
 },
     { timestamps: true }

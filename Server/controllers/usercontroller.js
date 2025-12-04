@@ -218,19 +218,38 @@ export async function loginUserController(req, res) {
     try {
         const { email, password } = req.body;
 
+        if (!email || !password) {
+            return res.status(400).json({
+                message: "provide email and password",
+                error: true,
+                success: false,
+            });
+        }
+
         const user = await UserModel.findOne({ email: email })
 
         if (!user) {
+            console.log(`Login attempt failed: User not found for email ${email}`);
             return res.status(400).json({
-                message: "User not register",
+                message: "User not registered",
+                error: true,
+                success: false
+            })
+        }
+
+        if (user.signUpWithGoogle) {
+            console.log(`Login attempt failed: User signed up with Google, cannot login with password for ${email}`);
+            return res.status(400).json({
+                message: "Please login with Google",
                 error: true,
                 success: false
             })
         }
 
         if (user.verify_email !== true) {
+            console.log(`Login attempt failed: Email not verified for user ${email}`);
             return res.status(400).json({
-                message: "Your Email.is not verify yet please verify your email first",
+                message: "Your email is not verified yet. Please verify your email first.",
                 error: true,
                 success: false
             })
@@ -239,8 +258,9 @@ export async function loginUserController(req, res) {
         const checkPassword = await bcrypt.compare(password, user.password);
 
         if (!checkPassword) {
+            console.log(`Login attempt failed: Incorrect password for user ${email}`);
             return res.status(400).json({
-                message: "Check your password",
+                message: "Incorrect password",
                 error: true,
                 success: false
             })
@@ -568,6 +588,7 @@ export async function verifyForgotPasswordOtp(req, res) {
         // Reset OTP fields after successful verification
         user.otp = "";
         user.otpExpires = "";
+        user.forgotPasswordVerified = true;
 
         await user.save();
 
@@ -608,7 +629,7 @@ export async function resetPassword(req, res) {
       });
     }
 
-    if (user?.signUpWithGoogle === false) {
+    if (user?.signUpWithGoogle === false && !user.forgotPasswordVerified) {
       if (!oldPassword) {
         return res.status(400).json({
           error: true,
@@ -646,6 +667,7 @@ export async function resetPassword(req, res) {
 
     user.password = hashPassword;
     user.signUpWithGoogle = false;
+    user.forgotPasswordVerified = false;
     await user.save();
 
     return res.json({
