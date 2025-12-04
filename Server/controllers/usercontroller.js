@@ -33,7 +33,7 @@ export async function registerUserController(req, res) {
       });
     }
 
-    user = await UserModel.findOne({ email: email });
+    user = await UserModel.findOne({ email: new RegExp('^' + email.toLowerCase() + '$', 'i') });
 
     if (user) {
       return res.json({
@@ -49,7 +49,7 @@ export async function registerUserController(req, res) {
     const hashPassword = await bcrypt.hash(password, salt);
 
     user = new UserModel({
-      email: email,
+      email: email.toLowerCase(),
       password: hashPassword,
       name: name,
       otp: verifyCode,
@@ -91,7 +91,7 @@ export async function verifyEmailController(req, res) {
     try {
         const { email, otp } = req.body;
 
-        const user = await UserModel.findOne({ email: email });
+        const user = await UserModel.findOne({ email: new RegExp('^' + email.toLowerCase() + '$', 'i') });
         if (!user) {
             return res.status(400).json({ error: true, success: false, message: "User not found" });
         }
@@ -125,12 +125,12 @@ export async function authWithGoogle(req, res) {
     const {name,email,password,avatar,mobile,role}= req.body;
 
     try {
-        const existingUser = await UserModel.findOne({email: email});
+        const existingUser = await UserModel.findOne({email: new RegExp('^' + email.toLowerCase() + '$', 'i')});
         if(!existingUser){
             const userData = {
                 name:name,
                 mobile:mobile,
-                email:email,
+                email:email.toLowerCase(),
                 password: "null",
                 role: role,
                 verify_email: true,
@@ -226,7 +226,7 @@ export async function loginUserController(req, res) {
             });
         }
 
-        const user = await UserModel.findOne({ email: email })
+        const user = await UserModel.findOne({ email: new RegExp('^' + email.toLowerCase() + '$', 'i') })
 
         if (!user) {
             console.log(`Login attempt failed: User not found for email ${email}`);
@@ -241,15 +241,6 @@ export async function loginUserController(req, res) {
             console.log(`Login attempt failed: User signed up with Google, cannot login with password for ${email}`);
             return res.status(400).json({
                 message: "Please login with Google",
-                error: true,
-                success: false
-            })
-        }
-
-        if (user.verify_email !== true) {
-            console.log(`Login attempt failed: Email not verified for user ${email}`);
-            return res.status(400).json({
-                message: "Your email is not verified yet. Please verify your email first.",
                 error: true,
                 success: false
             })
@@ -457,7 +448,7 @@ export async function updateUserDetails(req, res) {
             {
                 name: name,
                 mobile: mobile,
-                email: email,
+                email: email.toLowerCase(),
                 verify_email: email !== userExist.email ? false : true,
                 password: hashPassword,
                 otp: verifyCode !== "" ? verifyCode : null,
@@ -504,7 +495,7 @@ export async function updateUserDetails(req, res) {
 export async function forgotPasswordController(req, res) {
     try {
         const { email } = req.body
-        const user = await UserModel.findOne({ email: email })
+        const user = await UserModel.findOne({ email: new RegExp('^' + email.toLowerCase() + '$', 'i') })
 
         if (!user) {
             return res.status(400).json({
@@ -558,7 +549,7 @@ export async function verifyForgotPasswordOtp(req, res) {
             });
         }
 
-        const user = await UserModel.findOne({ email: email });
+        const user = await UserModel.findOne({ email: new RegExp('^' + email.toLowerCase() + '$', 'i') });
 
         if (!user) {
             return res.status(400).json({
@@ -620,7 +611,7 @@ export async function resetPassword(req, res) {
       });
     }
 
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email: new RegExp('^' + email.toLowerCase() + '$', 'i') });
     if (!user) {
       return res.status(400).json({
         message: "Email is not available",
@@ -629,30 +620,6 @@ export async function resetPassword(req, res) {
       });
     }
 
-    if (user?.signUpWithGoogle === false && !user.forgotPasswordVerified) {
-      if (!oldPassword) {
-        return res.status(400).json({
-          error: true,
-          success: false,
-          message: "Provide oldPassword"
-        });
-      }
-      if (!user.password) {
-        return res.status(400).json({
-          message: "No password found for this user.",
-          error: true,
-          success: false
-        });
-      }
-      const checkPassword = await bcrypt.compare(oldPassword, user.password);
-      if (!checkPassword) {
-        return res.status(400).json({
-          message: "Your old password is wrong",
-          error: true,
-          success: false,
-        });
-      }
-    }
 
     if (newPassword !== confirmPassword) {
       return res.status(400).json({

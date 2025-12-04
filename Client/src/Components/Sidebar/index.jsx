@@ -21,6 +21,8 @@ export const Sidebar = (props) => {
     catId: [],
     subCatId: [],
     thirdsubCatId: [],
+    availability: [],
+    size: [],
     minPrice:"",
     maxPrice:"",
     page:1,
@@ -29,6 +31,9 @@ export const Sidebar = (props) => {
 
 
 const [price,setPrice]=useState([0,5000])
+
+const availOptions = ["Available", "In Stock", "Not Available"];
+const sizeOptions = ["XS", "S", "L", "XL", "2XL", "3XL", "4XL", "5XL"];
 
 const context = useContext(MyContext)
 
@@ -274,7 +279,7 @@ useEffect(() => {
         </Collapse>
       </div>
 
-         <div className="box mt-3">
+         {/* <div className="box mt-3">
         <h3 className="mb-3 w-full text-[16px] font-[600] flex items-center pr-5 ">
           Availability
           <Button className=" !text-black !w-[30px] !h-[30px] !min-w-[30px] !rounded-full !ml-auto" onClick={()=>setIsOpenAvailFilter(!isOpenAvailFilter)}>
@@ -287,21 +292,16 @@ useEffect(() => {
         </h3>
         <Collapse isOpened={isOpenAvailFilter}>
           <div className="scroll px-4 relative -left-[13px] ">
-            <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="Available"
-              className="w-full"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="In Stock"
-              className="w-full"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="Not Available"
-              className="w-full"
-            />
+            {availOptions.map((option, index) => (
+              <FormControlLabel
+                key={index}
+                control={<Checkbox size="small" />}
+                label={option}
+                className="w-full"
+                checked={filters?.availability?.includes(option)}
+                onChange={() => handleCheckboxChange('availability', option)}
+              />
+            ))}
           </div>
         </Collapse>
       </div>
@@ -320,49 +320,19 @@ useEffect(() => {
         </h3>
         <Collapse isOpened={isOpenSizeFilter}>
           <div className="scroll px-5 pb-3 relative -left-[13px] ">
-            <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="XS"
-              className="w-full"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="S"
-              className="w-full"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="L"
-              className="w-full"
-            />
-             <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="XL"
-              className="w-full"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="2XL"
-              className="w-full"
-            />
-             <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="3XL"
-              className="w-full"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="4XL"
-              className="w-full"
-            />
-            <FormControlLabel
-              control={<Checkbox size="small" />}
-              label="5XL"
-              className="w-full"
-            />
+            {sizeOptions.map((option, index) => (
+              <FormControlLabel
+                key={index}
+                control={<Checkbox size="small" />}
+                label={option}
+                className="w-full"
+                checked={filters?.size?.includes(option)}
+                onChange={() => handleCheckboxChange('size', option)}
+              />
+            ))}
           </div>
         </Collapse>
-      </div>
+      </div> */}
 
     
          <div className="box mt-4">
