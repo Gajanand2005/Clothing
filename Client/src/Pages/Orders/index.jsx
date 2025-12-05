@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import AccountSidebar from '../../Components/AccountSidebar/index';
 import Button from '@mui/material/Button';
 import { FaAngleDown } from "react-icons/fa6";
-import Badge from '../../Components/Badge/Index';
+import Badge from '../../components/Badge/Index';
 import { FaAngleUp } from "react-icons/fa6";
 import { fetchDataFromApi } from '../../Utlis/Api';
 import { useNavigate } from 'react-router-dom';
-
+import './style.css'
 const Order = () => {
   const history = useNavigate();
 

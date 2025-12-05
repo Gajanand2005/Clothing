@@ -6,6 +6,7 @@ import banner1 from '../../assets/ban1.jpg'
 import banner2 from '../../assets/ban2.jpg'
 import banner3 from '../../assets/ban3.jpg'
 import banner4 from '../../assets/ban4.jpg'
+import './style.css'
 
 import { Navigation } from 'swiper/modules';
 import BannerBox from '../BannerBox/Index';

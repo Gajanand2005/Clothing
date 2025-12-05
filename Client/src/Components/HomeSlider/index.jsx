@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
-
+import "./Style.css";
 const HomeSlider = (props) => {
   return (
     <div className="homeSlider w-full bg-gray-50 py-6">

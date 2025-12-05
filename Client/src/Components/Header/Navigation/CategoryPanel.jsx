@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-
+import "./style.css";
 import Divider from '@mui/material/Divider';
 import { IoMdClose } from "react-icons/io";
 

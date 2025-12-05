@@ -4,6 +4,7 @@ import OtpBox from '../../Components/OtpBox/Index';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { postData } from '../../Utlis/Api';
+import './style.css'
 
 import { MyContext } from '../../App';
 

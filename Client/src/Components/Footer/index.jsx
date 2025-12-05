@@ -29,6 +29,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import AddAddress from "../../Pages/MyAccount/AddAddress.jsx";
+import "./Footer.css"
 
 const Footer = () => {
   const context = useContext(MyContext);

@@ -20,6 +20,7 @@ import { PiBagFill } from "react-icons/pi";
 import { TbHeartHandshake } from "react-icons/tb";
 import { SlLogout } from "react-icons/sl";
 import { fetchDataFromApi, postData } from "../../Utlis/Api.js";
+import './stle.css'
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {

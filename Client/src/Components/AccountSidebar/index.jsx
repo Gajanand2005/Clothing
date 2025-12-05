@@ -10,6 +10,7 @@ import { MyContext } from '../../App';
 import CircularProgress from '@mui/material/CircularProgress';
 import {  uploadImage } from '../../Utlis/Api.js';
 import { LuMapPinHouse } from "react-icons/lu";
+import "./style.css"
 
 const AccountSidebar = () => {
 

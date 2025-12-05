@@ -9,6 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { postData, fetchDataFromApi } from "../../Utlis/Api";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
+import "./login.css"
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 
