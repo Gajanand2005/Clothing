@@ -65,8 +65,8 @@ const Header = () => {
     setAnchorMyAcc(null);
 
     // Immediately clear client-side state and localStorage
-    context.setIsLogin(false);
-    context.setUserData(null);
+    context?.setIsLogin(false);
+    context?.setUserData(null);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     history("/");
@@ -99,7 +99,7 @@ const Header = () => {
       >
         <Button
           className="!w-[40px] !h-[40px] !rounded-full !min-w-[40px] !text-[rgba(0,0,0,0.8)]"
-          onClick={() => context.setIsSidebarOpen(!context.isSidebarOpen)}
+          onClick={() => context?.setIsSidebarOpen(!context?.isSidebarOpen)}
         >
           <IoMenuSharp className="text-[22px] text-[rgba(0,0,0,0.8)]" />
         </Button>
@@ -112,7 +112,7 @@ const Header = () => {
           </StyledBadge>
         </IconButton>
 
-        {context.isLogin === true ? (
+        {context?.isLogin === true ? (
           <div className="relative">
             <div
               className="rounded-full w-[35px] h-[35px] overflow-hidden cursor-pointer"

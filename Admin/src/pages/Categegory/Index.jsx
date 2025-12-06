@@ -51,11 +51,11 @@ const CategoryList = () => {
         <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
           <h2 className="text-[18px] font-[600]">Category List</h2>
           <div className="col w-[15%] ml-auto flex items-center gap-2">
-            <TooltipMUI title="Export" placement="top">
+            {/* <TooltipMUI title="Export" placement="top">
               <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black !hover:bg-black-300 hover:scale-105">
                 <PiExportBold />
               </Button>
-            </TooltipMUI>
+            </TooltipMUI> */}
             <TooltipMUI title="Add New Category" placement="top">
               <Button
                 className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black hover:bg-black-300 hover:scale-105"

@@ -62,11 +62,11 @@ const UploadBox = (props) => {
 
   return (
     <>
-      <div className="uploadBox p-3 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.4)] h-[150px] w-[180px] bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
+      <div className="uploadBox p-3 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.4)] h-[150px] w-full sm:w-[180px] bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
         {uploading ? (
           <>
             <CircularProgress />
-            <h4 className="text-center">Uploading....</h4>
+            <h4 className="text-center text-sm mt-2">Uploading....</h4>
           </>
           ) : showPreviewInside && previews.length > 0 ? (
             <div className="w-full h-full flex flex-wrap gap-1 overflow-hidden">
@@ -81,14 +81,14 @@ const UploadBox = (props) => {
             </div>
         ) : (
           <>
-            <IoIosImages className="text-[50px] opacity-50 pointer-events-none" />
-            <h4 className="text-[14px] pointer-events-none">Image Upload</h4>
+            <IoIosImages className="text-[40px] sm:text-[50px] opacity-50 pointer-events-none" />
+            <h4 className="text-[12px] sm:text-[14px] pointer-events-none text-center px-2">Image Upload</h4>
 
             <input
               type="file"
               accept="image/*"
               multiple={props.multiple !== undefined ? props.multiple : false}
-              className="absolute top-0 left-0 w-full h-full z-50 opacity-0"
+              className="absolute top-0 left-0 w-full h-full z-50 opacity-0 cursor-pointer"
               onChange={(e) => onChangeFile(e, props?.url)}
               name="images"
             />

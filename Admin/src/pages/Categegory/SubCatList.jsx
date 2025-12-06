@@ -20,21 +20,19 @@ const SubCatList = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between px-2 py-0 mt-3">
-        <h2 className="text-[18px] font-[600]">Sub Category LIst</h2>
-        <div className="col w-[30%] ml-auto flex items-center justify-end gap-3">
-          <Button
-            className="!bg-blue-600 !text-white "
-            onClick={() =>
-              context.setIsOpenFullScreenPanel({
-                open: true,
-                model: "Add New Sub Category",
-              })
-            }
-          >
-            Add New Sub Category
-          </Button>
-        </div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-2 py-4 mt-3 gap-4">
+        <h2 className="text-lg sm:text-xl font-semibold">Sub Category List</h2>
+        <Button
+          className="!bg-blue-600 !text-white !w-full sm:!w-auto !px-6 !py-2"
+          onClick={() =>
+            context.setIsOpenFullScreenPanel({
+              open: true,
+              model: "Add New Sub Category",
+            })
+          }
+        >
+          + Add Sub Category
+        </Button>
       </div>
       <div className="card my-4 pt-5 pb-5 px-5 shadow-md sm:rounded-lg bg-white">
         {context?.catData?.length !== 0 && (

@@ -105,13 +105,13 @@ const AddSize = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between px-2 py-0 mt-3">
-        <h2 className="text-[18px] font-[600]">Add Product Size</h2>
+      <div className="flex items-center justify-between px-2 md:px-4 py-0 mt-3">
+        <h2 className="text-[16px] md:text-[18px] font-[600]">Add Product Size</h2>
       </div>
-      <div className="card my-4 pt-5 pb-5 shadow-md sm:rounded-lg bg-white w-[65%]">
-        <form action="" className="form py-3 p-6" onSubmit={handleSubmit}>
+      <div className="card my-4 pt-5 pb-5 shadow-md rounded-lg bg-white w-full md:w-[65%] px-4 md:px-0">
+        <form action="" className="form py-3 p-4 md:p-6" onSubmit={handleSubmit}>
           <div className="col mb-4">
-            <h3 className="text-[14px] font-[500] mb-1 text-black">
+            <h3 className="text-[12px] md:text-[14px] font-[500] mb-2 text-black">
               PRODUCT SIZE
             </h3>
             <input
@@ -122,33 +122,34 @@ const AddSize = () => {
             />
           </div>
 
-          <Button className="btn-blue btn-lg w-full flex gap-2" type="submit">
+          <Button className="!w-full !bg-blue-600 !text-white !py-2 flex gap-2 justify-center" type="submit">
             {isLoading === true ? (
-              <CircularProgress color="inherit" />
+              <CircularProgress color="inherit" size={24} />
             ) : (
               <>
-                <FaCloudUploadAlt className="text-[25px]" />
-                Publish and View
+                <FaCloudUploadAlt className="text-[20px]" />
+                <span className="hidden sm:inline">Publish and View</span>
+                <span className="sm:hidden">Publish</span>
               </>
             )}
           </Button>
         </form>
       </div>
       {data?.length !== 0 && (
-        <div className="card my-4 pt-5 pb-5 shadow-md sm:rounded-lg bg-white w-[65%]">
+        <div className="card my-4 pt-5 pb-5 shadow-md rounded-lg bg-white w-full md:w-[65%] px-4 md:px-0">
           <div className="relative overflow-x-auto mt-5 pb-5">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table className="w-full text-xs md:text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-200 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" className="px-6 pr-0 py-3 w-[10%]">
-                    <div className="w-[60px]">
+                  <th scope="col" className="px-2 md:px-6 pr-0 py-3 w-[10%]">
+                    <div className="w-[40px] md:w-[60px]">
                       <Checkbox {...label} size="small" />
                     </div>
                   </th>
-                  <th scope="col" className="px-0 py-3 whitespace-nowrap">
+                  <th scope="col" className="px-2 md:px-0 py-3 whitespace-nowrap">
                     PRODUCT SIZE
                   </th>
-                  <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                  <th scope="col" className="px-2 md:px-6 py-3 whitespace-nowrap">
                     ACTION
                   </th>
                 </tr>
@@ -156,29 +157,29 @@ const AddSize = () => {
               <tbody>
                 {data.map((item, index) => (
                   <tr key={item._id} className="odd:bg-white border-b dark:border-gray-700">
-                    <td className="px-6 pr-0 py-3">
-                      <div className="w-[60px]">
+                    <td className="px-2 md:px-6 pr-0 py-3">
+                      <div className="w-[40px] md:w-[60px]">
                         <Checkbox {...label} size="small" />
                       </div>
                     </td>
-                    <td className="px-0 py-2">{item.name}</td>
-                    <td className="px-6 py-2">
+                    <td className="px-2 md:px-0 py-2 text-xs md:text-sm">{item.name}</td>
+                    <td className="px-2 md:px-6 py-2">
                       <div className="flex items-center gap-1">
                         <TooltipMUI title="Edit Product" placement="top">
                           <Button
-                            className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]"
+                            className="!w-[32px] !h-[32px] md:!w-[35px] md:!h-[35px] !min-w-[32px] md:!min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]"
                             onClick={() => editItem(item._id)}
                           >
-                            <FaEdit className="text-[rgba(0,0,0,0.7)] text-[20px]" />
+                            <FaEdit className="text-[rgba(0,0,0,0.7)] text-[16px] md:text-[20px]" />
                           </Button>
                         </TooltipMUI>
 
                         <TooltipMUI title="Remove Product" placement="top">
                           <Button
-                            className="!w-[35px] !h-[35px] !min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]"
+                            className="!w-[32px] !h-[32px] md:!w-[35px] md:!h-[35px] !min-w-[32px] md:!min-w-[35px] bg-[#f1f1f1] !border !border-[rgba(0,0,0,0.1)] !rounded-full hover:!bg-[#ccc]"
                             onClick={() => deleteItem(item._id)}
                           >
-                            <AiTwotoneDelete className="text-[rgba(0,0,0,0.7)] text-[25px]" />
+                            <AiTwotoneDelete className="text-[rgba(0,0,0,0.7)] text-[20px] md:text-[25px]" />
                           </Button>
                         </TooltipMUI>
                       </div>

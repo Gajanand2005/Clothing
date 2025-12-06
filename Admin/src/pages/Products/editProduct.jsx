@@ -44,7 +44,7 @@ const EditProduct = () => {
    const [productSizeData, setProductSizeData] = useState([])
   const [productThirdLavelCat, setProductThirdLavelCat] = useState("");
   const [previews, setPreviews] = useState([]);
-    const [isLoading, setIsLoading] = useState();
+    const [isLoading, setIsLoading] = useState(false);
   const [sizeChart, setSizeChart] = useState({
     S: { chest: '36–21', shoulder: '16.5–17', length: '26–27', sleeve: '7–8' },
     M: { chest: '38–40', shoulder: '17–17.5', length: '27–28', sleeve: '8–9' },
@@ -103,85 +103,76 @@ setPreviews(res?.product?.images)
  
 
   const handleChangeProductCat = (event) => {
-    setProductCat(event.target.value);
-    formFields.catId = event.target.value;
-     formFields.category = event.target.value;
+    const value = event.target.value;
+    setProductCat(value);
+    setFormFields(prev => ({ ...prev, catId: value, category: value }));
   };
-  const selectDatByName =(name)=> {
-   
-  formFields.catName = name;
-  }
+
+  const selectDatByName = (name) => {
+    setFormFields(prev => ({ ...prev, catName: name }));
+  };
 
   const handleChangeProductSubCat = (event) => {
-    setProductSubCat(event.target.value);
-    formFields.subCatId = event.target.value;
+    const value = event.target.value;
+    setProductSubCat(value);
+    setFormFields(prev => ({ ...prev, subCatId: value }));
   };
 
- const selectSubDatByName =(name)=> {
-   
-  formFields.subCat = name;
-  }
+  const selectSubDatByName = (name) => {
+    setFormFields(prev => ({ ...prev, subCat: name }));
+  };
 
-const handleChangeProductThirdLavelCat =(event)=> {
-  setProductThirdLavelCat(event.target.value);
-    formFields.thirdsubCatId = event.target.value;
-}
- const selectSubDatByThirdLavel =(name)=> {
-  formFields.thirdsubCat = name;
-  }
+  const handleChangeProductThirdLavelCat = (event) => {
+    const value = event.target.value;
+    setProductThirdLavelCat(value);
+    setFormFields(prev => ({ ...prev, thirdsubCatId: value }));
+  };
+
+  const selectSubDatByThirdLavel = (name) => {
+    setFormFields(prev => ({ ...prev, thirdsubCat: name }));
+  };
 
 
 
   const handleChangeProductFeatured = (event) => {
-    setProductFeatured(event.target.value);
-    formFields.isFeatured=event.target.value
+    const value = event.target.value;
+    setProductFeatured(value);
+    setFormFields(prev => ({ ...prev, isFeatured: value }));
   };
 
   const handleChangeProductSize = (event) => {
-    const {target:{value}} = event;
-    setProductSize(
-      typeof value === "string" ? value.split(","):value
-    );
-    formFields.size= value;
+    const { target: { value } } = event;
+    const newVal = typeof value === "string" ? value.split(",") : value;
+    setProductSize(newVal);
+    setFormFields(prev => ({ ...prev, size: newVal }));
   };
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
-    setFormFields(() => {
-      return {
-        ...formFields,
-        [name]: value,
-      };
-    });
+    setFormFields(prev => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
- const setPreviewsFun = (previewsArr) => {
-    // setPreviews(previewsArr);
-    // formFields.images = previewsArr;
-
-
-    const imgArr = previews;
-    for(let i=0; i<previewsArr.length;i++){
-      imgArr.push(previewsArr[i])
-    }
-    setPreviews([]);
-    setTimeout(() => {
-      setPreviews(imgArr)
-      formFields.images= imgArr;
-    }, 10);
+  const setPreviewsFun = (previewsArr) => {
+    const newPreviews = [...(previews || []), ...previewsArr];
+    setPreviews(newPreviews);
+    setFormFields(prev => ({ ...prev, images: newPreviews }));
   };
 
   const removeImg = (images, index) => {
-    var imageArr = [];
-    imageArr = previews;
-    deleteImages(`/api/product/deleteImage?img=${images}`).then((res) => {
-      imageArr.splice(index, 1);
-      setPreviews([]);
-      setTimeout(() => {
-        setPreviews(imageArr);
-        formFields.images = imageArr;
-      }, 100);
-    });
+    deleteImages(`/api/product/deleteImage?img=${encodeURIComponent(images)}`)
+      .then(() => {
+        const newArr = (previews || []).filter((_, i) => i !== index);
+        setPreviews(newArr);
+        setFormFields(prev => ({ ...prev, images: newArr }));
+      })
+      .catch(() => {
+        const newArr = (previews || []).filter((_, i) => i !== index);
+        setPreviews(newArr);
+        setFormFields(prev => ({ ...prev, images: newArr }));
+      });
   };
 
   const handleSizeChartChange = (size, field, value) => {
@@ -294,10 +285,10 @@ const handleSubmit = (e) => {
 
 
   return (
-    <>
-      <section className="p-5 bg-gray-50 ">
-        <form className="form py-3 p-8 " onSubmit={handleSubmit}>
-          <div className="scroll max-h-72vh] overflow-y-scroll">
+    <section className="p-4 md:p-6 bg-gray-50">
+      <div className="max-w-5xl mx-auto">
+        <form className="form bg-white p-4 md:p-6 rounded-lg shadow-sm" onSubmit={handleSubmit}>
+          <div className="scroll max-h-[72vh] overflow-y-auto">
             <div className="grid grid-cols-1 mb-3">
               <div className="col">
                 <h3 className="text-[14px] font-[500] !mb-2">Product Name</h3>
@@ -407,7 +398,7 @@ const handleSubmit = (e) => {
               </div>
             </div>
             {/* // Product Category Logic */}
-            <div className="grid grid-cols-4 mb-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-3 gap-4">
               <div className="col">
                 <h3 className="text-[14px] font-[500] !mb-2">
                   Product Category
@@ -585,29 +576,22 @@ const handleSubmit = (e) => {
                
               </div>
             </div>
-            <div className="col w-full px-0 p-5">
-              <h3 className="font-[600] text-[22px] mb-2">Media & Images</h3>
+            <div className="col w-full px-0 p-3">
+              <h3 className="font-[600] text-[20px] mb-2">Media & Images</h3>
 
-              <div className="grid grid-cols-7 gap-20 ">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
               {previews?.length !== 0 &&
                 previews?.map((images, index) => {
                   return (
-                    <div className="uploadBoxWrapper relative" key={index}>
-                      <span className="absolute w-[20px] h-[20px] rounded-full overflow-hidden bg-red-700 -top-[5px] -right-[50px] flex items-center justify-center z-50 cursor-pointer">
-                        <IoClose
-                          className="text-white text-[17px]"
-                          onClick={() => removeImg(images, index)}
-                        />
-                      </span>
+                    <div className="uploadBoxWrapper relative rounded-md overflow-hidden" key={index}>
+                      <button type="button" className="absolute top-2 right-2 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center z-20" onClick={() => removeImg(images, index)}>
+                        <IoClose className="text-[14px]" />
+                      </button>
 
-                      <div className="uploadBox p-0 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.4)] h-[150px] w-[180px] bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
+                      <div className="uploadBox p-0 rounded-md overflow-hidden border border-dashed border-[rgba(0,0,0,0.12)] h-[150px] w-full bg-gray-100 cursor-pointer hover:bg-gray-200 flex items-center justify-center flex-col relative">
                         <LazyLoadImage
                           alt={"image"}
                           effect="blur"
-                          wrapperProps={{
-                            // If you need to, you can tweak the effect transition using the wrapper style.
-                            style: { transitionDelay: "1s" },
-                          }}
                           className="w-full h-full object-cover"
                           src={images}
                         />
@@ -617,33 +601,35 @@ const handleSubmit = (e) => {
                 })}
 
               <UploadBox
-                multiple={true}
-                name="images"
-                url="/api/product/uploadImages"
                 setPreviews={setPreviewsFun}
+                url="/api/product/uploadImages"
+                multiple={true}
               />
             </div>
             </div>
           </div>
 
-          <hr />
-          <br />
-           <Button
-                      type="submit"
-                      className="!bg-blue-600 !text-black btn-lg w-[250px] flex gap-4"
-                    >
-                      {isLoading === true ? (
-                        <CircularProgress color="inherit" />
-                      ) : (
-                        <>
-                          <FaCloudUploadAlt className="text-[25px]" />
-                          Publish and View
-                        </>
-                      )}
-                    </Button>
+          <div className="flex items-center gap-3 mt-6 pt-6 border-t">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={isLoading}
+              className="!flex !gap-2"
+            >
+              {isLoading ? <CircularProgress size={20} color="inherit" /> : "Update Product"}
+            </Button>
+            <Button
+              type="button"
+              variant="outlined"
+              onClick={() => context.setIsOpenFullScreenPanel({ open: false })}
+            >
+              Cancel
+            </Button>
+          </div>
         </form>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

@@ -290,15 +290,16 @@ const AddProduct = () => {
 
   return (
     <>
-      <section className="p-5 bg-gray-50">
-        <form className="form py-3 p-8" onSubmit={handleSubmit}>
-          <div className="scroll max-h-72vh overflow-y-scroll">
+      <section className="p-4 md:p-6 bg-gray-50">
+        <div className="max-w-5xl mx-auto">
+          <form className="form bg-white p-4 md:p-6 rounded-lg shadow-sm" onSubmit={handleSubmit}>
+            <div className="scroll max-h-[72vh] overflow-y-auto">
             <div className="grid grid-cols-1 mb-3">
               <div className="col">
                 <h3 className="text-[14px] font-[500] !mb-2">Product Name</h3>
                 <input
                   type="text"
-                  className="w-full h-[40px] border border-[rgba(0,0,0,0.2)] rounded-md p-3 text-sm bg-[#fafafa]"
+                  className="w-full h-[40px] border border-[rgba(0,0,0,0.12)] rounded-md p-3 text-sm bg-[#fafafa]"
                   name="name"
                   value={formFields.name}
                   onChange={onChangeInput}
@@ -404,7 +405,7 @@ const AddProduct = () => {
             </div>
 
             {/* CATEGORY SECTION */}
-            <div className="grid grid-cols-4 mb-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-3 gap-4">
               <div className="col">
                 <h3 className="text-[14px] font-[500] !mb-2">
                   Product Category
@@ -588,18 +589,18 @@ const AddProduct = () => {
             </div>
 
             {/* IMAGES SECTION */}
-            <div className="col w-full px-0 p-5">
-              <h3 className="font-[600] text-[22px] mb-2">Media & Images</h3>
+            <div className="col w-full px-0 p-3">
+              <h3 className="font-[600] text-[20px] mb-2">Media & Images</h3>
 
-              <div className="grid grid-cols-7 gap-20">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
                 {previews.length !== 0 &&
                   previews.map((images, index) => (
-                    <div className="uploadBoxWrapper relative" key={index}>
-                      <span className="absolute w-[20px] h-[20px] bg-red-700 text-white rounded-full -top-[5px] -right-[50px] flex items-center justify-center cursor-pointer">
-                        <IoClose onClick={() => removeImg(images, index)} />
-                      </span>
+                    <div className="uploadBoxWrapper relative rounded-md overflow-hidden" key={index}>
+                      <button type="button" className="absolute top-2 right-2 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center z-20" onClick={() => removeImg(images, index)}>
+                        <IoClose className="text-[14px]" />
+                      </button>
 
-                      <div className="uploadBox border border-dashed border-[rgba(0,0,0,0.4)] rounded-md overflow-hidden h-[150px] w-[180px] bg-gray-100">
+                      <div className="uploadBox border border-dashed border-[rgba(0,0,0,0.12)] rounded-md overflow-hidden h-[140px] w-full bg-gray-100">
                         <LazyLoadImage
                           className="w-full h-full object-cover"
                           src={images}
@@ -609,33 +610,36 @@ const AddProduct = () => {
                     </div>
                   ))}
 
-                <UploadBox
-                  multiple={true}
-                  name="images"
-                  url="/api/product/uploadImages"
-                  setPreviews={setPreviewsFun}
-                />
+                <div className="">
+                  <UploadBox
+                    multiple={true}
+                    name="images"
+                    url="/api/product/uploadImages"
+                    setPreviews={setPreviewsFun}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          <hr />
-          <br />
-
-          <Button
-            type="submit"
-            className="!bg-blue-600 !text-black btn-lg w-[250px] flex gap-4"
-          >
-            {isLoading ? (
-              <CircularProgress color="inherit" />
-            ) : (
-              <>
-                <FaCloudUploadAlt className="text-[25px]" />
-                Publish and View
-              </>
-            )}
-          </Button>
-        </form>
+            <hr />
+            <div className="mt-4">
+              <Button
+                type="submit"
+                className="!bg-blue-600 !text-white btn-lg w-full md:w-[250px] flex gap-4 justify-center"
+              >
+                {isLoading ? (
+                  <CircularProgress color="inherit" />
+                ) : (
+                  <>
+                    <FaCloudUploadAlt className="text-[20px]" />
+                    Publish and View
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </div>
       </section>
     </>
   );

@@ -142,19 +142,17 @@ const AddSubCategory = () => {
 
   return (
     <>
-      <section className="p-5 bg-gray-50 mt-3 grid grid-cols-1 ">
-        {/* ------------------ Add Sub Category ------------------ */}
-        <form className="form py-3 p-8 " onSubmit={handleSubmit}>
-          <h4 className="text-[20px] font-[600] text-gray-800">
-            Add Sub Category
-          </h4>
-          <div className="scroll max-h-72vh] ">
-            <div className="grid grid-cols-1 mb-3 ">
-              <div className="col w-[25%]">
-                <div className="col">
-                  <h3 className="text-[14px] font-[500] !mb-2">
-                    Product Sub Category
-                  </h3>
+      <section className="p-4 md:p-6 bg-gray-50 mt-3">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* ------------------ Add Sub Category ------------------ */}
+          <form className="form bg-white p-4 md:p-6 rounded-lg shadow-sm" onSubmit={handleSubmit}>
+            <h4 className="text-lg md:text-xl font-semibold text-gray-800 mb-3">
+              Add Sub Category
+            </h4>
+            <div className="scroll max-h-[72vh]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+                <div className="w-full">
+                  <h3 className="text-sm font-medium mb-2">Product Sub Category</h3>
                   <Select
                     id="productCatDrop"
                     className="w-full bg-[#fafafa]"
@@ -171,48 +169,40 @@ const AddSubCategory = () => {
                       ))}
                   </Select>
                 </div>
-              </div>
-              <br />
-            </div>
-            <div className="col">
-              <h3 className="text-[14px] font-[500] !mb-2">
-                Sub Category Name
-              </h3>
-              <input
-                type="text"
-                className="w-[25%] h-[40px] border border-[rgba(0,0,0,0.2)] focus:outline-none focus:border-[rgba(0,0,0,0.5)] rounded-md p-3 text-sm bg-[#fafafa]"
-                name="name"
-                onChange={onChangeInput}
-                value={formFields.name}
-              />
-            </div>
-          </div>
-          <hr />
-          <br />
-          <Button type="submit" className="btn-blue btn-lg w-[250px] flex gap-4">
-            {isLoading ? (
-              <CircularProgress color="inherit" />
-            ) : (
-              <>
-                <FaCloudUploadAlt className="text-[25px]" />
-                Publish and View
-              </>
-            )}
-          </Button>
-        </form>
 
-        {/* ------------------ Add Third Level Category ------------------ */}
-        <form className="form py-3 p-8 " onSubmit={handleSubmit2}>
-          <div className="scroll max-h-72vh] ">
-            <h4 className="text-[20px] font-[600] text-gray-800">
-              Add Third Level Category
-            </h4>
-            <div className="grid grid-cols-1 mb-3 ">
-              <div className="col w-[25%]">
-                <div className="col">
-                  <h3 className="text-[14px] font-[500] !mb-2">
-                    Product Sub Category
-                  </h3>
+                <div className="w-full">
+                  <h3 className="text-sm font-medium mb-2">Sub Category Name</h3>
+                  <input
+                    type="text"
+                    className="w-full h-[44px] border border-[rgba(0,0,0,0.12)] focus:outline-none focus:border-[rgba(0,0,0,0.3)] rounded-md px-3 text-sm bg-[#fafafa]"
+                    name="name"
+                    onChange={onChangeInput}
+                    value={formFields.name}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="pt-3 border-t border-gray-100 mt-4">
+              <Button type="submit" className="btn-blue btn-lg w-full md:w-[250px] flex gap-4 justify-center">
+                {isLoading ? (
+                  <CircularProgress color="inherit" />
+                ) : (
+                  <>
+                    <FaCloudUploadAlt className="text-[20px]" />
+                    Publish and View
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+
+          {/* ------------------ Add Third Level Category ------------------ */}
+          <form className="form bg-white p-4 md:p-6 rounded-lg shadow-sm" onSubmit={handleSubmit2}>
+            <h4 className="text-lg md:text-xl font-semibold text-gray-800 mb-3">Add Third Level Category</h4>
+            <div className="scroll max-h-[72vh]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+                <div className="w-full">
+                  <h3 className="text-sm font-medium mb-2">Product Sub Category</h3>
                   <Select
                     id="productCatDrop2"
                     className="w-full bg-[#fafafa]"
@@ -233,36 +223,33 @@ const AddSubCategory = () => {
                       )}
                   </Select>
                 </div>
-              </div>
 
-              <br />
+                <div className="w-full">
+                  <h3 className="text-sm font-medium mb-2">Third Level Category Name</h3>
+                  <input
+                    type="text"
+                    className="w-full h-[44px] border border-[rgba(0,0,0,0.12)] focus:outline-none focus:border-[rgba(0,0,0,0.3)] rounded-md px-3 text-sm bg-[#fafafa]"
+                    name="name"
+                    onChange={onChangeInput2}
+                    value={formFields2.name}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="col">
-              <h3 className="text-[14px] font-[500] !mb-2">
-                Third Level Category Name
-              </h3>
-              <input
-                type="text"
-                className="w-[25%] h-[40px] border border-[rgba(0,0,0,0.2)] focus:outline-none focus:border-[rgba(0,0,0,0.5)] rounded-md p-3 text-sm bg-[#fafafa]"
-                name="name"
-                onChange={onChangeInput2}
-                value={formFields2.name}
-              />
+            <div className="pt-3 border-t border-gray-100 mt-4">
+              <Button type="submit" className="btn-blue btn-lg w-full md:w-[250px] flex gap-4 justify-center">
+                {isLoading2 ? (
+                  <CircularProgress color="inherit" />
+                ) : (
+                  <>
+                    <FaCloudUploadAlt className="text-[20px]" />
+                    Publish and View
+                  </>
+                )}
+              </Button>
             </div>
-          </div>
-          <hr />
-          <br />
-          <Button type="submit" className="btn-blue btn-lg w-[250px] flex gap-4">
-            {isLoading2 ? (
-              <CircularProgress color="inherit" />
-            ) : (
-              <>
-                <FaCloudUploadAlt className="text-[25px]" />
-                Publish and View
-              </>
-            )}
-          </Button>
-        </form>
+          </form>
+        </div>
       </section>
     </>
   );

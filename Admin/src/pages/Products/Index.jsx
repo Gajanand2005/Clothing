@@ -102,7 +102,7 @@ function createData(product, index, deleteProduct, context) {
 
   const productName = (
     <div className="flex items-center gap-4 w-[220px]">
-      <Link to={`/products/${product._id}`}>
+      <Link to={`/product/${product._id}`}>
         <div className="img w-[55px] h-[55px] rounded-md overflow-hidden group">
           <LazyLoadImage
             alt={"image"}

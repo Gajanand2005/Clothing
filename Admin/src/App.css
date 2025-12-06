@@ -141,4 +141,6 @@ display:flex ;  justify-content: center; align-items: center; background-color: 
 } 
 
 
+.contentRight{ padding-left: 30px !important;}
 
+.uploadBox h4{text-align: center;}
