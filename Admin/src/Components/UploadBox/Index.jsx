@@ -7,6 +7,10 @@ import { MyContext } from "../../App";
 const UploadBox = (props) => {
   const [previews, setPreviews] = useState([]);
   const [uploading, setUploading] = useState(false);
+  // If `showPreviewInside` prop is true, the component will render uploaded
+  // previews inside the upload box. Default is false so the upload placeholder
+  // remains visible and previews can be shown elsewhere (parent component).
+  const showPreviewInside = props.showPreviewInside === true;
 
   const context = useContext(MyContext);
 
@@ -64,17 +68,17 @@ const UploadBox = (props) => {
             <CircularProgress />
             <h4 className="text-center">Uploading....</h4>
           </>
-        ) : previews.length > 0 ? (
-          <div className="w-full h-full flex flex-wrap gap-1 overflow-hidden">
-            {previews.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt={`Uploaded ${index + 1}`}
-                className="w-full h-full object-cover rounded"
-              />
-            ))}
-          </div>
+          ) : showPreviewInside && previews.length > 0 ? (
+            <div className="w-full h-full flex flex-wrap gap-1 overflow-hidden">
+              {previews.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`Uploaded ${index + 1}`}
+                  className="w-full h-full object-cover rounded"
+                />
+              ))}
+            </div>
         ) : (
           <>
             <IoIosImages className="text-[50px] opacity-50 pointer-events-none" />

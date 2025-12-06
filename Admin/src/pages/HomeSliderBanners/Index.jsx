@@ -82,9 +82,9 @@ const HomeSliderBanner = () => {
   return (
     <>
       <div className="card my-5 shadow-md sm:rounded-lg bg-white">
-        <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
+        <div className="px-4 py-5 sm:px-6 grid grid-cols-1 md:grid-cols-2  ">
           <h2 className="text-[18px] font-[600]">Home Slider Banners</h2>
-          <div className="col w-[15%] ml-auto flex items-center gap-2">
+          <div className="col justify-start md:justify-end flex items-center gap-2">
             <TooltipMUI title="Export" placement="top">
               <Button className="!w-[35px] !h-[35px] btn btn-sm flex items-center !rounded-full !text-black !hover:bg-black-300 hover:scale-105">
                 <PiExportBold />

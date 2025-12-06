@@ -66,13 +66,13 @@ const AddHomeSlide = () => {
   return (
     <>
      <section className="p-5 bg-gray-50 mt-3 ">
-        <form className="form py-3 p-8 "  onSubmit={handleSubmit}>
+        <form className="form py-1  p-1 md:p-8 md:py-1 "  onSubmit={handleSubmit}>
           <div className="scroll max-h-[72vh]">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6 lg:gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-7 gap-2 ">
               {previews?.length !== 0 &&
                 previews?.map((images, index) => {
                   return (
-                    <div className="uploadBoxWrapper relative" key={index}>
+                    <div className="uploadBoxWrapper w-[100px] mr-3   relative" key={index}>
                       <span className="absolute w-[20px] h-[20px] rounded-full overflow-hidden bg-red-700 -top-[5px] -right-[50px] flex items-center justify-center z-50 cursor-pointer">
                         <IoClose
                           className="text-white text-[17px]"

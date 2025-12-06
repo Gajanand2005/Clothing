@@ -33,7 +33,9 @@ const Sidebar = () => {
       {/* Logo */}
       <div className="py-2 w-full flex justify-center border-b border-[rgba(0,0,0,0.1)] shrink-0 rounded-2xl" onClick={()=>{
         context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
-      }}>
+        setSubmenuIndex(null);
+      }} 
+      >
         <Link to="/">
           <img
             src={logo}
@@ -51,6 +53,7 @@ const Sidebar = () => {
             <Link to="/" 
             onClick={()=>{
         context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+        setSubmenuIndex(null);
       }}
       >
               <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-black/80 !py-3 !px-4 !rounded-md hover:!bg-black/5 transition-all gap-3">
@@ -61,7 +64,10 @@ const Sidebar = () => {
           </li>
 
           <li>
-            <Link to="/users">
+            <Link to="/users" onClick={()=>{
+        context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+        setSubmenuIndex(null);
+      }} >
               <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-black/80 !py-3 !px-4 !rounded-md hover:!bg-black/5 transition-all gap-3">
                 <MdGroups className="text-[25px]" />
                 <span> Users </span>
@@ -85,7 +91,12 @@ const Sidebar = () => {
             <Collapse isOpened={submenuIndex === 2}>
               <ul className="w-full">
                 <li>
-                  <Link to="/homeSlider/list">
+                  <Link to="/homeSlider/list"
+                  onClick={()=>{
+        context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+        setSubmenuIndex(null);
+      }} 
+                  >
                     <Button className="w-full !capitalize !justify-start !text-[14px] !font-[400] !text-black/80 !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
                       Home Banner List
@@ -96,11 +107,15 @@ const Sidebar = () => {
                 <li>
                   <Button
                     className="w-full !capitalize !justify-start !text-[14px] !font-[400] !text-black/80 !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3"
-                    onClick={() =>
+                    onClick={() =>{
                       context.setIsOpenFullScreenPanel({
                         open: true,
                         model: "Add Home Slide",
                       })
+                       context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+                       setSubmenuIndex(null);
+                    }
+                      
                     }
                   >
                     <PiDiamondLight />
@@ -127,7 +142,10 @@ const Sidebar = () => {
             <Collapse isOpened={submenuIndex === 3}>
               <ul className="w-full">
                 <li>
-                  <Link to="/category/list">
+                  <Link to="/category/list" onClick={()=>{
+        context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+        setSubmenuIndex(null);
+      }} >
                     <Button className="w-full !justify-start !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
                       Category List
@@ -136,7 +154,10 @@ const Sidebar = () => {
                 </li>
 
                 <li>
-                  <Link to="/subCategory/list">
+                  <Link to="/subCategory/list" onClick={()=>{
+        context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+        setSubmenuIndex(null);
+      }} >
                     <Button className="w-full !justify-start !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
                       Sub Category List
@@ -147,11 +168,15 @@ const Sidebar = () => {
                 <li>
                   <Button
                     className="w-full !justify-start !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3"
-                    onClick={() =>
-                      context.setIsOpenFullScreenPanel({
+                    onClick={() =>{
+                         context.setIsOpenFullScreenPanel({
                         open: true,
                         model: "Add New Sub Category",
                       })
+                       context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+                       setSubmenuIndex(null);
+                    }
+                   
                     }
                   >
                     <PiDiamondLight />
@@ -162,11 +187,15 @@ const Sidebar = () => {
                 <li>
                   <Button
                     className="w-full !justify-start !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3"
-                    onClick={() =>
-                      context.setIsOpenFullScreenPanel({
+                    onClick={() =>{
+                        context.setIsOpenFullScreenPanel({
                         open: true,
                         model: "Add New Category",
-                      })
+                      }) 
+                      context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+                      setSubmenuIndex(null);
+                    }
+                    
                     }
                   >
                     <PiDiamondLight />
@@ -185,14 +214,16 @@ const Sidebar = () => {
             >
               <SiPiapro className="text-[23px]" />
               <span> Products </span>
-
               <FaAngleDown className={`ml-auto transition-all ${submenuIndex === 4 ? "rotate-180" : ""}`} />
             </Button>
 
             <Collapse isOpened={submenuIndex === 4}>
               <ul className="w-full">
                 <li>
-                  <Link to="/products">
+                  <Link to="/products" onClick={()=>{
+        context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+        setSubmenuIndex(null);
+      }}  >
                     <Button className="w-full !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
                       Product List
@@ -203,11 +234,15 @@ const Sidebar = () => {
                 <li>
                   <Button
                     className="w-full !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3"
-                    onClick={() =>
-                      context.setIsOpenFullScreenPanel({
+                    onClick={() =>{
+                         context.setIsOpenFullScreenPanel({
                         open: true,
                         model: "Add Product",
                       })
+                      context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+                      setSubmenuIndex(null);
+                    }
+                   
                     }
                   >
                     <PiDiamondLight />
@@ -216,7 +251,10 @@ const Sidebar = () => {
                 </li>
 
                 <li>
-                  <Link to="/product/addSize">
+                  <Link to="/product/addSize" onClick={()=>{
+        context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+        setSubmenuIndex(null);
+      }} >
                     <Button className="w-full !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
                       Product Size
@@ -229,7 +267,10 @@ const Sidebar = () => {
 
           {/* Orders */}
           <li>
-            <Link to="/orders">
+            <Link to="/orders" onClick={()=>{
+        context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+        setSubmenuIndex(null);
+      }} >
               <Button className="w-full !text-[16px] !font-[600] !py-3 !px-4 hover:!bg-black/5 gap-3">
                 <SiTicktick className="text-[23px]" />
                 Orders
@@ -249,7 +290,6 @@ const Sidebar = () => {
           </Button>
         </Link>
       </div>
-
        <div className="sidebarOverlay fixed top-0 left-0 bg-[rgba(0,0,0,1)]  w-full h-fullz-[49] pointer-events-auto sm:pointer-events-none "
        onClick={()=>context?.isSidebarOpen(false)}
        ></div>

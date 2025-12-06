@@ -47,6 +47,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { deleteData, deleteWithData, fetchDataFromApi } from "../../../Utlis/Api.js";
+import Product from "../Products/Index.jsx";
 
 
 const columns = [
@@ -480,7 +481,7 @@ const Dashboard = () => {
 
       <DashboardBoxes data={boxesData} />
 
-      <div className="card my-5 shadow-md sm:rounded-lg bg-white">
+      {/* <div className="card my-5 shadow-md sm:rounded-lg bg-white">
         <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
           <div>
             <h2 className="text-[18px] font-[600]">Products</h2>
@@ -699,7 +700,10 @@ const Dashboard = () => {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
-      </div>
+      </div> */}
+
+<Product/>
+
 
       <div className="card my-5 shadow-md sm:rounded-lg bg-white">
         <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
