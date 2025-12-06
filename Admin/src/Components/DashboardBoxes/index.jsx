@@ -1,55 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
-import { AiTwotoneGift } from "react-icons/ai";
-import { IoStatsChartSharp } from "react-icons/io5";
-import { FaChartPie, FaBoxOpen } from "react-icons/fa6";
-import { BsBarChartFill } from "react-icons/bs";
-import { RiBarChartFill } from "react-icons/ri";
-import { HiChartBar } from "react-icons/hi2";
-import { PiPiggyBankDuotone } from "react-icons/pi";
+import 'swiper/css/free-mode'
+import { Navigation,FreeMode } from 'swiper/modules';
+import { MyContext } from "../../App";
+
 
 const DashboardBoxes = ({ data }) => {
-  const defaultData = [
-    {
-      title: "New Orders",
-      value: "1,398",
-      icon1: AiTwotoneGift,
-      icon2: IoStatsChartSharp,
-      color: "#ff0000",
-      size1: "40px",
-      size2: "40px"
-    },
-    {
-      title: "Sales",
-      value: "₹58,384",
-      icon1: FaChartPie,
-      icon2: BsBarChartFill,
-      color: "#0000ff",
-      size1: "40px",
-      size2: "40px"
-    },
-    {
-      title: "Revenue",
-      value: "₹12,209",
-      icon1: PiPiggyBankDuotone,
-      icon2: RiBarChartFill,
-      color: "#00ff00",
-      size1: "55px",
-      size2: "40px"
-    },
-    {
-      title: "Products",
-      value: "540",
-      icon1: FaBoxOpen,
-      icon2: HiChartBar,
-      color: "#bf00ff",
-      size1: "40px",
-      size2: "40px"
-    }
-  ];
+
+const context = useContext(MyContext);
 
   const boxesData = data || defaultData;
 
@@ -58,8 +18,27 @@ const DashboardBoxes = ({ data }) => {
       <Swiper
         slidesPerView={4}
         spaceBetween={30}
-        navigation={true}
-        modules={[Navigation]}
+        navigation={context?.windowWidth < 992 ? false :true }
+        modules={[Navigation ,FreeMode]}
+        freeMode={true}
+        breakpoints={{
+  250: {
+    slidesPerView: 1,
+    spaceBetween: 10,
+  },
+  650: {
+    slidesPerView: 2,
+    spaceBetween: 10,
+  },
+  768: {
+    slidesPerView: 3,
+    spaceBetween: 10,
+  },
+  992: {
+    slidesPerView: 4,
+    spaceBetween: 10,
+  },
+}}
         className="dashboardboxslider"
       >
         {boxesData.map((item, index) => {

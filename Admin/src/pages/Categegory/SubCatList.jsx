@@ -80,10 +80,10 @@ const SubCatList = () => {
                                 </div>
 
                               {
-                                Array.isArray(subCat?.children) && subCat.children.length > 0 &&
+                                Array.isArray(subCat?.children) && subCat?.children?.length > 0 &&
                                 <ul className="pl-4">
                                   {
-                                    subCat?.children.map(
+                                    subCat?.children?.map(
                                       (thirdLevel, index_)=>{
                                         return(
                                           <li key={index_} className="w-full hover:bg-[#f1f1f1] py-1">

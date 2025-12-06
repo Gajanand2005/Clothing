@@ -17,34 +17,43 @@ import { MyContext } from "../../App";
 const Sidebar = () => {
 
   const context = useContext(MyContext); 
-  const { isSidebarOpen } = context;     
+  const { isSidebarOpen, sidebarWidth } = context;     
 
   const [submenuIndex, setSubmenuIndex] = useState(null);
+
   const isOpenSubMenu = (index) => {
-    if (submenuIndex === index) {
-      setSubmenuIndex(null);
-    } else {
-      setSubmenuIndex(index);
-    }
-  }
+    setSubmenuIndex(submenuIndex === index ? null : index);
+  };
 
   return (
-    <div className={`sidebar fixed top-0 left-0 bg-[#f1f1f1] ${isSidebarOpen ? 'w-[23%]' : 'w-0'} h-screen border-r border-[rgba(0,0,0,0.1)] py-2 px-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 bg-white`}>
-      <div className="py-2 w-full flex justify-center border-b border-[rgba(0,0,0,0.1)] shrink-0 rounded-2xl">
+   <div 
+  className={`sidebar bg-white border-r border-gray-200 py-2 px-4 w-full h-full overflow-y-auto transition-all`}
+>
+
+      {/* Logo */}
+      <div className="py-2 w-full flex justify-center border-b border-[rgba(0,0,0,0.1)] shrink-0 rounded-2xl" onClick={()=>{
+        context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+      }}>
         <Link to="/">
           <img
             src={logo}
             alt="UDR Crafts Logo"
-            className="w-[190px] h-[130px] object-contain "
+            className="w-[190px] h-[130px] object-contain"
           />
         </Link>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-3 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-        <ul className="mt-4">
+      {/* Menu */}
+      <div className="flex-1 overflow-y-auto px-3">
+        <ul className="mt-4 overflow-y-scroll max-h-[80vh]">
+
           <li>
-            <Link to="/">
-              <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+            <Link to="/" 
+            onClick={()=>{
+        context?.windowWidth < 992 && context?.setIsSidebarOpen(false)
+      }}
+      >
+              <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-black/80 !py-3 !px-4 !rounded-md hover:!bg-black/5 transition-all gap-3">
                 <MdSpaceDashboard className="text-[23px]" />
                 <span> Dashboard </span>
               </Button>
@@ -52,168 +61,165 @@ const Sidebar = () => {
           </li>
 
           <li>
-            <Link to='/users'>
-            <Button
-              className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3"
-              onClick={() => isOpenSubMenu(1)}
-            >
-              <MdGroups className="text-[25px]" />
-              <span> Users </span>
-              <span className="ml-auto w-[30px] h-[30px] flex items-center justify-center">
-               
-              </span>
-            </Button>
+            <Link to="/users">
+              <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-black/80 !py-3 !px-4 !rounded-md hover:!bg-black/5 transition-all gap-3">
+                <MdGroups className="text-[25px]" />
+                <span> Users </span>
+              </Button>
             </Link>
-            
           </li>
 
+          {/* Home Banner */}
           <li>
-            <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={() => isOpenSubMenu(2)}>
+            <Button
+              className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-black/80 !py-3 !px-4 !rounded-md hover:!bg-black/5 transition-all gap-3"
+              onClick={() => isOpenSubMenu(2)}
+            >
               <PiSlideshowBold className="text-[23px]" />
               <span> Home Banner </span>
-              <span className="ml-auto w-[30px] h-[30px] flex items-center justify-center" >
-                <FaAngleDown className={`transition-all ${submenuIndex === 2 ? 'rotate-180' : ''}`} />
+              <span className="ml-auto w-[30px] h-[30px] flex items-center justify-center">
+                <FaAngleDown className={`transition-all ${submenuIndex === 2 ? "rotate-180" : ""}`} />
               </span>
             </Button>
 
-            <Collapse isOpened={submenuIndex === 2 ? true : false}>
+            <Collapse isOpened={submenuIndex === 2}>
               <ul className="w-full">
-                <li className="w-full">
+                <li>
                   <Link to="/homeSlider/list">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+                    <Button className="w-full !capitalize !justify-start !text-[14px] !font-[400] !text-black/80 !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
-                      <span>
-                        Home Banner List
-                      </span>
+                      Home Banner List
                     </Button>
                   </Link>
                 </li>
 
-                <li className="w-full">
-                  
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3"onClick={()=>context.setIsOpenFullScreenPanel({
-                      open: true,
-                      model:"Add Home Slide"
-                    })}>
-                      <PiDiamondLight />
-                      <span>
-                        Add New Banner
-                      </span>
-                    </Button>
-                
+                <li>
+                  <Button
+                    className="w-full !capitalize !justify-start !text-[14px] !font-[400] !text-black/80 !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3"
+                    onClick={() =>
+                      context.setIsOpenFullScreenPanel({
+                        open: true,
+                        model: "Add Home Slide",
+                      })
+                    }
+                  >
+                    <PiDiamondLight />
+                    Add New Banner
+                  </Button>
                 </li>
               </ul>
             </Collapse>
           </li>
 
+          {/* Category */}
           <li>
-            <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={() => isOpenSubMenu(3)}>
+            <Button
+              className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-black/80 !py-3 !px-4 !rounded-md hover:!bg-black/5 transition-all gap-3"
+              onClick={() => isOpenSubMenu(3)}
+            >
               <MdCategory className="text-[23px]" />
-              <span>
-                Category
-              </span>
-              <span className="ml-auto w-[30px] h-[30px] flex items-center justify-center" >
-                <FaAngleDown className={`transition-all ${submenuIndex === 3 ? 'rotate-180' : ''}`} />
+              <span> Category </span>
+              <span className="ml-auto w-[30px] h-[30px] flex items-center justify-center">
+                <FaAngleDown className={`transition-all ${submenuIndex === 3 ? "rotate-180" : ""}`} />
               </span>
             </Button>
 
-            <Collapse isOpened={submenuIndex === 3 ? true : false}>
+            <Collapse isOpened={submenuIndex === 3}>
               <ul className="w-full">
-                <li className="w-full">
+                <li>
                   <Link to="/category/list">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+                    <Button className="w-full !justify-start !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
-                      <span>
-                        Category List
-                      </span>
+                      Category List
                     </Button>
                   </Link>
                 </li>
-                <li className="w-full">
+
+                <li>
                   <Link to="/subCategory/list">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+                    <Button className="w-full !justify-start !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
-                      <span>
-                       Sub Category List
-                      </span>
+                      Sub Category List
                     </Button>
                   </Link>
                 </li>
-                 <li className="w-full">
-                 
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={()=>context.setIsOpenFullScreenPanel({
-                      open: true,
-                      model:"Add New Sub Category"
-                    })}>
-                      <PiDiamondLight />
-                      <span>
-                      New Sub CategoryList
-                      </span>
-                    </Button>
-                 
+
+                <li>
+                  <Button
+                    className="w-full !justify-start !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3"
+                    onClick={() =>
+                      context.setIsOpenFullScreenPanel({
+                        open: true,
+                        model: "Add New Sub Category",
+                      })
+                    }
+                  >
+                    <PiDiamondLight />
+                    New Sub Category
+                  </Button>
                 </li>
-                <li className="w-full">
-                 
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={()=>context.setIsOpenFullScreenPanel({
-                      open: true,
-                      model:"Add New Category"
-                    })}>
-                      <PiDiamondLight />
-                      <span>
-                        Add New Category
-                      </span>
-                    </Button>
-               
+
+                <li>
+                  <Button
+                    className="w-full !justify-start !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3"
+                    onClick={() =>
+                      context.setIsOpenFullScreenPanel({
+                        open: true,
+                        model: "Add New Category",
+                      })
+                    }
+                  >
+                    <PiDiamondLight />
+                    Add New Category
+                  </Button>
                 </li>
               </ul>
             </Collapse>
           </li>
 
+          {/* Products */}
           <li>
-            <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={() => isOpenSubMenu(4)}>
+            <Button
+              className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-black/80 !py-3 !px-4 hover:!bg-black/5 gap-3"
+              onClick={() => isOpenSubMenu(4)}
+            >
               <SiPiapro className="text-[23px]" />
-              <span>
-                Products
-              </span>
-              <span className="ml-auto w-[30px] h-[30px] flex items-center justify-center" >
-                <FaAngleDown className={`transition-all ${submenuIndex === 4 ? 'rotate-180' : ''}`} />
-              </span>
+              <span> Products </span>
+
+              <FaAngleDown className={`ml-auto transition-all ${submenuIndex === 4 ? "rotate-180" : ""}`} />
             </Button>
 
-            <Collapse isOpened={submenuIndex === 4 ? true : false}>
+            <Collapse isOpened={submenuIndex === 4}>
               <ul className="w-full">
-               
-                <li className="w-full">
+                <li>
                   <Link to="/products">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+                    <Button className="w-full !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
-                      <span>
-                        Product List
-                      </span>
+                      Product List
                     </Button>
                   </Link>
                 </li>
-                <li className="w-full">
-                  
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={()=>context.setIsOpenFullScreenPanel({
-                      open: true,
-                      model:"Add Product"
-                    })}>
-                      <PiDiamondLight />
-                      <span>
-                        Product Upload
-                      </span>
-                    </Button>
-                
+
+                <li>
+                  <Button
+                    className="w-full !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3"
+                    onClick={() =>
+                      context.setIsOpenFullScreenPanel({
+                        open: true,
+                        model: "Add Product",
+                      })
+                    }
+                  >
+                    <PiDiamondLight />
+                    Product Upload
+                  </Button>
                 </li>
-                
-                <li className="w-full">
+
+                <li>
                   <Link to="/product/addSize">
-                    <Button className="w-full !capitalize !items-center !justify-start !text-[14px] !font-[400] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !pl-10 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+                    <Button className="w-full !text-[14px] !py-3 !px-4 !pl-10 hover:!bg-black/5 gap-3">
                       <PiDiamondLight />
-                      <span>
-                        Product Size
-                      </span>
+                      Product Size
                     </Button>
                   </Link>
                 </li>
@@ -221,29 +227,35 @@ const Sidebar = () => {
             </Collapse>
           </li>
 
+          {/* Orders */}
           <li>
-            <Link to='/orders'>
-            <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3" onClick={() => isOpenSubMenu(5)}>
-              <SiTicktick className="text-[23px]" />
-              <span>
+            <Link to="/orders">
+              <Button className="w-full !text-[16px] !font-[600] !py-3 !px-4 hover:!bg-black/5 gap-3">
+                <SiTicktick className="text-[23px]" />
                 Orders
-              </span>
-            </Button>
+              </Button>
             </Link>
           </li>
 
         </ul>
       </div>
 
+      {/* Logout */}
       <div className="shrink-0 px-3 py-2 border-t border-[rgba(0,0,0,0.1)]">
         <Link to="/logout">
-          <Button className="w-full !capitalize !items-center !justify-start !text-[16px] !font-[600] !text-[rgba(0,0,0,0.8)] !py-3 !px-4 !rounded-md hover:!bg-[rgba(0,0,0,0.05)] transition-all gap-3">
+          <Button className="w-full !text-[16px] !font-[600] !py-3 !px-4 hover:!bg-black/5 gap-3">
             <HiOutlineLogout className="text-[25px]" />
-            <span> Logout </span>
+            Logout
           </Button>
         </Link>
       </div>
+
+       <div className="sidebarOverlay fixed top-0 left-0 bg-[rgba(0,0,0,1)]  w-full h-fullz-[49] pointer-events-auto sm:pointer-events-none "
+       onClick={()=>context?.isSidebarOpen(false)}
+       ></div>
     </div>
+
+   
   );
 };
 

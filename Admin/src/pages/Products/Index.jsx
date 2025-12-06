@@ -340,8 +340,8 @@ const Product = () => {
           </div>
         </div>
 
-        <div className="flex items-center w-full px-5 justify-between pr-5 gap-4">
-          <div className="col w-[15%]">
+        <div className="grid gird-col-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 w-full px-5 justify-between  gap-4">
+          <div className="col ">
             <h4 className="font-[600] text-[13px] pl-3"> Category by </h4>
 
             {context?.catData?.length !== 0 && (
@@ -362,7 +362,7 @@ const Product = () => {
             )}
           </div>
 
-          <div className="col w-[15%]">
+          <div className="col ">
             <h4 className="font-[600] text-[13px] pl-3">Sub Category by </h4>
             {context?.catData?.length !== 0 && (
               <Select
@@ -387,11 +387,11 @@ const Product = () => {
             )}
           </div>
 
-          <div className="col w-[15%]">
+          <div className="col ">
             <h4 className="font-[600] text-[13px] pl-3">
               ThirdLevel Category{" "}
             </h4>
-            {context?.catData?.length !== 0 && (
+            {productSubCat && context?.catData?.length !== 0 && (
               <Select
                 labelId="demo-simple-select-label"
                 id="productCatDrop"
@@ -401,30 +401,31 @@ const Product = () => {
                 label="Category"
                 onChange={handleChangeProductThirdLavelCat}
               >
-                {context?.catData?.map(
-                  (cat, index) =>
-                    cat?.children?.length !== 0 &&
-                    cat?.children?.map(
-                      (subCat, subIndex) =>
-                        subCat?.children?.length !== 0 &&
-                        subCat?.children?.map((thirdLavelCat, index) => {
-                          return (
-                            <MenuItem
-                              key={thirdLavelCat._id}
-                              value={thirdLavelCat._id}
-                            >
-                              {thirdLavelCat.name}
-                            </MenuItem>
-                          );
-                        })
-                    )
+                {context?.catData?.map((cat) =>
+                  cat?.children?.map((subCat) => {
+                    if (subCat?._id === productSubCat && subCat?.children?.length > 0) {
+                      return subCat?.children?.map((thirdLavelCat) => (
+                        <MenuItem key={thirdLavelCat._id} value={thirdLavelCat._id}>
+                          {thirdLavelCat.name}
+                        </MenuItem>
+                      ));
+                    }
+                    return null;
+                  })
                 )}
               </Select>
             )}
           </div>
 
-          <div className="col w-[25%] ml-auto">
-            <SearchBox />
+          <div className="col w-full ml-auto flex items-center">
+            <div style={{alignSelf:'end'}} className="w-full">
+              <SearchBox 
+              // searchQuery={searchQuery}
+              // setSearchQuery={setSearchQuery}
+              // setPageOrder={setPageOrder}
+              />
+            </div>
+            
           </div>
         </div>
 

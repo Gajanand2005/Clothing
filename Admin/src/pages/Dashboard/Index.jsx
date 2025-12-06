@@ -475,7 +475,7 @@ const Dashboard = () => {
             <FaPlus /> Add Product
           </Button>
         </div>
-        <img src={dashboard} className="w-[250px]" alt="Dashboard" />
+        <img src={dashboard} className="w-[250px] hidden lg:block" alt="Dashboard" />
       </div>
 
       <DashboardBoxes data={boxesData} />
@@ -866,60 +866,65 @@ const Dashboard = () => {
         
       </div>
 
-      <div className="card my-5 shadow-md sm:rounded-lg bg-white">
-        <div className="px-4 py-5 sm:px-6 flex items-center justify-between pb-0">
-          <h2 className="text-[18px] font-[600]">
-            Total Users and Total Sales
-          </h2>
-        </div>
+     <div className="card my-5 shadow-md sm:rounded-lg bg-white w-full">
+  <div className="px-4 py-5 sm:px-6 flex items-center justify-between pb-0">
+    <h2 className="text-[16px] sm:text-[18px] font-[600]">
+      Total Users and Total Sales
+    </h2>
+  </div>
 
-        <div className="px-4 py-5 sm:px-6 flex items-center gap-5 ">
-          <span className="flex items-center gap-1 text-[15px]">
-            <span className="block w-[8px] h-[8px] rounded-full bg-green-600"></span>
-            Total Users
-          </span>
+  {/* Legends */}
+  <div className="px-4 py-3 sm:px-6 flex flex-wrap items-center gap-4 sm:gap-5">
+    <span className="flex items-center gap-1 text-[14px] sm:text-[15px]">
+      <span className="block w-[8px] h-[8px] rounded-full bg-green-600"></span>
+      Total Users
+    </span>
 
-          <span className="flex items-center gap-1 text-[15px]">
-            <span className="block w-[8px] h-[8px] rounded-full bg-blue-600"></span>
-            Total Sales
-          </span>
-        </div>
+    <span className="flex items-center gap-1 text-[14px] sm:text-[15px]">
+      <span className="block w-[8px] h-[8px] rounded-full bg-blue-600"></span>
+      Total Sales
+    </span>
+  </div>
 
-        <ResponsiveContainer width="100%" height={400}>
-          {
-            chartData?.length !==0 &&
-            <LineChart
-            data={chartData}
-            margin={{
-              top: 5,
-              right: 0,
-              left: 20,
-              bottom: 10,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="none" />
-            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-            <YAxis width="auto" tick={{ fontSize: 12 }} />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="Total_Sales"
-              stroke="#0045d0ff"
-              strokeWidth={3}
-              activeDot={{ r: 8 }}
-            />
-            <Line
-              type="monotone"
-              dataKey="Total_Users"
-              stroke="#00b309ff"
-              strokeWidth={3}
-            />
-          </LineChart>
-          }
-          
-        </ResponsiveContainer>
-      </div>
+  {/* Chart Container - fully responsive heights */}
+  <div className="w-full h-[250px] sm:h-[320px] md:h-[400px] px-2 sm:px-4">
+    <ResponsiveContainer width="100%" height="100%">
+      {chartData?.length !== 0 && (
+        <LineChart
+          data={chartData}
+          margin={{
+            top: 5,
+            right: 0,
+            left: 10,
+            bottom: 10,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke="none" />
+          <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+          <YAxis tick={{ fontSize: 11 }} />
+          <Tooltip />
+          <Legend />
+
+          <Line
+            type="monotone"
+            dataKey="Total_Sales"
+            stroke="#0045d0ff"
+            strokeWidth={3}
+            activeDot={{ r: 7 }}
+          />
+
+          <Line
+            type="monotone"
+            dataKey="Total_Users"
+            stroke="#00b309ff"
+            strokeWidth={3}
+          />
+        </LineChart>
+      )}
+    </ResponsiveContainer>
+  </div>
+</div>
+
     </>
   );
 };

@@ -1,5 +1,6 @@
- import React from 'react'
+ import React, { useContext } from 'react'
 import "./App.css";
+import './respo.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Index.jsx";
 import Header from "./Components/Header/Index.jsx";
@@ -10,11 +11,7 @@ import SignUp from "./pages/Signup/index.jsx";
 import Products from "./pages/Products/Index.jsx";
 
 import toast, {Toaster} from 'react-hot-toast'; 
-
 import Slide from '@mui/material/Slide';
-
-
-
 import Users from './pages/Users/Index.jsx';
 import Orders from './pages/Orders/Index.jsx';
 import ForgotPassword from './pages/ForgotPassword/index.jsx';
@@ -69,6 +66,8 @@ function App() {
   const [userData, setUserData]= useState(null);
   const [address, setAddress]= useState([]);
   const [catData, setCatData]= useState([]);
+  const [windowWidth, setWindowWidth]= useState(window.innerWidth);
+  const [sidebarWidth, setSidebarWidth]= useState(18);
 
   const [isOpenFullScreenPanel, setIsOpenFullScreenPanel] = useState({
     open: false,
@@ -200,39 +199,46 @@ function App() {
     ),
   ]);
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      exact: true,
-      element: (
-        <>
-          <section className="main">
-            <Header />
-            <div className="contentMain flex">
-              <div
-                className={`overflow-hidden sidebarWrapper ${
-                  isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
-              >
-                <Sidebar />
-              </div>
-              <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
-              >
-                <Dashboard />
-              </div>
-            </div>
-          </section>
-        </>
-      ),
-    },
+const context = useContext(MyContext)
 
+  const router = createBrowserRouter([
+
+{
+  path: "/",
+  exact: true,
+  element: (
+    <>
+      <section className="main">
+        <Header />
+        {/* Parent div should ALWAYS have 'flex' */}
+        <div className={`contentMain flex w-full relative`}>
+          {/* Overlay for mobile - only covers content, not header */}
+          {isSidebarOpen && (
+            <div
+              className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
+          <div 
+            className={`sidebarWrapper ${
+              isSidebarOpen === true 
+                ? 'w-[60%] sm:w-[23%]' 
+                : 'w-0'
+            } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
+          >
+            <Sidebar />
+          </div>
+
+          <div 
+            className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
+          >
+            <Dashboard />
+          </div>
+        </div>
+      </section>
+    </>
+  )
+},
     {
       path: "/login",
       exact: true,
@@ -244,9 +250,6 @@ function App() {
         </>
       ),
     },
-
-    
-
     {
       path: "/forgot-password",
       exact: true,
@@ -302,22 +305,25 @@ function App() {
         <>
           <section className="main">
             <Header />
-            <div className="contentMain flex">
+            <div className="contentMain flex w-full relative">
+              {/* Overlay for mobile - only covers content, not header */}
+              {isSidebarOpen && (
+                <div
+                  className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
               <div
-                className={`overflow-hidden sidebarWrapper ${
+                className={`sidebarWrapper ${
                   isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
+                    ? 'w-[60%] sm:w-[23%]'
+                    : 'w-0'
+                } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
               >
                 <Sidebar />
               </div>
               <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
+                className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
               >
                 <Products />
               </div>
@@ -334,22 +340,25 @@ function App() {
         <>
           <section className="main">
             <Header />
-            <div className="contentMain flex">
+            <div className="contentMain flex w-full relative">
+              {/* Overlay for mobile - only covers content, not header */}
+              {isSidebarOpen && (
+                <div
+                  className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
               <div
-                className={`overflow-hidden sidebarWrapper ${
+                className={`sidebarWrapper ${
                   isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
+                    ? 'w-[60%] sm:w-[23%]'
+                    : 'w-0'
+                } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
               >
                 <Sidebar />
               </div>
               <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
+                className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
               >
                 <HomeSliderBanner />
               </div>
@@ -366,22 +375,25 @@ function App() {
         <>
           <section className="main">
             <Header />
-            <div className="contentMain flex">
+            <div className="contentMain flex w-full relative">
+              {/* Overlay for mobile - only covers content, not header */}
+              {isSidebarOpen && (
+                <div
+                  className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
               <div
-                className={`overflow-hidden sidebarWrapper ${
+                className={`sidebarWrapper ${
                   isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
+                    ? 'w-[60%] sm:w-[23%]'
+                    : 'w-0'
+                } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
               >
                 <Sidebar />
               </div>
               <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
+                className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
               >
                 <CategoryList />
               </div>
@@ -398,22 +410,25 @@ function App() {
         <>
           <section className="main">
             <Header />
-            <div className="contentMain flex">
+            <div className="contentMain flex w-full relative">
+              {/* Overlay for mobile - only covers content, not header */}
+              {isSidebarOpen && (
+                <div
+                  className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
               <div
-                className={`overflow-hidden sidebarWrapper ${
+                className={`sidebarWrapper ${
                   isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
+                    ? 'w-[60%] sm:w-[23%]'
+                    : 'w-0'
+                } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
               >
                 <Sidebar />
               </div>
               <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
+                className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
               >
                 <SubCatList />
               </div>
@@ -430,22 +445,25 @@ function App() {
         <>
           <section className="main">
             <Header />
-            <div className="contentMain flex">
+            <div className="contentMain flex w-full relative">
+              {/* Overlay for mobile - only covers content, not header */}
+              {isSidebarOpen && (
+                <div
+                  className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
               <div
-                className={`overflow-hidden sidebarWrapper ${
+                className={`sidebarWrapper ${
                   isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
+                    ? 'w-[60%] sm:w-[23%]'
+                    : 'w-0'
+                } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
               >
                 <Sidebar />
               </div>
               <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
+                className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
               >
                 <Users />
               </div>
@@ -462,22 +480,25 @@ function App() {
         <>
           <section className="main">
             <Header />
-            <div className="contentMain flex">
+            <div className="contentMain flex w-full relative">
+              {/* Overlay for mobile - only covers content, not header */}
+              {isSidebarOpen && (
+                <div
+                  className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
               <div
-                className={`overflow-hidden sidebarWrapper ${
+                className={`sidebarWrapper ${
                   isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
+                    ? 'w-[60%] sm:w-[23%]'
+                    : 'w-0'
+                } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
               >
                 <Sidebar />
               </div>
               <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
+                className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
               >
                 <Orders />
               </div>
@@ -494,22 +515,25 @@ function App() {
         <>
           <section className="main">
             <Header />
-            <div className="contentMain flex">
+            <div className="contentMain flex w-full relative">
+              {/* Overlay for mobile - only covers content, not header */}
+              {isSidebarOpen && (
+                <div
+                  className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
               <div
-                className={`overflow-hidden sidebarWrapper ${
+                className={`sidebarWrapper ${
                   isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
+                    ? 'w-[60%] sm:w-[23%]'
+                    : 'w-0'
+                } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
               >
                 <Sidebar />
               </div>
               <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
+                className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
               >
                 <Profile />
               </div>
@@ -526,22 +550,25 @@ function App() {
         <>
           <section className="main">
             <Header />
-            <div className="contentMain flex">
+            <div className="contentMain flex w-full relative">
+              {/* Overlay for mobile - only covers content, not header */}
+              {isSidebarOpen && (
+                <div
+                  className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
               <div
-                className={`overflow-hidden sidebarWrapper ${
+                className={`sidebarWrapper ${
                   isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
+                    ? 'w-[60%] sm:w-[23%]'
+                    : 'w-0'
+                } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
               >
                 <Sidebar />
               </div>
               <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
+                className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
               >
                 <ProductDetails />
               </div>
@@ -558,22 +585,25 @@ function App() {
         <>
           <section className="main">
             <Header />
-            <div className="contentMain flex">
+            <div className="contentMain flex w-full relative">
+              {/* Overlay for mobile - only covers content, not header */}
+              {isSidebarOpen && (
+                <div
+                  className="absolute inset-0 bg-black/50 z-[40] sm:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
               <div
-                className={`overflow-hidden sidebarWrapper ${
+                className={`sidebarWrapper ${
                   isSidebarOpen === true
-                    ? "w-[23%] transition-all"
-                    : "w-[0%] opacity-0 transition-all"
-                }`}
+                    ? 'w-[60%] sm:w-[23%]'
+                    : 'w-0'
+                } transition-all duration-300 overflow-hidden flex-shrink-0 relative z-[41]`}
               >
                 <Sidebar />
               </div>
               <div
-                className={`contentRight py-4 px-5 ${
-                  isSidebarOpen
-                    ? "w-[77%] transition-all"
-                    : "w-[100%] transition-all"
-                }`}
+                className={`contentRight py-4 px-4 sm:px-5 flex-1 overflow-auto transition-all duration-300`}
               >
                 <AddSize />
               </div>
@@ -616,6 +646,29 @@ useEffect(()=>{
       })
     }, [])
 
+useEffect(() => {
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+window.addEventListener("resize",handleResize)
+
+return ()=>{
+  window.removeEventListener("resize",handleResize);
+};
+
+
+}, [])
+
+useEffect(()=>{
+if(windowWidth < 992){
+  setIsSidebarOpen(false);
+  setSidebarWidth(100)
+}else{
+  setSidebarWidth(18)
+}
+},[windowWidth])
+
 
   const values = {
     isSidebarOpen,
@@ -635,6 +688,10 @@ useEffect(()=>{
     setAddress,
     setCatData,
     catData,
+    windowWidth, 
+    setWindowWidth,
+    sidebarWidth, 
+    setSidebarWidth,
   };
 
   return (

@@ -76,8 +76,8 @@ const SignUp = () => {
   }
   return (
     <section className="bg-white  w-full h-[auto] ">
-      <img src={loginbg} className="w-full fixed top-0 left-0 opacity-25" />
-      <header className="w-full top-0 left-0 px-4 py-3 fixed flex items-center justify-between z-50 ">
+      {/* <img src={loginbg} className="w-full fixed top-0 left-0 opacity-25" /> */}
+       <header className="  w-full top-0 left-0  static lg:fixed px-4 py-3 flex items-center  justify-center  sm:justify-between z-50 ">
         <Link to="/">
           <img
             src={logo}
@@ -85,7 +85,7 @@ const SignUp = () => {
             className="w-[95px] h-[75px] object-cover rounded-full "
           />
         </Link>
-        <div className="flex items-center gap-4">
+        <div className= " hidden  sm:flex items-center gap-4">
           <NavLink to="/login" exact={true} activeClassName="active">
             <button className="!rounded-full !text-[rgba(0,0,0,0.0.8)] !px-5 flex gap-3 items-center hover:bg-[#f1f1f2]">
               <CgLogIn className="text-[18px]" />
@@ -101,7 +101,7 @@ const SignUp = () => {
         </div>
       </header>
 
-      <div className="loginBox card w-[600px] pb-50 h-[auto] mx-auto pt-20 z-50 relative">
+     <div className="  loginBox card  w-full md:w-[600px] pb-80 h-[auto] mx-auto pt-5  lg:pt-20 z-50 relative">
         <div className="text-center">
           <img
             src={logo}
@@ -110,7 +110,7 @@ const SignUp = () => {
         </div>
 
         <div>
-          <h1 className="text-center text-[35px] font-[800] text-black mt-4">
+           <h1 className="text-center text-[18px] sm:text-[35px] font-[800] text-black mt-4">
             Join us today! Get special <br /> benefits and stay up-to-date.
           </h1>
           <div className="flex items-center justify-center w-full gap-3 mt-5">
@@ -129,7 +129,7 @@ const SignUp = () => {
           <br />
           <div className="w-full flex items-center justify-center gap-4">
             <span className="flex w-[100px] border h-[1px] bg-[rgba(0, 0, 0, 1)]"></span>
-            <span className="text-[15px] font-[600]">
+           <span className="text-[10px] lg:text-[14px] font-[500]">
               Or, Sign in with your email
             </span>
             <span className="flex items-center border w-[100px] h-[1px] bg-[rgba(0, 0, 0, 1)]"></span>
@@ -190,6 +190,15 @@ const SignUp = () => {
               <Link to="/forgot-password" className="  mt-8">
                 <span className="font-[800] hover:underline cursor-pointer text-blue-700 hover:text-gray-700 mb-4">
                   Forgot Password
+                </span>
+              </Link>
+            </div>
+            <div className="flex items-center justify-between mb-4 ">
+              <span className="text-[14px]">Already  have an account?</span>
+               <Link to="/login"
+                className="  mt-8">
+                <span className="font-[800] hover:underline cursor-pointer text-blue-700 hover:text-gray-700  ">
+                 Login
                 </span>
               </Link>
             </div>

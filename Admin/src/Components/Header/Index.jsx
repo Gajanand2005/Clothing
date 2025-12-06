@@ -92,7 +92,7 @@ const Header = () => {
     <header className="w-full h-[auto] py-2 shadow-md pr-7 bg-[#f1f1f1] flex items-center justify-between bg-white">
       <div
         className={`part1 ${
-          context.isSidebarOpen === true
+          context?.isSidebarOpen === true
             ? "pl-[25%] transition-all"
             : "pl-[1%] transition-all"
         }`}
