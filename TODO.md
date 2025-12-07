@@ -1,1 +1,6 @@
-- [ ] Fix the product title display in the Orders page table by changing {item?.productTitle} to {item?.name}
+- [x] Refactor header layout for responsiveness
+- [x] Remove absolute positioning for menu button
+- [x] Fix logo positioning and alignment
+- [x] Fix col3 alignment and remove positioning hacks
+- [x] Adjust widths, gaps, and flex properties for mobile/desktop
+- [x] Test responsiveness across screen sizes

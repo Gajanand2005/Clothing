@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
-import "./Style.css";
+import { MyContext } from "../../App";
 const HomeSlider = (props) => {
+
+  const context = useContext(MyContext)
+
   return (
-    <div className="homeSlider w-full bg-gray-50 py-6">
+    <div className="homeSlider w-full bg-gray-50 py-4 md:py-6">
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6">
         <Swiper
           modules={[Navigation, Autoplay]}
+          // navigation={context?.windowWidth < 992 ? false : true}
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           loop={true}
           grabCursor={true}
@@ -19,6 +23,14 @@ const HomeSlider = (props) => {
 
           breakpoints={{
             640: {
+              slidesPerView: 1,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 1,
+              spaceBetween: 20,
+            },
+            1024: {
               slidesPerView: 1,
               spaceBetween: 20,
             },
@@ -33,7 +45,7 @@ const HomeSlider = (props) => {
                     <img
                       src={image}
                       alt={`Banner ${index + 1}`}
-                      className="w-full h-[300px] xs:h-[300px] sm:h-[350px] md:h-[300px] lg:h-[350px] xl:h-[400px] object-cover"
+                      className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] object-cover"
                     />
                   </div>
                 </SwiperSlide>

@@ -26,7 +26,7 @@ import Success from "./Pages/Orders/success.jsx";
 import Failed from "./Pages/Orders/failed.jsx";
 import Delivery from "./Components/Footer/Delivery.jsx";
 import Aboutus from "./Components/Footer/Aboutus.jsx";
-
+import "./respo.css"
 
 
 const MyContext = createContext();
@@ -56,6 +56,7 @@ const App = () => {
   const [searchData, setSearchData]= useState([]);
 const [currency, setCurrency] = useState("INR");
 const [currencyRate, setCurrencyRate] = useState(1);
+  const [windowWidth, setWindowWidth]= useState(window.innerWidth);
 
   const handleOpenProductDetailsModal = (status, item) => {
     setOpenProductDetailsModel({
@@ -146,6 +147,15 @@ const formatPrice = (amount) => {
         setCatData(res?.data);
       }
     });
+     const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+window.addEventListener("resize",handleResize)
+
+return ()=>{
+  window.removeEventListener("resize",handleResize);
+};
   }, []);
 
   const alertBox = (status, msg) => {
@@ -281,6 +291,8 @@ setOpenSizeChart,
   formatPrice,
   searchData,
   setSearchData,
+   windowWidth, 
+    setWindowWidth,
   };
 
   return (

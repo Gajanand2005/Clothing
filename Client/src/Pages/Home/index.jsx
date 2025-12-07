@@ -60,10 +60,11 @@ const Home = () => {
       {context?.catData?.length !== 0 && (
         <HomeCatSlider data={context?.catData} />
       )}
-
+      <div className="min-h-[2vh] lg:min-h-[65vh] relative">
       {homeSlidesData?.data?.length !== 0 && (
         <HomeSlider data={homeSlidesData} />
       )}
+      </div>
 
     
 

@@ -8,9 +8,9 @@ import CategoryPanel from "./CategoryPanel";
 import "./style.css";
 import { fetchDataFromApi } from "../../../Utlis/Api.js";
 import { MyContext } from "../../../App.jsx";
+import MobileNav from "./mobileNav.jsx";
 
-const Navigation = () => {
-  const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
+const Navigation = (props) => {
   const [catData, setCatData] = useState([]);
 
 const context = useContext(MyContext)
@@ -18,25 +18,25 @@ const context = useContext(MyContext)
   useEffect(() => {
  setCatData(context?.catData);
   },[context?.catData]);
-
-  const openCategoryPanel = (value) => {
-    setIsOpenCatPanel(value !== undefined ? value : !isOpenCatPanel);
-  };
   return (
     <>
-      <nav className="py-2">
-        <div className="container flex items-center justify-between gap-2 md:gap-9">
+      <nav className="navigation">
+        <div className="container flex items-center justify-start lg:justify-end gap-2 !md:gap-9">
           <div className="col_1 w-full md:w-[20%]">
-            <Button
+            {
+              context?.windowWidth > 992  &&
+              <Button
               className="!text-black !font-bold gap-2 w-full !text-sm md:!text-base"
-              onClick={openCategoryPanel}
+              onClick={() => props.setIsOpenCatPanel(!props.isOpenCatPanel)}
             >
               <BsMenuButtonWideFill className="text-[12px] md:text-[15px]" />{" "}
               Shop By Categories
               <FaAngleDown className="text-[14px] md:text-[18px] font-bold" />
             </Button>
+            }
+            
           </div>
-          <div className="col_2 w-full md:w-[60%] hidden md:block">
+          <div className="col_2 w-full md:w-[60%]">
             <ul className="flex items-center justify-center gap-2 md:gap-3 nav">
               <li className="list-none">
                 <Link
@@ -51,7 +51,7 @@ const context = useContext(MyContext)
               {catData?.length !== 0 &&
                 catData?.map((cat, index) => {
                   return (
-                    <li className="list-none relative" key={index}>
+                    <li className="list-none relative" key={cat._id}>
                       <Link
                         to={`/productListing?catId=${cat?._id}`}
                         className="link transition text-[16px] !font-[500]"
@@ -67,7 +67,7 @@ const context = useContext(MyContext)
                               return (
                                 <li
                                   className="list-none w-full relative"
-                                  key={index_}
+                                  key={subCat._id}
                                 >
                                   <Link to={`/productListing?subCatId=${subCat?._id}`} className="w-full">
                                     <Button className="!text-[rgba(0,0,0,0.8)] w-full !text-left !justify-start !rounded-none">
@@ -78,18 +78,18 @@ const context = useContext(MyContext)
                                     <div className="submenu absolute top-[0%] left-[100%] min-w-[150px] bg-white shadow-md opacity-0 transition-all">
                                       <ul>
                                         {subCat?.children?.map(
-                                          (thirdLavelCat, index__) => {
+                                          (thirdLevelCat, index__) => {
                                             return (
                                               <li
                                                 className="list-none w-full"
-                                                key={index__}
+                                                key={thirdLevelCat._id}
                                               >
                                                 <Link
-                                                  to={`/productListing?thirdsubCatId=${thirdLavelCat?._id}`} 
+                                                  to={`/productListing?thirdSubCatId=${thirdLevelCat?._id}`}
                                                   className="w-full"
                                                 >
                                                   <Button className="!text-[rgba(0,0,0,0.8)] w-full !text-left !justify-start !rounded-none">
-                                                    {thirdLavelCat?.name}
+                                                    {thirdLevelCat?.name}
                                                   </Button>
                                                 </Link>
                                               </li>
@@ -110,7 +110,7 @@ const context = useContext(MyContext)
                 })}
             </ul>
           </div>
-          <div className="col_3 w-full md:w-[20%] hidden md:flex justify-end">
+          <div className="col_3 w-full md:w-[20%] hidden md:flex justify-end hidden lg:block">
             <p className="text-[12px] md:text-[14px] font-bold flex items-center gap-2 md:gap-3 mb-0 mt-0">
               <MdOutlineRocketLaunch className="text-[14px] md:text-[18px]" />{" "}
               Worldwide Shipping
@@ -118,15 +118,15 @@ const context = useContext(MyContext)
           </div>
         </div>
       </nav>
-      {
-        catData?.length!==0 &&
-        <CategoryPanel
-        openCategoryPanel={openCategoryPanel}
-        isOpenCatPanel={isOpenCatPanel}
+      <CategoryPanel
+        setIsOpenCatPanel={props.setIsOpenCatPanel}
+        isOpenCatPanel={props.isOpenCatPanel}
+       propsSetIsOpenCatPanel={props.setIsOpenCatPanel}
         data={catData}
       />
-      }
-      
+
+
+
     </>
   );
 };

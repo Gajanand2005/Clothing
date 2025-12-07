@@ -13,26 +13,27 @@ const CategoryPanel = (props) => {
 
   const toggleDrawer = (newOpen) => () => {
     props.setIsOpenCatPanel(newOpen);
+    props.propsSetIsOpenCatPanel(newOpen);
   };
- 
+
  const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" className='categoryPanel'>
       <h3 className='p-3 text-[20px] font-[500] flex items-center justify-between'>
-        Shop By Categories 
-        <IoMdClose 
-          onClick={() => props.openCategoryPanel(false)} 
-          className='cursor-pointer text-[20px]' 
+        Shop By Categories
+        <IoMdClose
+          onClick={() => props.setIsOpenCatPanel(false)}
+          className='cursor-pointer text-[20px]'
         />
       </h3>
       {
         props?.data?.length!==0 &&   <CategoryCollapse data={props?.data}/>
       }
-    
+
       <Divider />
     </Box>
   );
   return (
-    <Drawer open={props.isOpenCatPanel} onClose={() => props.openCategoryPanel(false)}>
+    <Drawer open={props.isOpenCatPanel} onClose={() => props.setIsOpenCatPanel(false)}>
       {DrawerList}
     </Drawer>
   );

@@ -1,0 +1,18 @@
+@media only screen and (min-width:320px) and (max-width:982px){
+ html,body{overflow-x: hidden;}
+
+ .navigation ul{
+    white-space: nowrap;
+    overflow-x: scroll;
+    display: block !important;
+    overflow-y: hidden;
+ }
+ .navigation ul::-webkit-scrollbar{
+   display: none !important;
+}
+  .navigation ul li{ display: inline-block; vertical-align: top !important;}
+ 
+  .container{
+    width: 98% !important; max-width: 98% !important;
+  }
+}

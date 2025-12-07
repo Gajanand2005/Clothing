@@ -21,6 +21,8 @@ import { TbHeartHandshake } from "react-icons/tb";
 import { SlLogout } from "react-icons/sl";
 import { fetchDataFromApi, postData } from "../../Utlis/Api.js";
 import './stle.css'
+import { MdOutlineMenuOpen } from "react-icons/md";
+
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -41,7 +43,7 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
   const context = useContext(MyContext);
   const history = useNavigate();
 
@@ -70,21 +72,21 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-white sticky -top-[47px] z-[100]">
+      <header className="bg-white sticky -top-[47px] z-[100] ">
         <div className="top-strip py-1 sm:py-2 border-t-[1px] border-gray-300 border-b-[1px] ">
           <div className="container">
             <div className="flex flex-col sm:flex-row items-center justify-between">
-              <div className="col1 w-full sm:w-[50%] lg:w-[60%]">
+              <div className="col1 w-full sm:w-[50%] lg:w-[60%] hidden lg:block">
                 <p className="text-[9px] sm:text-[11px] lg:text-[13px] font-[500]">
                   S-Mal Couture
                 </p>
               </div>
               <div className="flex items-center justify-center sm:justify-end col2 w-full sm:w-[50%] lg:w-[40%]">
-                <ul className="flex items-center gap-1 sm:gap-3 lg:gap-4">
+                <ul className="flex items-center gap-1 sm:gap-3 lg:gap-4 w-full lg:w-[200px] justify-between ">
                   <li className="list-none">
                     <Link
                       to="/help-center"
-                      className="text-[9px] sm:text-[11px] lg:text-[13px] link font-[500] transition"
+                      className="text-[11px]  sm:text-[11px] lg:text-[13px] link !font-[500] transition"
                     >
                       Help Center
                     </Link>
@@ -92,7 +94,7 @@ const Header = () => {
                   <li className="list-none">
                     <Link
                       to="/my-order"
-                      className="text-[9px] sm:text-[11px] lg:text-[13px] link font-[500] transition"
+                      className="text-[11px] sm:text-[11px] lg:text-[13px] link !font-[500] transition"
                     >
                       Order Tracking
                     </Link>
@@ -102,23 +104,27 @@ const Header = () => {
             </div>
           </div>
         </div>
-        <div className="header py-4 md:py-6 border-b-[1px] border-gray-300 ">
-          <div className="container flex flex-col md:flex-row items-center justify-between gap-3 ">
-            <div className="col1 w-full md:w-[25%] flex justify-center md:justify-start">
+        <div className="header !py-1 !mt-2 lg:!mt-3  lg:py-4 border-b-[1px] border-gray-300">
+          <div className="container flex flex-col md:flex-row items-center justify-between gap-0 lg:gap-3 ">
+            <div className="col1 w-[100%] lg:w-[25%] ">
+               {
+                context?.windowWidth < 992 &&
+                <Button className="text-[25px] !w-[30px]  !h-[30px] !rounded-full !text-gray-700 !min-w-[35px] lg:hidden absolute top-[30px] left-[10px] cursor-pointer"  onClick={()=>setIsOpenCatPanel(true)}><MdOutlineMenuOpen size={20}/ ></Button>
+               }
               <Link to={"/"}>
                 <img
                   src={logo}
                   alt="Logo"
-                  className="h-[50px] md:h-[70px] w-[130px] md:w-[190px] object-cover bg-transparent "
+                  className="h-[50px] lg:relative lg:left-0 relative left-10 md:h-[70px] w-[130px] md:w-[190px] object-cover bg-transparent "
                 />
               </Link>
             </div>
-            <div className="col2 w-full md:w-[40%] ">
+            <div className="col2 w-full lg:w-[45%] fixed top-0 left-0 h-full lg:static p-2 lg:p-0 bg-white z-50 hidden lg:block ">
               <Search />
             </div>
-            <div className="col3 w-full md:w-[35%] flex items-center justify-center md:justify-end pl-0 md:pl-7">
+            <div className="col3 w-full md:w-[39%] flex items-center justify-center md:justify-end pl-0 md:pl-7 relative left-30 lg:right-0 lg:top-0 top-[-40px]">
               <ul className="flex items-center justify-center md:justify-end gap-2 md:gap-3 w-full flex-wrap">
-         <select
+         <select 
   value={context.currency}
   onChange={(e) => context.setCurrency(e.target.value)}
   className="border px-2 py-1 rounded cursor-pointer"
@@ -146,15 +152,19 @@ const Header = () => {
                   </li>
                 ) : (
                   <>
-                    <div
+                  {
+                    context?.windowWidth > 992 &&
+                    <>
+                     <div
                       className=" !text-[#000] myAccountWrap flex items-center gap-3 cursor-pointer"
                       onClick={handleClick}
                     >
                       <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-[#f1f1f1]">
                         <FaUserAstronaut className="text-[20px] text-[rgba(0,0,0,0.7)]" />
                       </Button>
-
-                      <div className="info flex flex-col ">
+                    {
+                      context?.windowWidth > 992 &&
+                        <div className="info flex flex-col ">
                         <h4 className="text-[14px] leading-5 font-[600] !mb-0 capitalize text-left text-black">
                           {context?.userData?.name}
                         </h4>
@@ -162,7 +172,10 @@ const Header = () => {
                             {context?.userData?.email}
                         </span>
                       </div>
+                    }
+                    
                     </div>
+                 
                     <Menu
                       anchorEl={anchorEl}
                       id="account-menu"
@@ -233,10 +246,15 @@ const Header = () => {
                       </MenuItem>
                       <Divider />
                     </Menu>
+                    </>
+                  }
+                   
                   </>
                 )}
 
-                <li>
+                {
+                  context?.windowWidth > 992 && 
+                    <li>
                   <Tooltip title="Wishlist" placement="top">
                     <Link to="/my-list">
                       <IconButton aria-label="cart">
@@ -247,6 +265,9 @@ const Header = () => {
                     </Link>
                   </Tooltip>
                 </li>
+                }
+
+              
                 <li>
                   <Tooltip title="Cart" placement="top">
                     <IconButton
@@ -264,7 +285,7 @@ const Header = () => {
           </div>
         </div>
 
-        <Navigation />
+        <Navigation isOpenCatPanel={isOpenCatPanel} setIsOpenCatPanel={setIsOpenCatPanel} />
       </header>
     </>
   );
