@@ -26,7 +26,7 @@ const CategoryCollapse = (props) => {
             props?.data?.length!==0 &&  props?.data?.map((cat, index)=>{
               return(
                 <li className='list-none relative flex-col' key={index}>
-            <Link to={`/productListing?catId=${cat?._id}`} className='w-full'>
+            <Link to={`/productListing?catId=${cat?._id}`} className='w-full' onClick={()=>props?.setIsOpenCatPanel && props?.setIsOpenCatPanel(false)}>
               <Button className='w-full !text-left !justify-start !px-3 !text-black'>{cat?.name}</Button>
             </Link>
             {submenuIndex === index ? (
@@ -47,7 +47,7 @@ const CategoryCollapse = (props) => {
                     cat?.children?.length!==0 && cat?.children?.map((subCat, index_)=>{
                       return(
                           <li className='list-none relative mb-1' key={index_}>
-                    <Link to={`/productListing?subCatId=${subCat?._id}`}>
+                    <Link to={`/productListing?subCatId=${subCat?._id}`} onClick={()=>props?.setIsOpenCatPanel && props?.setIsOpenCatPanel(false)}>
                       <Button className='w-full !text-left !justify-start !px-3 !text-black'>{subCat?.name}</Button>
                     </Link>
                     {innerSubmenuIndex === index_ ? (
@@ -67,7 +67,7 @@ const CategoryCollapse = (props) => {
                           subCat?.children?.length !==0 &&  subCat?.children?.map((thirdLavelCat, index__)=>{
                             return(
                               <li className='list-none relative mb-1' key={index__}>
-                          <Link to={`/productListing?thirdsubCatId=${thirdLavelCat?._id}`} className='link w-full !text-left !justify-start transition text-[13px]'>
+                          <Link to={`/productListing?thirdsubCatId=${thirdLavelCat?._id}`} className='link w-full !text-left !justify-start transition text-[13px]' onClick={()=>props?.setIsOpenCatPanel && props?.setIsOpenCatPanel(false)}>
                            {thirdLavelCat?.name}
                           </Link>
                         </li>

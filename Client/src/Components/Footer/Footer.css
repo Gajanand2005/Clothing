@@ -1,121 +1,7 @@
-/* -----------------------
-   FOOTER GLOBAL SETTINGS
------------------------- */
 footer {
   width: 100%;
 }
 
-/* -----------------------
-   TOP ICON SECTION
------------------------- */
-.footer-top {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 25px;
-  flex-wrap: wrap;
-  padding: 20px 10px;
-}
-
-.footer-top .col {
-  text-align: center;
-  width: 100%;
-  max-width: 160px;
-}
-
-/* Hover animation */
-.footer-top .col svg {
-  transition: 0.3s ease-in-out;
-}
-
-.footer-top .col:hover svg {
-  transform: translateY(-4px);
-  color: #dc2626; /* red-600 */
-}
-
-/* -----------------------
-   MIDDLE MAIN SECTION
------------------------- */
-.footer-middle {
-  width: 100%;
-  padding: 25px 15px;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 25px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 25px;
-}
-
-@media (min-width: 768px) {
-  .footer-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.footer-middle h3 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.footer-middle p,
-.footer-middle ul li {
-  font-size: 14px;
-  color: #444;
-}
-
-.footer-middle ul {
-  list-style: none;
-  margin-top: 5px;
-}
-
-.footer-middle ul li a {
-  text-decoration: none;
-  color: #444;
-}
-
-.footer-middle ul li a:hover {
-  color: #dc2626;
-}
-
-/* -----------------------
-   SOCIAL + PAYMENT + COPYRIGHT
------------------------- */
-.footer-bottom {
-  padding: 20px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-  text-align: center;
-}
-
-@media (min-width: 768px) {
-  .footer-bottom {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-  }
-}
-
-.footer-bottom .social-icons a svg {
-  transition: 0.3s;
-}
-
-.footer-bottom .social-icons a:hover svg {
-  color: #dc2626;
-}
-
-.footer-bottom .payments svg {
-  font-size: 26px;
-}
-
-/* -----------------------
-   CART PANEL FIX
------------------------- */
 .cartPanel {
   width: 360px !important;
   max-width: 100%;
@@ -126,9 +12,7 @@ footer {
   max-width: 100%;
 }
 
-/* -----------------------
-   PRODUCT MODAL RESPONSIVE
------------------------- */
+/* MODAL RESPONSIVE */
 .productDetailsModalContainer {
   display: flex;
   flex-direction: column;
@@ -138,25 +22,17 @@ footer {
   .productDetailsModalContainer {
     flex-direction: row;
   }
-}
 
-.productDetailsModalContainer .col1,
-.productDetailsModalContainer .col2 {
-  width: 100%;
-}
-
-@media (min-width: 768px) {
   .productDetailsModalContainer .col1 {
     width: 40%;
   }
+
   .productDetailsModalContainer .col2 {
     width: 60%;
   }
 }
 
-/* -----------------------
-   SIZE CHART TABLE
------------------------- */
+/* Size Table */
 .size-chart-table table {
   width: 100%;
   border-collapse: collapse;
@@ -180,4 +56,13 @@ footer {
     padding: 6px;
     font-size: 12px;
   }
+}
+/* HIDE SCROLLBAR ON MOBILE SLIDER */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE और Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }

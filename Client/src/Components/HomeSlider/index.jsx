@@ -9,7 +9,7 @@ const HomeSlider = (props) => {
   const context = useContext(MyContext)
 
   return (
-    <div className="homeSlider w-full bg-gray-50 py-4 md:py-6">
+    <div className="homeSlider w-full bg-gray-50 py-4 md:py-6 relative z-[99]">
       <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6">
         <Swiper
           modules={[Navigation, Autoplay]}

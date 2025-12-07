@@ -11,14 +11,21 @@ import './style.css'
 import { Navigation } from 'swiper/modules';
 import BannerBox from '../BannerBox/Index';
 const AdsBannerSlider = (props) => {
+  const maxItems = props.items || 4;
   return (
     <div className='py-5 w-full'>
        <Swiper
-                slidesPerView={props.items}
-                spaceBetween={20}
-                navigation={true}
+                slidesPerView={1}
+                spaceBetween={10}
+                // navigation={true}
                 modules={[Navigation]}
                 className="mySwiper"
+                breakpoints={{
+                  320: { slidesPerView: 1, spaceBetween: 10 },
+                  640: { slidesPerView: Math.min(2, maxItems), spaceBetween: 15 },
+                  768: { slidesPerView: Math.min(3, maxItems), spaceBetween: 18 },
+                  1024: { slidesPerView: Math.min(4, maxItems), spaceBetween: 20 },
+                }}
               >
             <SwiperSlide>
            <BannerBox img={banner1} link={'/'} />

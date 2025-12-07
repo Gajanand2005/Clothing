@@ -26,7 +26,7 @@ const CategoryPanel = (props) => {
         />
       </h3>
       {
-        props?.data?.length!==0 &&   <CategoryCollapse data={props?.data}/>
+        props?.data?.length!==0 &&   <CategoryCollapse data={props?.data} setIsOpenCatPanel={props.setIsOpenCatPanel} />
       }
 
       <Divider />

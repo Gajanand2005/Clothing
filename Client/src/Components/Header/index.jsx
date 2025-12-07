@@ -72,7 +72,7 @@ const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
 
   return (
     <>
-      <header className="bg-white sticky -top-[47px] z-[100] ">
+      <header className="bg-white sticky top-0 z-[100] ">
         <div className="top-strip py-1 sm:py-2 border-t-[1px] border-gray-300 border-b-[1px] ">
           <div className="container">
             <div className="flex flex-col sm:flex-row items-center justify-between">
@@ -127,7 +127,7 @@ const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
          <select 
   value={context.currency}
   onChange={(e) => context.setCurrency(e.target.value)}
-  className="border px-2 py-1 rounded cursor-pointer"
+  className="border px-1 lg:px-2 py-1 rounded cursor-pointer"
 >
   <option value="INR">₹ INR</option>
   <option value="USD">$ USD</option>

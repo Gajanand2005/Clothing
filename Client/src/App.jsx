@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import Footer from "./Components/Footer/Index.jsx";
+import MobileBottomNav from "./Components/MobileBottomNav/Index.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductListing from "./Pages/ProductListing/Index.jsx";
 import ProductDetails from "./Pages/ProductDetails/index.jsx";
@@ -339,6 +340,9 @@ setOpenSizeChart,
             <Route path={"/AboutUs"} element={<Aboutus />} />
           </Routes>
           <Whataap />
+          {
+            windowWidth < 992 && <MobileBottomNav />
+          }
           <Footer />
           
         </MyContext.Provider>

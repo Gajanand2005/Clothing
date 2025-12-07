@@ -70,12 +70,12 @@ const Home = () => {
 
       <section className="bg-white py-8">
         <div className="container">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="leftSec p-4 md:p-10 text-center md:text-left w-full md:w-auto">
-              <h2 className="text-[18px] md:text-[22px] font-[600]">
+          <div className="flex flex-col md:flex-row items-center justify-between lg:gap-4 gap-1">
+            <div className="leftSec p-4 md:p-10 text-center md:text-left w-full md:w-auto mb-4 md:mb-0">
+              <h2 className="text-[14px] sm:text-[12px] md:text-[22px] font-semibold leading-tight">
                 Popular Products
               </h2>
-              <p className="text-[14px] font-[400] mt-0 mb-0 ">
+              <p className="text-[13px] md:text-[14px] text-gray-600 mt-1 mb-0">
                 SmalCouture Presents :
               </p>
             </div>
@@ -119,9 +119,6 @@ const Home = () => {
             popularproductsData?.length===0 &&   <ProductLoading/>
           }
 
-       
-
-
           {popularproductsData?.length !== 0 && (
             <ProductSlider items={5} data={popularproductsData} />
           )}
@@ -133,13 +130,6 @@ const Home = () => {
           <AdsBannerSlider items={4} />
         </div>
       </section>
-
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
     </div>
   );
 };
