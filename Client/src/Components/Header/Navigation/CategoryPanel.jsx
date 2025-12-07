@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -7,6 +7,8 @@ import Divider from '@mui/material/Divider';
 import { IoMdClose } from "react-icons/io";
 
 import CategoryCollapse from '../../CategoryCollapse/Index'
+import Button from '@mui/material/Button';
+import { MyContext } from '../../../App';
 
 const CategoryPanel = (props) => {
 
@@ -15,9 +17,11 @@ const CategoryPanel = (props) => {
     props.setIsOpenCatPanel(newOpen);
     props.propsSetIsOpenCatPanel(newOpen);
   };
+  const context =useContext(MyContext)
 
  const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" className='categoryPanel'>
+  
       <h3 className='p-3 text-[20px] font-[500] flex items-center justify-between'>
         Shop By Categories
         <IoMdClose
@@ -30,6 +34,11 @@ const CategoryPanel = (props) => {
       }
 
       <Divider />
+      {    context?.windowWidth < 992 &&
+      <Link to='/login' className="p-3 block">
+  <Button className="btn-org btn w-full !text-white !bg-orange-600 hover:!bg-black btn"  onClick={() => props.setIsOpenCatPanel(false)}> Login</Button>
+</Link>
+    }
     </Box>
   );
   return (

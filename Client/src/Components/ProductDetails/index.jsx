@@ -50,8 +50,6 @@ const addToCart = (product, userId, quantity) => {
       setIsLoading(false);
       return;
     }
-  }{
-
   }
 
   const productItem = {
@@ -87,8 +85,8 @@ const addToCart = (product, userId, quantity) => {
 
   return (
     <>
-      <h1 className="text-[24px] font-[600] !mb-2">{props?.item?.name}</h1>
-      <div className="flex items-center gap-3 text-[13px]">
+      <h1 className=" text-[18px] sm:text-[24px] font-[600] !mb-2">{props?.item?.name}</h1>
+      <div className="flex items-start lg:items-center sm:items-center flex-col sm:flex-row gap-3 md:flex-row lg:flex-row text-[13px] justify-start">
         <span className="text-gray-400">
           Brand :{" "}
           <span className="font-[500] text-black opacity-75">
@@ -96,22 +94,26 @@ const addToCart = (product, userId, quantity) => {
           </span>
         </span>
       </div>
-      <div className="flex items-center gap-4 py-1 !mt-4">
-    <span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">
+      <div className="flex flex-col lg:flex-row  sm:flex-row md:flex-row sm:items-center items-start gap-4 py-1 !mt-4">
+<div className="flex items-center gap-4">
+<span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">
   {context?.formatPrice(props?.item?.oldPrice)}
 </span>
 
 <span className="price text-orange-600 font-bold text-[20px]">
   {context?.formatPrice(props?.item?.price)}
 </span>
+</div>
 
 
+<div className="flex items-center gap-4">
         <span className="text-[15px]">
           Available In Stock:{" "}
           <span className="text-green-600 text-[15px] font-[600]">
             {props?.item?.countInStock} Items
           </span>
         </span>
+        </div>
       </div>
 
       <p className="!mt-2 pr-10 !mb-5">{props?.item?.description}</p>
@@ -161,17 +163,11 @@ const addToCart = (product, userId, quantity) => {
       </div>
 
       <div className="flex items-center gap-4 !mt-6">
-        <span className="flex items-center gap-3 text-[15px] link cursor-pointer font-[600] ">
+        <span className="flex items-center gap-3 text-[13px ] lg:text-[15px] link cursor-pointer font-[600] ">
           <TbHeartHandshake className="text-[19px]" />
           Add to Wishlist
         </span>
-        {/* <span
-  onClick={() => context?.setOpenSizeChart(true)}
-  className="flex items-center gap-3 text-[15px] cursor-pointer"
->
-  <MdPhotoSizeSelectActual className="text-[19px]" />
-  Size Guide
-</span> */}
+     
       </div>
     </>
   );

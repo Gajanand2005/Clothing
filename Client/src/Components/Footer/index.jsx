@@ -206,7 +206,7 @@ const Footer = () => {
         </div>
         {/* cart panel */}
         <Drawer
-          open={context.openCartPanel}
+          open={context?.openCartPanel}
           onClose={() => context?.toggleCartPanel(false)}
           anchor={"right"}
           className="cartPanel"
@@ -241,14 +241,16 @@ const Footer = () => {
           className="addressPanel"
         >
           <div className="flex items-center justify-between py-3 px-4 gap-3 border-b border-[#000]">
-            <h4>{context.addressMode == "add" ? 'Add' : 'Edit'} Delivery Address </h4>
+            <h4>{context?.addressMode == "add" ? 'Add' : 'Edit'} Delivery Address </h4>
             <IoClose
               className="text-[20px] cursor-pointer"
               onClick={()=>context?.toggleAddressPanel(false)}
             />
           </div>
 
+          <div className="w-full max-h-screen overflow-auto">
           <AddAddress/>
+          </div>
           
         </Drawer>
 

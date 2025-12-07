@@ -22,7 +22,7 @@ const removeItem = (id)=>{
   return (
     <>
       <div className="cartItem w-full p-3 flex items-center gap-4 pb-5 border-b border-[rgba(0,0,0,0.1)]">
-                <div className="img w-[15%] h-[150px] rounded-md overflow-hidden">
+                <div className="img w-[30%] sm:w-[15%] h-[150px] rounded-md overflow-hidden">
                   <Link to={`/product/${props?.item?.productId}`} className="group">
                     <img
                       src={props?.item?.image}
@@ -32,12 +32,12 @@ const removeItem = (id)=>{
                   </Link>
                 </div>
 
-                <div className="info w-[85%] relative">
+                <div className="info w-full sm:w-[85%] relative">
                   <IoMdClose className="cursor-pointer absolute top-[0px] right-[1px] text-[18px] link transition-all" 
                   onClick={()=>removeItem(props?.item?._id)}
                   />
                   <span className="text-[13px] font-[600] ">{props?.item?.brand}</span>
-                  <h3 className="text-[15px] font-[600] text-black">
+                  <h3 className=" text-[13px] sm:text-[15px] font-[600] text-black">
                     <Link to={`/product/${props?.item?.productId}`} className="link">{props?.item?.productTitle.substr(0,70)+'....'}</Link>
                   </h3>
                   <div className="flex items-center gap-4 !mt-2 !mb-2">

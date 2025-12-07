@@ -180,29 +180,29 @@ const CheckOut = () => {
 
   return (
     <>
-      <section className="py-10 ">
+      <section className="py-3 lg:py-10 px-3 ">
         <form
           action=""
           onSubmit={checkout}
           className="flex items-center justify-center"
         >
-          <div className="w-[70%] m-auto flex gap-5">
+          <div className="w-full lg:w-[70%] m-auto flex flex-col md:flex-row gap-5">
             {/* LEFT */}
-            <div className="leftCol w-[60%] ">
+            <div className="leftCol w-full md:w-[60%] ">
               <div className="card bg-white shadow-md p-5 rounded-md w-full">
                 <div className="flex items-center justify-between">
-                  <h1 className="text-[20px] font-[600]">
+                  <h1 className="text-[12px] lg:text-[20px] font-[600]">
                     Select Delivery Address
                   </h1>
                   <Button
-                    className="!bg-orange-600 !text-white hover:!bg-black"
+                    className="!bg-orange-600 !text-white hover:!bg-black btn "
                     onClick={() => {
                       context?.setOpenAddressPanel(true);
                       context?.setAddressMode("add");
                     }}
                   >
                     <PiPlusBold />
-                    ADD NEW ADDRESS
+                    ADD{context?.windowWidth < 762 ? "" :"New Adress" }
                   </Button>
                 </div>
                 <br />
@@ -256,7 +256,7 @@ const CheckOut = () => {
 
                             <Button
                               variant="text"
-                              className="top-[15px] right-[15px] !absolute !bg-orange-600 !text-white hover:!bg-black"
+                              className="top-[15px] right-[15px] !absolute !bg-orange-600 !text-white hover:!bg-black btn"
                               size="small"
                               onClick={() => editAddress(address?._id)}
                             >
@@ -283,7 +283,7 @@ const CheckOut = () => {
             </div>
 
             {/* RIGHT */}
-            <div className="rightCol w-[40%]">
+            <div className="rightCol w-full md:w-[40%]">
               <div className="card shadow-md bg-white p-5 rounded-md">
                 <h2 className="!mb-3 font-[600]">Your Order</h2>
 

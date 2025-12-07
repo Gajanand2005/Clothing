@@ -790,19 +790,24 @@ export async function getAllUsers(req, res) {
 export async function getReviews(req, res) {
     try {
         const productId= req.query.productId;
-        const reviews = await ReviewModel.find({productId:productId});
-        if(reviews.length === 0){
+        
+        // Validate productId
+        if(!productId){
             return res.status(400).json({
                 error: true,
-                success: false
+                success: false,
+                message: "Product ID is required"
             })
         }
 
-            return res.status(200).json({
-                error: false,
-                success: true,
-              reviews: reviews
-            })
+        const reviews = await ReviewModel.find({productId:productId});
+        
+        // Return empty array if no reviews found (not an error)
+        return res.status(200).json({
+            error: false,
+            success: true,
+            reviews: reviews || []
+        })
 
     } catch (error) {
         return res.status(500).json({

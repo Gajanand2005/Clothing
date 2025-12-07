@@ -192,23 +192,24 @@ if(context?.addressMode === "edit"){
 
   return (
     <>
-      <form className="p-8 py-3 pb-8 " onSubmit={handleSubmit}>
-        <div className="flex items-center gap-5 pt-2 pb-5">
-          <div className="col w-[100%]">
-            <TextField
-              className="w-full"
-              label="address Line 1"
-              variant="outlined"
-              size="small"
-              name="address_line1"
-              onChange={onchangeInput}
-              value={formFields.address_line1}
-            />
-          </div>
+      <form className="p-4 md:p-8 py-3 pb-8 w-full" onSubmit={handleSubmit}>
+        
+        {/* Address Line 1 */}
+        <div className="flex flex-col gap-5 pt-2 pb-5">
+          <TextField
+            className="w-full"
+            label="Address Line 1"
+            variant="outlined"
+            size="small"
+            name="address_line1"
+            onChange={onchangeInput}
+            value={formFields.address_line1}
+          />
         </div>
-
-        <div className="flex items-center gap-5 pt-2 pb-5">
-          <div className="col w-[50%]">
+  
+        {/* City + State */}
+        <div className="flex flex-col md:flex-row items-center gap-5 pt-2 pb-5">
+          <div className="w-full md:w-1/2">
             <TextField
               className="w-full"
               label="City"
@@ -219,8 +220,8 @@ if(context?.addressMode === "edit"){
               value={formFields.city}
             />
           </div>
-
-          <div className="col w-[50%]">
+  
+          <div className="w-full md:w-1/2">
             <TextField
               className="w-full"
               label="State"
@@ -232,9 +233,10 @@ if(context?.addressMode === "edit"){
             />
           </div>
         </div>
-
-        <div className="flex items-center gap-5 pt-2 pb-5">
-          <div className="col w-[50%]">
+  
+        {/* Pincode + Country */}
+        <div className="flex flex-col md:flex-row items-center gap-5 pt-2 pb-5">
+          <div className="w-full md:w-1/2">
             <TextField
               className="w-full"
               label="Pincode"
@@ -245,8 +247,8 @@ if(context?.addressMode === "edit"){
               value={formFields.pincode}
             />
           </div>
-
-          <div className="col w-[50%]">
+  
+          <div className="w-full md:w-1/2">
             <TextField
               className="w-full"
               label="Country"
@@ -258,9 +260,10 @@ if(context?.addressMode === "edit"){
             />
           </div>
         </div>
-
-        <div className="flex items-center gap-5 pt-2 pb-5">
-          <div className="col w-[50%]">
+  
+        {/* Phone + Landmark */}
+        <div className="flex flex-col md:flex-row items-center gap-5 pt-2 pb-5">
+          <div className="w-full md:w-1/2">
             <PhoneInput
               defaultCountry="in"
               value={formFields?.mobile}
@@ -272,10 +275,11 @@ if(context?.addressMode === "edit"){
                   mobile: phone,
                 }));
               }}
+              className="w-full"
             />
           </div>
-
-          <div className="col w-[50%]">
+  
+          <div className="w-full md:w-1/2">
             <TextField
               className="w-full"
               label="Landmark"
@@ -287,36 +291,37 @@ if(context?.addressMode === "edit"){
             />
           </div>
         </div>
-
-        <div className="col w-[50%]">
-          <h6 className="text-[12px]">Address type</h6>
+  
+        {/* Address Type Radio */}
+        <div className="w-full md:w-1/2 pb-5">
+          <h6 className="text-[12px] font-medium mb-1">Address type</h6>
+  
           <RadioGroup
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
             onChange={handleChangeAddressType}
             value={addressType}
+            className="flex gap-5"
           >
             <FormControlLabel value="Home" control={<Radio />} label="Home" />
-            <FormControlLabel
-              value="Office"
-              control={<Radio />}
-              label="Office"
-            />
+            <FormControlLabel value="Office" control={<Radio />} label="Office" />
           </RadioGroup>
         </div>
-
-        <div className="flex  items-center gap-5 ">
+  
+        {/* Save Button */}
+        <div className="flex items-center gap-5">
           <Button
             className="!bg-orange-600 flex !text-white w-full items-center text-[19px] hover:!bg-black gap-2"
             type="submit"
           >
-            Save{" "}
+            Save
           </Button>
         </div>
       </form>
     </>
   );
+  
 };
 
 export default AddAddress;

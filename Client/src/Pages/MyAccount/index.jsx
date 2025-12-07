@@ -159,8 +159,8 @@ const history =useNavigate();
             <hr />
 
             <form className="!mt-8" onSubmit={handleSubmit}>
-              <div className="flex items-center gap-5">
-                <div className="w-[50%]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 ">
+                <div className="col">
                   <TextField
                     label="Full Name"
                     variant="outlined"
@@ -173,7 +173,7 @@ const history =useNavigate();
                   />
                 </div>
 
-                <div className="w-[50%]">
+                <div className="w-[col]">
                   <TextField
                     type="email"
                     label="Email"
@@ -186,10 +186,8 @@ const history =useNavigate();
                     onChange={onchangeInput}
                   />
                 </div>
-              </div>
 
-              <div className="flex items-center !mt-4 gap-5">
-                <div className="w-[50%]">
+                <div className="col">
                   <PhoneInput
                     defaultCountry="in"
                     value={formFields?.mobile}
@@ -205,11 +203,13 @@ const history =useNavigate();
                 </div>
               </div>
 
+              
+
               <br />
 
               <div className="flex items-center gap-4">
                 <Button
-                  className="!bg-orange-600 !text-white hover:!bg-black w-[150px]"
+                  className="!bg-orange-600 !text-white hover:!bg-black w-[150px] btn"
                   type="submit"
                   disabled={!valideValue}
                 >
@@ -231,7 +231,7 @@ const history =useNavigate();
               <hr />
 
               <form className="!mt-8" onSubmit={handleSubmitChangePassword}>
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {
                     context?.userData?.signUpWithGoogle===false &&
                      <div className="col">
@@ -284,7 +284,7 @@ const history =useNavigate();
 
                 <div className="flex items-center gap-4">
                   <Button
-                    className="!bg-orange-600 !text-white hover:!bg-black w-[200px]"
+                    className="!bg-orange-600 !text-white hover:!bg-black w-[200px] btn"
                     type="submit"
                     
                   >

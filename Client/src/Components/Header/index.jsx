@@ -122,17 +122,24 @@ const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
             <div className="col2 w-full lg:w-[45%] fixed top-0 left-0 h-full lg:static p-2 lg:p-0 bg-white z-50 hidden lg:block ">
               <Search />
             </div>
-            <div className="col3 w-full md:w-[39%] flex items-center justify-center md:justify-end pl-0 md:pl-7 relative left-30 lg:right-0 lg:top-0 top-[-40px]">
+           <div className="col3 w-full md:w-[39%] flex items-center justify-center md:justify-end pl-0 md:pl-7 relative">
               <ul className="flex items-center justify-center md:justify-end gap-2 md:gap-3 w-full flex-wrap">
-         <select 
-  value={context.currency}
-  onChange={(e) => context.setCurrency(e.target.value)}
+  <select 
+  value={context?.currency}
+  onChange={(e) => context?.setCurrency(e.target.value)}
   className="border px-1 lg:px-2 py-1 rounded cursor-pointer"
 >
   <option value="INR">₹ INR</option>
   <option value="USD">$ USD</option>
   <option value="EUR">€ EUR</option>
+
+  {/* NEW ONES */}
+  <option value="GBP">£ GBP</option>
+  <option value="AUD">A$ AUD</option>
+  <option value="CAD">C$ CAD</option>
+  <option value="AED">د.إ AED</option>
 </select>
+
       
                 {context?.isLogin === false ? (
                   <li className="list-none">
@@ -252,22 +259,19 @@ const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
                   </>
                 )}
 
-                {
-                  context?.windowWidth > 992 && 
-                    <li>
-                  <Tooltip title="Wishlist" placement="top">
-                    <Link to="/my-list">
-                      <IconButton aria-label="cart">
-                        <StyledBadge badgeContent={context?.myListData?.length !==0 ?context?.myListData?.length : 0} color="secondary">
-                          <GiTechnoHeart />
-                        </StyledBadge>
-                      </IconButton>
-                    </Link>
-                  </Tooltip>
-                </li>
-                }
-
-              
+{context?.windowWidth > 768 && (
+  <li>
+    <Tooltip title="Wishlist" placement="top">
+      <Link to="/my-list">
+        <IconButton aria-label="wishlist">
+          <StyledBadge badgeContent={context?.myListData?.length || 0}>
+            <GiTechnoHeart />
+          </StyledBadge>
+        </IconButton>
+      </Link>
+    </Tooltip>
+  </li>
+)}        
                 <li>
                   <Tooltip title="Cart" placement="top">
                     <IconButton

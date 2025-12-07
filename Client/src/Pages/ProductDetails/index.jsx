@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import ProductZoom from "../../Components/ProductZoom/Index";
 
-import { MyContext } from "../../App";
 import Reviews from "../../Pages/ProductDetails/reviews";
 import ProductSlider from "../../Components/ProductSlider/Index";
 import ProductDetailsComponent from "../../Components/ProductDetails/Index";
@@ -12,7 +11,6 @@ import { fetchDataFromApi } from "../../Utlis/Api";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const ProductDetails = () => {
-  const context = useContext(MyContext);
 
   const [activeTab, setActiveTab] = useState(0);
   const [productData, setProductData] = useState();
@@ -23,12 +21,17 @@ const ProductDetails = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetchDataFromApi(`/api/user/getReviews?productId=${id}`).then((res) => {
-      if (res?.error === false) {
-        setReviewsCount(res?.reviews.length);
-      }
-    });
-  }, [reviewsCount]);
+    if(id){
+      fetchDataFromApi(`/api/user/getReviews?productId=${id}`).then((res) => {
+        if (res?.error === false) {
+          setReviewsCount(res?.reviews?.length || 0);
+        }
+      }).catch((err) => {
+        console.error("Error fetching reviews:", err);
+        setReviewsCount(0);
+      });
+    }
+  }, [id]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -98,12 +101,12 @@ const ProductDetails = () => {
           </div>
         ) : (
           <>
-            <div className="container flex gap-9">
-              <div className="productZoomContainer w-[40%] ">
+            <div className="container flex flex-col lg:flex-row gap-3 lg:gap-9 items-start lg:items-center ">
+              <div className="productZoomContainer w-full lg:w-[40%] ">
                 <ProductZoom images={productData?.images} />
               </div>
 
-              <div className="productContent w-[60%] pr-10 ">
+              <div className="productContent w-full lg:w-[60%] pr-10 ">
                 <ProductDetailsComponent item={productData} />
               </div>
             </div>
@@ -129,12 +132,18 @@ const ProductDetails = () => {
                 </span>
               </div>
               {activeTab == 0 && (
-                <div className="shadow-md w-full py-5 px-8 rounded-md">
-                  {productData?.description}
+                <div className="shadow-md w-full py-3 sm:py-5 px-3 sm:px-6 md:px-8 rounded-md">
+                  <div className="text-sm sm:text-base leading-relaxed">
+                    {productData?.description}
+                  </div>
                   {productData?.sizeChart && (
-                    <div className="mt-4">
-                      <h3 className="text-[18px] font-[600] mb-2">Size Chart</h3>
-                      <pre className="whitespace-pre-wrap font-mono text-sm bg-gray-50 p-4 rounded border">{productData.sizeChart}</pre>
+                    <div className="mt-4 sm:mt-6">
+                      <h3 className="text-[16px] sm:text-[18px] font-[600] mb-2 sm:mb-3">Size Chart</h3>
+                      <div className="overflow-x-auto -mx-3 sm:mx-0">
+                        <pre className="whitespace-pre font-mono text-[10px] sm:text-xs md:text-sm bg-gray-50 p-2 sm:p-4 rounded border min-w-max sm:min-w-0">
+                          {productData.sizeChart}
+                        </pre>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -142,7 +151,7 @@ const ProductDetails = () => {
 
 
               {activeTab === 1 && (
-                <div className="shadow-md w-[80%] py-5 px-8 rounded-md">
+                <div className="shadow-none lg:shadow-md w-full sm:w-[80%] py-0 lg:py-5 px-0 lg:px-8 rounded-md">
                   {productData?.length !== 0 && (
                     <Reviews
                       productId={productData?._id}

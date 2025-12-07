@@ -170,12 +170,12 @@ postData("/api/myList/add",obj).then((res)=>{
   
 
   return (
-    <div className="productItem shadow-lg rounded-md overflow-hidden border-2  border-[rgba(0,0,0,0.1)] ">
+    <div className="productItem shadow-lg rounded-md overflow-hidden border-2 border-[rgba(0,0,0,0.1)]">
       <div className="group imgWrapper w-[100%] overflow-hidden rounded-md relative">
         <Link to={`/product/${item?._id}`}>
-          <div className="img  overflow-hidden">
-            <img src={item?.images[0]} alt="" className="w-full" />
-            <img src={item?.images[1]} alt="" className="w-full" />
+          <div className="img overflow-hidden h-[120px] sm:h-[140px] md:h-auto">
+            <img src={item?.images[0]} alt="" className="w-full h-full object-cover" />
+            <img src={item?.images[1]} alt="" className="w-full h-full object-cover" />
           </div>
         </Link>
 
@@ -205,8 +205,7 @@ postData("/api/myList/add",obj).then((res)=>{
           </div>
         )}
 
-        <span className="discount flex items-center absolute top-[10px] left-[10px] z-50 bg-orange-500 text-white rounded-full p-1 text-[10px] md:text-[12px] font-[500]  ">
-          {" "}
+        <span className="discount flex items-center absolute top-[5px] left-[5px] md:top-[10px] md:left-[10px] z-50 bg-orange-500 text-white rounded-full p-0.5 md:p-1 text-[8px] sm:text-[10px] md:text-[12px] font-[500]">
           {item?.discount}%
         </span>
 
@@ -246,63 +245,62 @@ postData("/api/myList/add",obj).then((res)=>{
         </div>
       </div>
 
-      <div className="info p-2 md:p-3 py-3 relative pb-[50px] h-[190px] ">
-        <h6 className="text-[11px] sm:text-[12px] md:text-[14px]">
+      <div className="info p-1.5 sm:p-2 md:p-3 py-2 md:py-3 relative pb-[45px] sm:pb-[50px] min-h-[160px] sm:min-h-[190px]">
+        <h6 className="text-[9px] sm:text-[11px] md:text-[14px]">
           <span className="link transition-all">{item?.brand}</span>
         </h6>
-        <h3 className="text-[13px] sm:text-[14px] md:text-[16px] title mt-1 font-[500] text-[#000]">
+        <h3 className="text-[11px] sm:text-[13px] md:text-[16px] title mt-0.5 md:mt-1 font-[500] text-[#000] leading-tight line-clamp-2">
           <Link
             to={`/product/${item?._id}`}
             className="link transition-all"
           >
-            {item?.name?.substr(0, 30) + "...."}
+            {item?.name}
           </Link>
         </h3>
-        <div className="py-1"></div>
+        <div className="py-0.5 md:py-1"></div>
 
-        <div className="flex items-center gap-3 sm:gap-4 py-1">
-          <span className="oldPrice line-through text-gray-500 text-[12px] sm:text-[14px] md:text-[16px] font-[500]">
-            {" "}
+        <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 py-0.5 md:py-1">
+          <span className="oldPrice line-through text-gray-500 text-[10px] sm:text-[12px] md:text-[16px] font-[500]">
             {context?.formatPrice(item?.price)}
           </span>
-          <span className="oldPrice text-orange-600 font-bold text-[12px] sm:text-[14px] md:text-[16px]">
-            {" "}
+          <span className="oldPrice text-orange-600 font-bold text-[10px] sm:text-[12px] md:text-[16px]">
             {context?.formatPrice(item?.oldPrice)}
           </span>
         </div>
-        <div className="w-full !absolute bottom-[15px] left-0 pl-3 pr-3">
+        <div className="w-full !absolute bottom-[10px] sm:bottom-[15px] left-0 pl-1.5 sm:pl-3 pr-1.5 sm:pr-3">
           {item?.countInStock <= 0 ? (
             <Button
-              className="btn-org btn-border flex w-full btn-sm gap-2 !bg-gray-500 !text-white"
+              className="btn-org btn-border flex w-full btn-sm gap-1 sm:gap-2 !bg-gray-500 !text-white !text-[10px] sm:!text-[12px] md:!text-[14px] !py-1 sm:!py-1.5"
               size="small"
               disabled
             >
-              Notify Me
+              <span className="text-[10px] sm:text-[12px]">Notify Me</span>
             </Button>
           ) : isAdded === false ? (
             <Button
-              className="btn-org btn-border flex w-full btn-sm gap-2"
+              className="btn-org btn-border flex w-full btn-sm gap-1 sm:gap-2 !text-[10px] sm:!text-[12px] md:!text-[14px] !py-1 sm:!py-1.5"
               size="small"
               onClick={() =>
                 addToCart(item, context?.userData?._id, quantity)
               }
             >
-              <MdOutlineShoppingCart className="text-[18px]" /> Add to Cart
+              <MdOutlineShoppingCart className="text-[14px] sm:text-[16px] md:text-[18px]" /> 
+              <span className="text-[10px] sm:text-[12px]">Add to Cart</span>
             </Button>
           ) : (
-            <div className="flex items-center justify-between overflow-hidden rounded-full border border-[rgba(0,0,0,0.1)] ">
+            <div className="flex items-center justify-between overflow-hidden rounded-full border border-[rgba(0,0,0,0.1)]">
               <Button
-                className="!min-w-[30px] !w-[30px] !h-[30px] !bg-[#f1f1f1] !rounded-none "
+                className="!min-w-[25px] sm:!min-w-[30px] !w-[25px] sm:!w-[30px] !h-[25px] sm:!h-[30px] !bg-[#f1f1f1] !rounded-none"
                 onClick={minusQty}
               >
-                <FaMinus className="text-[rgba(0,0,0,0.7)]" />
+                <FaMinus className="text-[10px] sm:text-[12px] text-[rgba(0,0,0,0.7)]" />
               </Button>
-              <span>{quantity}</span>
+              <span className="text-[11px] sm:text-[14px]">{quantity}</span>
               <Button
-                className="!min-w-[30px] !w-[30px] !h-[30px] !bg-orange-600 !rounded-none "
+                className="!min-w-[25px] sm:!min-w-[30px] !w-[25px] sm:!w-[30px] !h-[25px] sm:!h-[30px] !bg-orange-600 !rounded-none"
                 onClick={addQty}
               >
-                <FaPlus className="text-white" />
+                <FaPlus className="text-[10px] sm:text-[12px] text-white" />
               </Button>
             </div>
           )}

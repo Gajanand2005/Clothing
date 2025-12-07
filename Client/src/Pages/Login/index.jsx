@@ -239,7 +239,7 @@ window.scrollTo(0,0)
 
               <div className="flex items-center w-full !mt-3">
                 <Button
-                  className=" !text-white !bg-orange-600 hover:!bg-black w-full !text-[18px] !p-3 flex gap-3"
+                  className=" !text-white !bg-orange-600 hover:!bg-black w-full !text-[18px] !p-3 flex gap-3 btn "
                   type="submit"
                   disabled={!valideValue}
                 >

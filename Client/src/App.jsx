@@ -58,6 +58,7 @@ const App = () => {
 const [currency, setCurrency] = useState("INR");
 const [currencyRate, setCurrencyRate] = useState(1);
   const [windowWidth, setWindowWidth]= useState(window.innerWidth);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleOpenProductDetailsModal = (status, item) => {
     setOpenProductDetailsModel({
@@ -94,17 +95,28 @@ const currencyRates = {
   INR: 1,
   USD: 0.012,
   EUR: 0.011,
+  GBP: 0.0095,   // British Pound
+  AUD: 0.018,    // Australian Dollar
+  CAD: 0.017,    // Canadian Dollar
+  AED: 0.044,    // UAE Dirham
 };
 
 // global converter
 const formatPrice = (amount) => {
   const converted = (amount * currencyRate).toFixed(2);
 
-  // return with symbol
-  if (currency === "INR") return "₹" + converted;
-  if (currency === "USD") return "$" + converted;
-  return "€" + converted;
+  switch (currency) {
+    case "INR": return "₹" + converted;
+    case "USD": return "$" + converted;
+    case "EUR": return "€" + converted;
+    case "GBP": return "£" + converted;
+    case "AUD": return "A$" + converted;
+    case "CAD": return "C$" + converted;
+    case "AED": return "د.إ" + converted;
+    default: return converted;
+  }
 };
+
 
 
 
@@ -294,6 +306,8 @@ setOpenSizeChart,
   setSearchData,
    windowWidth, 
     setWindowWidth,
+    sidebarOpen,
+    setSidebarOpen,
   };
 
   return (

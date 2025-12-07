@@ -8,7 +8,7 @@ import { NavLink } from "react-router";
 import Button from "@mui/material/Button";
 import { MyContext } from '../../App';
 import CircularProgress from '@mui/material/CircularProgress';
-import {  uploadImage } from '../../Utlis/Api.js';
+import {  fetchDataFromApi, uploadImage } from '../../Utlis/Api.js';
 import { LuMapPinHouse } from "react-icons/lu";
 import "./style.css"
 
@@ -16,7 +16,6 @@ const AccountSidebar = () => {
 
 const [previews, setPreviews] = useState([]);
 const [uploading, setUploading] = useState(false);
-
 
   const context = useContext(MyContext);
 
@@ -67,6 +66,25 @@ const onChangeFile = async (e, apiEndPoint) => {
   }
 };
 
+const logout = () => {
+  // Always remove tokens from localStorage to ensure logout on client side
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  context.setIsLogin(false);
+  context.setUserData(null);
+  context.setUserData(null);
+
+  fetchDataFromApi(
+    `/api/user/logout?token=${localStorage.getItem("accessToken")}`,
+    { withCredentials: true }
+  ).then((res) => {
+  }).catch(() => {
+    
+  });
+  context?.setCartData([]);
+  context?.setMyListData([]);
+  history("/");
+};
 
 
   return (
@@ -163,7 +181,7 @@ const onChangeFile = async (e, apiEndPoint) => {
                 </li>
                 <li className="w-full">
 
-                  <Button className="flex w-full !px-4 md:!px-5 !justify-start !text-left !text-[rgba(0,0,0,0.7)] !rounded-none items-center gap-2 ">
+                  <Button className="flex w-full !px-4 md:!px-5 !justify-start !text-left !text-[rgba(0,0,0,0.7)] !rounded-none items-center gap-2 "  onClick={logout}>
                     <SlLogout className="text-[18px] md:text-[20px]" />
                     <span className="text-[14px] md:text-[16px]">Logout</span>{" "}
                   </Button>
