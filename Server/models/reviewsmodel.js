@@ -27,3 +27,4 @@ const reviewsSchema = new mongoose.Schema({
 
 const ReviewModel = mongoose.model('reviews',reviewsSchema)
 export default ReviewModel
+

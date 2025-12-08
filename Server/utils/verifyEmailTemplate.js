@@ -213,3 +213,4 @@ const VerificationEmail = (username, otp) => {
 };
 
 export default VerificationEmail;
+

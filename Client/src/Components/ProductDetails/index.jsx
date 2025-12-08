@@ -175,3 +175,4 @@ const addToCart = (product, userId, quantity) => {
 
 export default ProductDetailsComponent;
 
+

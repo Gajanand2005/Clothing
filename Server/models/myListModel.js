@@ -47,3 +47,4 @@ const myListSchema = mongoose.Schema({
 
     const  MyListModel = mongoose.model('MyList', myListSchema);
     export default MyListModel ;
+

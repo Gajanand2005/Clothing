@@ -32,3 +32,4 @@ userRouter.post('/addReview', auth, addReview);
 userRouter.get('/getReviews', getReviews);
 userRouter.get('/getAllUsers', auth, getAllUsers);
 export default userRouter;
+

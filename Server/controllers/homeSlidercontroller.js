@@ -390,3 +390,4 @@ export async function removeImageFromCloudinary(request, response) {
         });
     }
 }
+

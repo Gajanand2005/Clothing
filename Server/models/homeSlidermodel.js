@@ -18,3 +18,4 @@ const homeSliderSchema = mongoose.Schema({
 const HomeSliderModel = mongoose.model('HomeSlider',homeSliderSchema)
 
 export default HomeSliderModel
+

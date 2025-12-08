@@ -418,3 +418,4 @@ export async function updatedCategory(request, response) {
         category: category
     });
 }
+

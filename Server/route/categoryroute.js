@@ -26,3 +26,4 @@ categoryRouter.delete('/:id',auth, deleteCategory);
 categoryRouter.put('/:id',auth, updatedCategory);
 
 export default categoryRouter;
+

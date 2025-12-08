@@ -11,3 +11,4 @@ cartRouter.put ('/update-size',auth,updateCartItemSizeController)
 cartRouter.delete ('/delete-cart-item/:id',auth,deleteCartItemQtyController)
 cartRouter.delete ('/emptyCart/:id',auth,emptyCartController)
 export default cartRouter;
+

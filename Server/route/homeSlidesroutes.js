@@ -39,3 +39,4 @@ homeSlidesRouter.put('/:id',auth, updateSlide);
 homeSlidesRouter.post('/publish', auth, addHomeSlide);
 
 export default homeSlidesRouter;
+

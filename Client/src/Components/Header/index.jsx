@@ -292,3 +292,4 @@ const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
 
 export default Header;
 
+

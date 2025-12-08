@@ -312,3 +312,4 @@ postData("/api/myList/add",obj).then((res)=>{
 
 export default ProductItem;
 
+

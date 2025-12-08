@@ -251,3 +251,4 @@ export const totalUsersController = async(req,res)=>{
         })
     }
 }
+

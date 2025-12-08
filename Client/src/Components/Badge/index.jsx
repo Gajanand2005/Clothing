@@ -10,3 +10,4 @@ const Badge = (props) => {
 
 export default Badge;
 
+

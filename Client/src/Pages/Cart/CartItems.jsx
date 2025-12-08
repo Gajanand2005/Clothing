@@ -194,3 +194,4 @@ const cleanPrice = (price) => {
 export default CartItems;
 
 
+
