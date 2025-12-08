@@ -9,7 +9,7 @@ import banner4 from '../../assets/ban4.jpg'
 import './style.css'
 
 import { Navigation } from 'swiper/modules';
-import BannerBox from '../BannerBox/Index';
+import BannerBox from '../BannerBox/index.jsx';
 const AdsBannerSlider = (props) => {
   const maxItems = props.items || 4;
   return (
