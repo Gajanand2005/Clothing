@@ -14,8 +14,7 @@ import ProductLoadingGrid from "../../Components/ProductLoading/ProductLoadingGr
 import { postData } from "../../Utlis/Api.js";
 import { MyContext } from "../../App";
 import { useLocation } from "react-router-dom";
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import Search from "../../Components/Search/Index.jsx"; // <-- IMPORTANT (Search Bar)
 
 const SearchPage = () => {
   const [itemView, setIsItemView] = useState("grid");
@@ -26,12 +25,12 @@ const SearchPage = () => {
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [selectedSortVAl,setSelectedSortVal] = useState("Name, A to Z");
+  const [selectedSortVAl, setSelectedSortVal] = useState("Name, A to Z");
 
   const context = useContext(MyContext);
   const location = useLocation();
 
-  // Load search results when page loads or query changes
+  // Load search results
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const searchQuery = queryParams.get("q");
@@ -41,116 +40,79 @@ const SearchPage = () => {
       const obj = {
         page: page,
         limit: 30,
-        query: searchQuery
+        query: searchQuery,
       };
-      
-      postData(`/api/product/search/get`, obj).then((res) => {
-        setProductData(res);
-        setTotalPages(res?.totalPages || 1);
-        setIsLoading(false);
-      }).catch(() => {
-        setIsLoading(false);
-      });
-    } else if (context?.searchData && context?.searchData?.products?.length > 0) {
-      // Use context search data if available
-      setProductData(context?.searchData);
-      setTotalPages(context?.searchData?.totalPages || 1);
+
+      postData(`/api/product/search/get`, obj)
+        .then((res) => {
+          setProductData(res);
+          setTotalPages(res?.totalPages || 1);
+          setIsLoading(false);
+        })
+        .catch(() => setIsLoading(false));
+    } else if (context?.searchData?.products?.length > 0) {
+      setProductData(context.searchData);
+      setTotalPages(context.searchData.totalPages || 1);
     }
   }, [location.search, page]);
 
-
-
-
-
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+
+  const handleSortBy = (name, order, products, value) => {
+    setSelectedSortVal(value);
+
+    postData(`/api/product/sortBy`, {
+      products: products,
+      sortBy: name,
+      order: order,
+    }).then((res) => {
+      setProductData(res);
+      setAnchorEl(null);
+    });
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-
-const handleSortBy = (name,order,products,value) => {
-  setSelectedSortVal(value);
-  postData(`/api/product/sortBy`,{
-    products:products,
-    sortBy:name,
-    order:order
-  }).then((res)=>{
-    setProductData(res);
-    setAnchorEl(null)
-  })
-}
-
-
-
-
-
-
 
   return (
     <section className="py-5 pb-0">
-      <div className="container">
+
+      {/* ✅ MOBILE SEARCH BAR (FIXED TOP) */}
+      <div className="lg:hidden px-3 mb-3 sticky top-[70px] z-[999] bg-white py-2 shadow-sm">
+        <Search />
+      </div>
+
+      <div className="container hidden lg:block">
         <Breadcrumbs aria-label="breadcrumb">
-          <Link
-            underline="hover"
-            color="inherit"
-            href="/"
-            className="link transition"
-          >
+          <Link underline="hover" color="inherit" href="/" className="link transition">
             Home
           </Link>
-          <Link
-            underline="hover"
-            color="inherit"
-            href="/"
-            className="link transition"
-          >
+          <Link underline="hover" color="inherit" href="/" className="link transition">
             Fashion
           </Link>
         </Breadcrumbs>
       </div>
+
       <div className="bg-white p-2 mt-4">
         <div className="container flex flex-col lg:flex-row gap-3">
-          <div className="sidebarWrapper w-full lg:w-[20%]  bg-white ">
-            <Sidebar  
-            productData={productData}
-             setProductData={setProductData} 
-            isloading={isloading} 
-            setIsLoading={setIsLoading}
-            page={page}
-            setTotalPages={setTotalPages}
+
+          {/* ✅ SIDEBAR - HIDE ON MOBILE */}
+          <div className="sidebarWrapper hidden lg:block w-full lg:w-[20%] bg-white">
+            <Sidebar
+              productData={productData}
+              setProductData={setProductData}
+              isloading={isloading}
+              setIsLoading={setIsLoading}
+              page={page}
+              setTotalPages={setTotalPages}
             />
           </div>
 
-          <div className="rightContent w-full lg:w-[80%] py-2 ">
-            <div className="bg-[#f1f1f1] p-2 w-full  mb-4 rounded-md flex items-center justify-between sticky top-[130px] z-[99]">
-              <div className="col1 flex items-center itemViewAction ">
-                <Button
-                  className={`!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000] ${
-                    itemView == "list" && "active "
-                  }`}
-                  onClick={() => setIsItemView("list")}
-                >
-                  <RiMenuSearchLine className="text-[rgba(0,0,0,0.7)]" />
-                </Button>
-                <Button
-                  className={`!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000] ${
-                    itemView == "grid" && "active "
-                  }`}
-                  onClick={() => setIsItemView("grid")}
-                >
-                  <BsUiRadiosGrid className="text-[rgba(0,0,0,0.7)]" />
-                </Button>
+          {/* RIGHT CONTENT */}
+          <div className="rightContent w-full lg:w-[80%] py-2">
 
-                <span className="text-[14px] font-[500] pl-3 text-[rgba(0,0,0,0.7 )]">
-                    There are {productData?.products?.length !== 0 ? productData?.products?.length : 0} Products
-                </span>
-              </div>
-
-              <div className="col2 ml-auto flex items-center justify-end gap-3 pr-4">
-                <span className="text-[14px] font-[500] pl-3 text-[rgba(0,0,0,0.7 )]">
+            {/* SORT + VIEW TOOLS */}
+<div className="flex items-center gap-3">
+                <span className="text-[14px] font-medium text-gray-700">
                   Sort By
                 </span>
 
@@ -160,111 +122,69 @@ const handleSortBy = (name,order,products,value) => {
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                   onClick={handleClick}
-                  className="!bg-white !text-[12px] !text-[#000] capitalize !border-1 !border-[#000]"
-                >
-                  {selectedSortVAl}
-                </Button>
-
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  slotProps={{
-                    list: {
-                      "aria-labelledby": "basic-button",
-                    },
+                  className="!bg-white !text-[12px] !text-[#000] !font-semibold capitalize !border !border-[#000] !px-3 !py-1 !rounded-md"
+                  sx={{
+                    minWidth: { xs: "120px", sm: "140px", md: "160px" },
                   }}
                 >
-                  {/* <MenuItem
-                    onClick={handleClose}
-                    className="!bg-white !text-[13px] !text-[#000] capitalize"
-                  >
-                    Sales, highest to lowest
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleClose}
-                    className="!bg-white !text-[13px] !text-[#000] capitalize"
-                  >
-                    Relevance
-                  </MenuItem> */}
-                  <MenuItem
-                    onClick={()=> handleSortBy('name',"asc", productData ,'Name, A to Z')}
-                    className="!bg-white !text-[13px] !text-[#000] capitalize"
-                  >
+                  <span className="truncate">{selectedSortVAl}</span>
+                </Button>
+
+                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                  <MenuItem onClick={() => handleSortBy("name", "asc", productData, "Name, A to Z")}>
                     Name, A to Z
                   </MenuItem>
-                  <MenuItem
-                    onClick={()=> handleSortBy('name',"desc", productData ,'Name, Z to A')}
-                    className="!bg-white !text-[13px] !text-[#000] capitalize"
-                  >
+                  <MenuItem onClick={() => handleSortBy("name", "desc", productData, "Name, Z to A")}>
                     Name, Z to A
                   </MenuItem>
-                  <MenuItem
-                     onClick={()=> handleSortBy('price',"asc", productData ,'Price, Low to High')}
-                    className="!bg-white !text-[13px] !text-[#000] capitalize"
-                  >
+                  <MenuItem onClick={() => handleSortBy("price", "asc", productData, "Price, Low to High")}>
                     Price, Low to High
                   </MenuItem>
-                  <MenuItem
-                    onClick={()=> handleSortBy('price',"desc", productData ,'Price High to Low ')}
-                    className="!bg-white !text-[13px] !text-[#000] capitalize"
-                  >
-                    Price, hight to low
+                  <MenuItem onClick={() => handleSortBy("price", "desc", productData, "Price, High to Low")}>
+                    Price, High to Low
                   </MenuItem>
                 </Menu>
               </div>
-            </div>
 
-           <div
+            {/* PRODUCTS GRID */}
+            <div
               className={`grid ${
                 itemView === "grid"
-                  ? ` grid-cols-4 md:grid-cols-4`
-                  : `grid-cols-1 md:grid-cols-1 `
+                  ? `grid-cols-2 sm:grid-cols-3 md:grid-cols-4`
+                  : `grid-cols-1`
               } gap-4`}
             >
-              {itemView === "grid" ? (
-                <>
-                {
-                  isloading=== true ? <ProductLoadingGrid view={itemView}/>
-                  :
-                  productData?.products?.length !== 0 && productData?.products?.map((item,index)=>{
-                    return(
-                      <ProductItem key={index}  item={item} />
-                    )
-                  })
-                }
-                </>
+              {isloading ? (
+                <ProductLoadingGrid view={itemView} />
               ) : (
-                <>
-                     {
-                  isloading=== true ? <ProductLoadingGrid view={itemView}/>
-                  :
-                  productData?.products?.length !== 0 && productData?.products?.map((item,index)=>{
-                    return(
-                      <ProductItemListView key={index}  item={item} />
-                    )
-                  })
-                }
-                </>
+                productData?.products?.map((item, index) =>
+                  itemView === "grid" ? (
+                    <ProductItem key={index} item={item} />
+                  ) : (
+                    <ProductItemListView key={index} item={item} />
+                  )
+                )
               )}
             </div>
 
-                   {
-                      totalPages > 1 && 
-                      <div className="flex items-center justify-center !mt-10"> 
-              <Pagination  showFirstButton showLastButton 
-              count={totalPages}
-              onClick={(e,value)=>setPage(value)}
-              />
-            </div>
-                    }
+            {/* PAGINATION */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center mt-10">
+                <Pagination
+                  showFirstButton
+                  showLastButton
+                  count={totalPages}
+                  onChange={(e, value) => setPage(value)}
+                />
+              </div>
+            )}
 
-            
           </div>
+
         </div>
       </div>
     </section>
   );
 };
+
 export default SearchPage;
