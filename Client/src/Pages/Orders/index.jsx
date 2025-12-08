@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import AccountSidebar from '../../Components/AccountSidebar/index';
+import AccountSidebar from '../../Components/AccountSidebar/index.jsx';
 import Button from '@mui/material/Button';
 import { FaAngleDown } from "react-icons/fa6";
 import Badge from '../../components/Badge/Index';

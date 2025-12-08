@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
-import ProductItem from "../../Components/ProductItem/Index.jsx";
-import ProductItemListView from "../../Components/ProductItemListView/Index.jsx";
+import ProductItem from "../../Components/ProductItem/index.jsx";
+import ProductItemListView from "../../Components/ProductItemListView/index.jsx";
 import Button from "@mui/material/Button";
 import { BsUiRadiosGrid } from "react-icons/bs";
 import { RiMenuSearchLine } from "react-icons/ri";
@@ -14,7 +14,8 @@ import ProductLoadingGrid from "../../Components/ProductLoading/ProductLoadingGr
 import { postData } from "../../Utlis/Api.js";
 import { MyContext } from "../../App";
 import { useLocation } from "react-router-dom";
-import Search from "../../Components/Search/Index.jsx"; // <-- IMPORTANT (Search Bar)
+import Search from "../../Components/Search/Index.jsx";
+ // <-- IMPORTANT (Search Bar)
 
 const SearchPage = () => {
   const [itemView, setIsItemView] = useState("grid");

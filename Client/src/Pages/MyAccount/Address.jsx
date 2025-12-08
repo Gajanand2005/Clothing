@@ -19,7 +19,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-import AddressBox from "./AddressBox";
+import AddressBox from "./AddressBox.jsx";
 
 const label = { inputProps: { "aria-label": "Radio demo" } };
 

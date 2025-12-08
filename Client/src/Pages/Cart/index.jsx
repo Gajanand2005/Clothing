@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { LuBaggageClaim } from "react-icons/lu";
-import CartItems from "./CartItems";
+import CartItems from "./CartItems.jsx";
 import { MyContext } from "../../App";
 
 const cleanPrice = (price) => {
