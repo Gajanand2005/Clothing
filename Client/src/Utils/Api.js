@@ -134,6 +134,11 @@ apiClient.interceptors.response.use(
             originalRequest._retry = true;
             isRefreshing = true;
 
+            if (!getRefreshToken()) {
+                clearStoredTokens();
+                return Promise.reject(error);
+            }
+
             try {
                 const newToken = await refreshAccessToken();
                 processQueue(null, newToken);
