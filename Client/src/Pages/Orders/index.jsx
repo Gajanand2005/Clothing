@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AccountSidebar from '../../Components/AccountSidebar/index.jsx';
 import Button from '@mui/material/Button';
 import { FaAngleDown } from "react-icons/fa6";
-import Badge from '../../components/Badge/Index';
+import Badge from '../../components/Badge/index.jsx';
 import { FaAngleUp } from "react-icons/fa6";
 import { fetchDataFromApi } from '../../Utlis/Api';
 import { useNavigate } from 'react-router-dom';
