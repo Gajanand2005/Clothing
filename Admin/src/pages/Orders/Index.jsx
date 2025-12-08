@@ -4,7 +4,7 @@ import { FaAngleUp, FaAngleDown } from 'react-icons/fa'
 import Badge from '../../Components/Badge/Index.jsx'
 import PrintVoice from '../Invoice/printvoice.jsx'
 import { useEffect } from 'react'
-import { editData, fetchDataFromApi } from '../../../../Client/src/Utlis/Api.js'
+import { editData, fetchDataFromApi } from '../../../Utils/Api.js'
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useContext } from 'react'
@@ -230,3 +230,5 @@ const Orders = () => {
 }
 
 export default Orders
+
+

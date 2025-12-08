@@ -10,7 +10,7 @@ import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { MyContext } from "../../App";
 import { useLocation } from "react-router-dom";
-import { postData } from "../../Utlis/Api";
+import { postData } from "../../Utils/Api";
 
 export const Sidebar = (props) => {
   const [isOpenCategoryFilter, setIsOpenCategoryFilter]= useState(true);
@@ -364,3 +364,4 @@ useEffect(() => {
 };
 
 export default Sidebar;
+

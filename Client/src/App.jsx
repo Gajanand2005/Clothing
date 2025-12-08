@@ -15,7 +15,7 @@ import MyList from "./Pages/MyList/index.jsx";
 import Order from "./Pages/Orders/index.jsx";
 import Whataap from "./Components/Whataap/index.jsx";
 import HelpCenter from "./Pages/HelpCenter/Index.jsx";
-import { fetchDataFromApi, postData, editData } from "./Utlis/Api.js";
+import { fetchDataFromApi, postData, editData } from "./Utils/Api.js";
 import Verify from "./Pages/Verify/index.jsx";
 import Address from "./Pages/MyAccount/Address.jsx";
 import Home from "./Pages/Home/index.jsx";
@@ -363,3 +363,4 @@ setOpenSizeChart,
 
 export default App;
 export { MyContext };
+

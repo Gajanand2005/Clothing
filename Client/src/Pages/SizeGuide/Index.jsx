@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { fetchDataFromApi } from '../../Utlis/Api'
+import { fetchDataFromApi } from '../../Utils/Api'
 import CircularProgress from '@mui/material/CircularProgress'
 
 const Size = () => {
@@ -90,3 +90,4 @@ const Size = () => {
 }
 
 export default Size
+

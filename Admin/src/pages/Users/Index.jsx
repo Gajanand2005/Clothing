@@ -20,7 +20,7 @@ import { MyContext } from '../../App';
 import { Link } from 'react-router-dom';
 import { SlCalender } from "react-icons/sl";
 import CircularProgress from '@mui/material/CircularProgress';
-import { fetchDataFromApi } from '../../../Utlis/Api.js';
+import { fetchDataFromApi } from '../../../Utils/Api.js';
 
 
 
@@ -264,3 +264,5 @@ const Users = () => {
 }
 
 export default Users
+
+

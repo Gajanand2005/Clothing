@@ -60,3 +60,4 @@ const HomeSlider = (props) => {
 };
 
 export default HomeSlider;
+

@@ -5,7 +5,7 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { editData, fetchDataFromApi, postData } from "../../../Utlis/Api";
+import { editData, fetchDataFromApi, postData } from "../../../Utils/Api";
 import { MyContext } from "../../App";
 
 const AddAdress = () => {
@@ -230,3 +230,5 @@ const AddAdress = () => {
 };
 
 export default AddAdress;
+
+

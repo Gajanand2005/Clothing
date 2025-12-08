@@ -6,7 +6,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 
-import { fetchDataFromApi } from "../../Utlis/Api.js";
+import { fetchDataFromApi } from "../../Utils/Api.js";
 import { MyContext } from "../../App.jsx";
 import ProductLoading from "../../Components/ProductLoading/Index.jsx";
 import ProductSlider from "../../Components/ProductSlider/index.jsx";
@@ -136,5 +136,6 @@ const Home = () => {
 };
 
 export default Home;
+
 
 

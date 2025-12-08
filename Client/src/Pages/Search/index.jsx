@@ -11,10 +11,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
 import Sidebar from "../../Components/Sidebar/index.jsx";
 import ProductLoadingGrid from "../../Components/ProductLoading/ProductLoadingGrid.jsx";
-import { postData } from "../../Utlis/Api.js";
+import { postData } from "../../Utils/Api.js";
 import { MyContext } from "../../App";
 import { useLocation } from "react-router-dom";
-import Search from "../../Components/Search/Index.jsx";
+import Search from "../../Components/Search/index.jsx";
  // <-- IMPORTANT (Search Bar)
 
 const SearchPage = () => {
@@ -189,3 +189,4 @@ const SearchPage = () => {
 };
 
 export default SearchPage;
+

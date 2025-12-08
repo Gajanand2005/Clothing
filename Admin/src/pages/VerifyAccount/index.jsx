@@ -8,7 +8,7 @@
 // import Button from "@mui/material/Button";
 // import OtpBox from "../../Components/OtpBox";
 // import { MyContext } from "../../App";
-// import { postData } from "../../../Utlis/Api";
+// import { postData } from "../../../Utils/Api";
 // import CircularProgress from "@mui/material/CircularProgress";
 
 
@@ -150,7 +150,7 @@ import { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import OtpBox from "../../Components/OtpBox";
 import { MyContext } from "../../App";
-import { postData } from "../../../Utlis/Api";
+import { postData } from "../../../Utils/Api";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const VerifyAccount = () => {
@@ -326,3 +326,5 @@ const VerifyAccount = () => {
 };
 
 export default VerifyAccount;
+
+

@@ -4,10 +4,10 @@ import { TbHeartHandshake } from "react-icons/tb";
 import QtyBox from "../QtyBox/index.jsx";
 import Button from "@mui/material/Button";
 import { MdPhotoSizeSelectActual } from "react-icons/md";
-import { MyContext } from "../../App";
+import { MyContext } from "../../App.jsx";
 import { Link } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { postData } from "../../Utlis/Api";
+import { postData } from "../../Utils/Api.js";
 
 
 const ProductDetailsComponent = (props) => {
@@ -174,3 +174,4 @@ const addToCart = (product, userId, quantity) => {
 };
 
 export default ProductDetailsComponent;
+

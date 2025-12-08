@@ -11,7 +11,7 @@ import { IoClose } from "react-icons/io5";
 import { Button } from "@mui/material";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { MyContext } from "../../App";
-import { deleteImages, fetchDataFromApi, postData } from "../../../Utlis/Api";
+import { deleteImages, fetchDataFromApi, postData } from "../../../Utils/Api";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -646,3 +646,5 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
+
+

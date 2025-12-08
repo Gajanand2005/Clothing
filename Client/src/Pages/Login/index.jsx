@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
-import { postData, fetchDataFromApi } from "../../Utlis/Api";
+import { postData, fetchDataFromApi } from "../../Utils/Api";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseApp } from "../../firebase.jsx";
 import "./login.css"
@@ -277,3 +277,4 @@ window.scrollTo(0,0)
 };
 
 export default Login;
+

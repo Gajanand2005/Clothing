@@ -8,7 +8,7 @@ import {
   fetchDataFromApi,
   postData,
   uploadImage,
-} from "../../../Utlis/Api";
+} from "../../../Utils/Api";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import { PhoneInput } from "react-international-phone";
@@ -461,3 +461,5 @@ const Profile = () => {
 };
 
 export default Profile;
+
+

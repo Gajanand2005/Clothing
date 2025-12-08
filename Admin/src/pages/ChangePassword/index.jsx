@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState, useContext } from "react";
 import { MyContext } from "../../App.jsx";
-import { postData } from "../../../Utlis/Api.js";
+import { postData } from "../../../Utils/Api.js";
 
 const ChangePassword = () => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
@@ -169,3 +169,5 @@ const ChangePassword = () => {
 };
 
 export default ChangePassword;
+
+

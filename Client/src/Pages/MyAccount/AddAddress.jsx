@@ -15,7 +15,7 @@ import {
   editData,
   fetchDataFromApi,
   postData,
-} from "../../Utlis/Api";
+} from "../../Utils/Api";
 import { FaRegTrashAlt } from "react-icons/fa";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -325,3 +325,4 @@ if(context?.addressMode === "edit"){
 };
 
 export default AddAddress;
+

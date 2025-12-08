@@ -2,7 +2,7 @@ import React,{useContext, useState} from 'react'
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 import { MyContext } from '../../App';
-import { deleteData } from '../../Utlis/Api';
+import { deleteData } from '../../Utils/Api';
 
 
 const myListItems = (props) => {
@@ -64,3 +64,4 @@ const removeItem = (id)=>{
 }
 
 export default myListItems
+

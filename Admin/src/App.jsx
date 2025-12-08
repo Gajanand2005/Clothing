@@ -1,31 +1,31 @@
- import React, { useContext } from 'react'
+import React, { useContext, lazy, Suspense } from 'react'
 import "./App.css";
 import './respo.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "./pages/Dashboard/Index.jsx";
-import Header from "./Components/Header/Index.jsx";
-import Sidebar from "./Components/Sidebar/Index.jsx";
+const Dashboard = lazy(() => import("./pages/Dashboard/Index.jsx"));
+const Header = lazy(() => import("./Components/Header/Index.jsx"));
+const Sidebar = lazy(() => import("./Components/Sidebar/Index.jsx"));
 import { createContext, useState } from "react";
-import Login from "./pages/Login/index.jsx";
-import SignUp from "./pages/Signup/index.jsx";
-import Products from "./pages/Products/Index.jsx";
+const Login = lazy(() => import("./pages/Login/index.jsx"));
+const SignUp = lazy(() => import("./pages/Signup/index.jsx"));
+const Products = lazy(() => import("./pages/Products/Index.jsx"));
 
-import toast, {Toaster} from 'react-hot-toast'; 
+import toast, {Toaster} from 'react-hot-toast';
 import Slide from '@mui/material/Slide';
-import Users from './pages/Users/Index.jsx';
-import Orders from './pages/Orders/Index.jsx';
-import ForgotPassword from './pages/ForgotPassword/index.jsx';
-import VerifyAccount from './pages/VerifyAccount/index.jsx';
-import ChangePassword from './pages/ChangePassword/index.jsx';
-import { fetchDataFromApi } from '../Utlis/Api.js';
+const Users = lazy(() => import('./pages/Users/Index.jsx'));
+const Orders = lazy(() => import('./pages/Orders/Index.jsx'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword/index.jsx'));
+const VerifyAccount = lazy(() => import('./pages/VerifyAccount/index.jsx'));
+const ChangePassword = lazy(() => import('./pages/ChangePassword/index.jsx'));
+import { fetchDataFromApi } from '../Utils/Api.js';
 import { useEffect } from 'react';
-import Profile from './pages/Profile/index.jsx';
-import CategoryList from './pages/Categegory/Index.jsx';
-import SubCatList from './pages/Categegory/SubCatList.jsx';
-import ProductDetails from './pages/Products/productDetails.jsx';
+const Profile = lazy(() => import('./pages/Profile/index.jsx'));
+const CategoryList = lazy(() => import('./pages/Categegory/Index.jsx'));
+const SubCatList = lazy(() => import('./pages/Categegory/SubCatList.jsx'));
+const ProductDetails = lazy(() => import('./pages/Products/productDetails.jsx'));
 
-import AddSize from './pages/Products/addSize.jsx';
-import HomeSliderBanner from './pages/HomeSliderBanners/Index.jsx';
+const AddSize = lazy(() => import('./pages/Products/addSize.jsx'));
+const HomeSliderBanner = lazy(() => import('./pages/HomeSliderBanners/Index.jsx'));
 
 
 
@@ -709,3 +709,4 @@ if(windowWidth < 992){
 }
 
 export default App;
+

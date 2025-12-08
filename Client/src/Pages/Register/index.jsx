@@ -5,7 +5,7 @@ import { TbEyeglass2 } from "react-icons/tb";
 import { TbEyeglassOff } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { postData, fetchDataFromApi } from "../../Utlis/Api";
+import { postData, fetchDataFromApi } from "../../Utils/Api";
 import { MyContext } from "../../App";
 import CircularProgress from '@mui/material/CircularProgress';
 import { FaS } from "react-icons/fa6";
@@ -248,3 +248,4 @@ const Register = () => {
 };
 
 export default Register;
+

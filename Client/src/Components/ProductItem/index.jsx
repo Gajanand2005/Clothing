@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "../Productitem/style.css";
+import "./style.css"
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
@@ -9,7 +9,7 @@ import { IoGitCompare } from "react-icons/io5";
 import { MdClose, MdOutlineShoppingCart, MdZoomOutMap } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
 import { MyContext } from "../../App";
-import { deleteData, editData, postData } from "../../Utlis/Api";
+import { deleteData, editData, postData } from "../../Utils/Api";
 import { IoCloseSharp } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
 
@@ -311,3 +311,4 @@ postData("/api/myList/add",obj).then((res)=>{
 }
 
 export default ProductItem;
+

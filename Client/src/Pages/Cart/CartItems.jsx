@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { GoTriangleDown } from "react-icons/go";
-import { deleteData, editData, fetchDataFromApi } from "../../Utlis/Api";
+import { deleteData, editData, fetchDataFromApi } from "../../Utils/Api";
 import { useContext } from "react";
 import { MyContext } from "../../App.jsx";
 
@@ -192,4 +192,5 @@ const cleanPrice = (price) => {
 };
 
 export default CartItems;
+
 

@@ -3,7 +3,7 @@ import thief from '../../assets/thief.png'
 import OtpBox from '../../Components/OtpBox/index.jsx';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import { postData } from '../../Utlis/Api';
+import { postData } from '../../Utils/Api';
 import './style.css'
 
 import { MyContext } from '../../App';
@@ -86,3 +86,4 @@ const Verify = () => {
 }
 
 export default Verify
+

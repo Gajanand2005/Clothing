@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { IoIosImages } from "react-icons/io";
-import { uploadImage } from "../../../Utlis/Api";
+import { uploadImage } from "../../../Utils/Api";
 import CircularProgress from "@mui/material/CircularProgress";
 import { MyContext } from "../../App";
 
@@ -100,3 +100,5 @@ const UploadBox = (props) => {
 };
 
 export default UploadBox;
+
+

@@ -4,9 +4,9 @@ import Link from "@mui/material/Link";
 import ProductZoom from "../../Components/ProductZoom/index.jsx";
 import Reviews from "../../Pages/ProductDetails/Reviews.jsx";
 import ProductSlider from "../../Components/ProductSlider/index.jsx";
-import ProductDetailsComponent from "../../Components/ProductDetails/index.jsx";
+import ProductDetailsComponent from "../../Components/ProductDetails/Index.jsx";
 import { useParams } from "react-router-dom";
-import { fetchDataFromApi } from "../../Utlis/Api";
+import { fetchDataFromApi } from "../../Utils/Api";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const ProductDetails = () => {
@@ -177,3 +177,4 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
+

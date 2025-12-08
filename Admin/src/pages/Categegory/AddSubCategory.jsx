@@ -9,7 +9,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
-import { postData } from "../../../Utlis/Api";
+import { postData } from "../../../Utils/Api";
 import { useNavigate } from "react-router-dom";
 
 const AddSubCategory = () => {
@@ -256,3 +256,5 @@ const AddSubCategory = () => {
 };
 
 export default AddSubCategory;
+
+

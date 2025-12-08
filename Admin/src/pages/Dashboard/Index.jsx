@@ -46,7 +46,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { deleteData, deleteWithData, fetchDataFromApi } from "../../../Utlis/Api.js";
+import { deleteData, deleteWithData, fetchDataFromApi } from "../../../Utils/Api.js";
 import Product from "../Products/Index.jsx";
 
 
@@ -934,3 +934,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+

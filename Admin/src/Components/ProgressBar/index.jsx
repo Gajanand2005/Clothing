@@ -18,3 +18,4 @@ const ProgressBar = ({ value, type }) => {
 };
 
 export default ProgressBar;
+

@@ -21,30 +21,6 @@ const mergeConfig = (config = {}, defaultHeaders = {}) => {
     };
 };
 
-const normalizeError = (error) => {
-    if (!error) {
-        return { message: 'Unknown error', error: true, success: false };
-    }
-
-    if (error?.error !== undefined) {
-        return error;
-    }
-
-    if (error?.message) {
-        return {
-            message: error.message,
-            error: true,
-            success: false
-        };
-    }
-
-    return {
-        message: 'Request failed',
-        error: true,
-        success: false
-    };
-};
-
 const apiClient = axios.create({
     baseURL: apiUrl,
     withCredentials: true
@@ -155,6 +131,19 @@ apiClient.interceptors.response.use(
     }
 );
 
+const normalizeError = (error) => {
+    if (!error) {
+        return { message: 'Unknown error', error: true, success: false };
+    }
+    if (error?.error !== undefined) {
+        return error;
+    }
+    if (error?.message) {
+        return { message: error.message, error: true, success: false };
+    }
+    return { message: 'Request failed', error: true, success: false };
+};
+
 export const postData = async (url, payload, config = {}) => {
     try {
         const response = await apiClient.post(
@@ -179,19 +168,46 @@ export const fetchDataFromApi = async (url, config = {}) => {
     }
 };
 
+// export const uploadImage = async (url, formData, config = {}) => {
+//     try {
+//         const response = await apiClient.post(
+//             url,
+//             formData,
+//             mergeConfig(config, { 'Content-Type': 'multipart/form-data' })
+//         );
+//         return response.data;
+//     } catch (error) {
+//         console.log(error);
+//         return normalizeError(error);
+//     }
+// };
+
+
 export const uploadImage = async (url, formData, config = {}) => {
-    try {
-        const response = await apiClient.post(
-            url,
-            formData,
-            mergeConfig(config, { 'Content-Type': 'multipart/form-data' })
-        );
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        return normalizeError(error);
-    }
+  try {
+    // For FormData, don't set Content-Type - let browser set it automatically with boundary
+    const { headers = {}, ...restConfig } = config;
+    
+    // Remove Content-Type if it exists, so browser can set it with proper boundary
+    const { 'Content-Type': _, ...headersWithoutContentType } = headers;
+    
+    const uploadConfig = {
+      ...restConfig,
+      headers: headersWithoutContentType
+    };
+    
+    const response = await apiClient.post(
+      url,
+      formData,
+      uploadConfig
+    );
+    return response.data;
+  } catch (error) {
+    console.log("UPLOAD ERROR:", error?.response?.data || error?.message);
+    return normalizeError(error);
+  }
 };
+
 
 export const editData = async (url, updatedData, config = {}) => {
     try {
@@ -207,6 +223,16 @@ export const editData = async (url, updatedData, config = {}) => {
     }
 };
 
+export const deleteImages = async (url, config = {}) => {
+    try {
+        const { data } = await apiClient.delete(url, config);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return normalizeError(error);
+    }
+};
+
 export const deleteData = async (url, config = {}) => {
     try {
         const { data } = await apiClient.delete(url, config);
@@ -216,3 +242,19 @@ export const deleteData = async (url, config = {}) => {
         return normalizeError(error);
     }
 };
+
+export const deleteWithData = async (url, payload, config = {}) => {
+    try {
+        const mergedConfig = mergeConfig(config, { 'Content-Type': 'application/json' });
+        const response = await apiClient.delete(url, {
+            ...mergedConfig,
+            data: payload
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return normalizeError(error);
+    }
+};
+
+

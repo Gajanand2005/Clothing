@@ -3,7 +3,7 @@ import '../Search/style.css'
 import Button from '@mui/material/Button';
 import { BsSearchHeart } from "react-icons/bs";
 import { MyContext } from '../../App';
-import { postData } from '../../Utlis/Api';
+import { postData } from '../../Utils/Api';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -79,4 +79,5 @@ const search = () => {
 }
 
 export default Search
+
 

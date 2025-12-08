@@ -7,7 +7,7 @@ import {
   deleteImages,
   editData,
   fetchDataFromApi,
-} from "../../../Utlis/Api";
+} from "../../../Utils/Api";
 
 const flattenCategories = (categories = []) => {
   const list = [];
@@ -288,3 +288,5 @@ const EditCategory = () => {
 };
 
 export default EditCategory;
+
+

@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import { MyContext } from '../../App';
-import { deleteData } from '../../Utlis/Api';
+import { deleteData } from '../../Utils/Api';
 
 const CartPanel = (props) => {
   const context = useContext(MyContext);
@@ -87,3 +87,4 @@ const CartPanel = (props) => {
 }
 
 export default CartPanel
+

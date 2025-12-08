@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { MdOutlineRocketLaunch } from "react-icons/md";
 import CategoryPanel from "./CategoryPanel";
 import "./style.css";
-import { fetchDataFromApi } from "../../../Utlis/Api.js";
+import { fetchDataFromApi } from "../../../Utils/Api.js";
 import { MyContext } from "../../../App.jsx";
 import MobileNav from "./mobileNav.jsx";
 
@@ -132,3 +132,4 @@ const context = useContext(MyContext)
 };
 
 export default Navigation;
+

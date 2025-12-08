@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import AccountSidebar from '../../Components/AccountSidebar/index.jsx';
 import Button from '@mui/material/Button';
 import { FaAngleDown } from "react-icons/fa6";
-import Badge from '../../components/Badge/index.jsx';
+import Badge from '../../Components/Badge/index.jsx';
 import { FaAngleUp } from "react-icons/fa6";
-import { fetchDataFromApi } from '../../Utlis/Api';
+import { fetchDataFromApi } from '../../Utils/Api';
 import { useNavigate } from 'react-router-dom';
 import './style.css'
 const Order = () => {
@@ -210,3 +210,4 @@ useEffect(() => {
 }
 
 export default Order
+

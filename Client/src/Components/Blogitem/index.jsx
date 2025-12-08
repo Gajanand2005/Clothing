@@ -17,3 +17,4 @@ const BlogItem = ({ image, date, title, excerpt, link }) => {
 }
 
 export default BlogItem
+

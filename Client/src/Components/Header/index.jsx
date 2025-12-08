@@ -1,7 +1,7 @@
 import React, { use, useContext, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import logo from "../../assets/ba-removebg-preview.png";
-import Search from "../Search/Index.jsx";
+import Search from "../Search/index.jsx";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -19,7 +19,7 @@ import Divider from "@mui/material/Divider";
 import { PiBagFill } from "react-icons/pi"; 
 import { TbHeartHandshake } from "react-icons/tb";
 import { SlLogout } from "react-icons/sl";
-import { fetchDataFromApi, postData } from "../../Utlis/Api.js";
+import { fetchDataFromApi, postData } from "../../Utils/Api.js";
 import './stle.css'
 import { MdOutlineMenuOpen } from "react-icons/md";
 
@@ -291,3 +291,4 @@ const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
 };
 
 export default Header;
+

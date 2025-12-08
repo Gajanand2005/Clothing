@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { editData, postData } from "../../Utlis/Api.js";
+import { editData, postData } from "../../Utils/Api.js";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import AccountSidebar from "../../Components/AccountSidebar/index.jsx";
@@ -305,3 +305,4 @@ const history =useNavigate();
 };
 
 export default MyAccount;
+

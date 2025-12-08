@@ -5,7 +5,7 @@ import { MyContext } from "../../App";
 import { PiPlusBold } from "react-icons/pi";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import { deleteData, postData } from "../../Utlis/Api";
+import { deleteData, postData } from "../../Utils/Api";
 import { useNavigate } from "react-router-dom";
 
 
@@ -368,3 +368,4 @@ const CheckOut = () => {
 };
 
 export default CheckOut;
+

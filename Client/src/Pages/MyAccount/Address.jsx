@@ -12,7 +12,7 @@ import "react-international-phone/style.css";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
-import { deleteData, editData, fetchDataFromApi, postData } from "../../Utlis/Api";
+import { deleteData, editData, fetchDataFromApi, postData } from "../../Utils/Api";
 import { FaRegTrashAlt } from "react-icons/fa";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -152,3 +152,4 @@ const Address = () => {
 };
 
 export default Address;
+

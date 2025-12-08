@@ -24,7 +24,7 @@ import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import ProductZoom from "../ProductZoom/index.jsx";
-import ProductDetailsComponent from "../ProductDetails/index.jsx";
+import ProductDetailsComponent from "../ProductDetails/Index.jsx";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -375,3 +375,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

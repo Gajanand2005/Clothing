@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import React, { useContext, useEffect, useState } from 'react'
 import TextField from "@mui/material/TextField";
-import { fetchDataFromApi, postData } from '../../Utlis/Api';
+import { fetchDataFromApi, postData } from '../../Utils/Api';
 import { MyContext } from '../../App';
 
 const Reviews = (props) => {
@@ -167,3 +167,4 @@ const Reviews = (props) => {
 };
 
 export default Reviews;
+

@@ -18,8 +18,7 @@ import IconButton from "@mui/material/IconButton";
 import { MdClose } from "react-icons/md";
 import Sidebar from "../../Components/Sidebar/index.jsx";
 import ProductLoadingGrid from "../../Components/ProductLoading/ProductLoadingGrid.jsx";
-import Product from './../../../../Admin/src/pages/Products/Index';
-import { postData } from "../../Utlis/Api.js";
+import { postData } from "../../Utils/Api.js";
 import { MyContext } from "../../App.jsx";
 
 const ProductListing = () => {
@@ -326,3 +325,4 @@ const handleSortBy = (name,order,products,value) => {
   );
 };
 export default ProductListing;
+

@@ -8,7 +8,7 @@ import { NavLink } from "react-router";
 import Button from "@mui/material/Button";
 import { MyContext } from '../../App';
 import CircularProgress from '@mui/material/CircularProgress';
-import {  fetchDataFromApi, uploadImage } from '../../Utlis/Api.js';
+import {  fetchDataFromApi, uploadImage } from '../../Utils/Api.js';
 import { LuMapPinHouse } from "react-icons/lu";
 import "./style.css"
 
@@ -194,3 +194,4 @@ const logout = () => {
 }
 
 export default AccountSidebar
+
