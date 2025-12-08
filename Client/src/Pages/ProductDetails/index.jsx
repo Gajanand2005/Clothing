@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
-import ProductZoom from "../../Components/ProductZoom/Index";
-
+import ProductZoom from "../../Components/ProductZoom/index.jsx";
 import Reviews from "../../Pages/ProductDetails/reviews";
 import ProductSlider from "../../Components/ProductSlider/Index";
-import ProductDetailsComponent from "../../Components/ProductDetails/Index";
+import ProductDetailsComponent from "../../Components/ProductDetails/index.jsx";
 import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../Utlis/Api";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -101,7 +100,7 @@ const ProductDetails = () => {
           </div>
         ) : (
           <>
-            <div className="container flex flex-col lg:flex-row gap-0 lg:gap-9 items-start lg:items-center ">
+            <div className="container flex flex-col lg:flex-row gap-3 lg:gap-9 items-start lg:items-center ">
               <div className="productZoomContainer w-full lg:w-[40%] ">
                 <ProductZoom images={productData?.images} />
               </div>
