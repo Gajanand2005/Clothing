@@ -24,7 +24,7 @@ const MobileBottomNav = () => {
       : { to: '/search', label: 'Search', icon: <AiOutlineSearch /> },
     { to: '/my-list', label: 'Wishlist', icon: <GiTechnoHeart /> },
     { to: '/my-order', label: 'Orders', icon: <PiBagFill /> },
-    { to: '/my-account', label: 'Account', icon: <FaUserAstronaut /> },
+    // { to: '/my-account', label: 'Account', icon: <FaUserAstronaut /> },
   ];
 
   return (
