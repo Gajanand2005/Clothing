@@ -125,7 +125,7 @@ const context = useContext(MyContext)
         data={catData}
       />
 
-
+      
 
     </>
   );

@@ -76,7 +76,7 @@ const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
         <div className="top-strip py-1 sm:py-2 border-t-[1px] border-gray-300 border-b-[1px] ">
           <div className="container">
             <div className="flex flex-col sm:flex-row items-center justify-between">
-              <div className="col1 w-full sm:w-[50%] lg:w-[60%] hidden lg:block">
+              <div className="col1 w-full sm:w-[50%] lg:w-[60%] block">
                 <p className="text-[9px] sm:text-[11px] lg:text-[13px] font-[500]">
                   S-Mal Couture
                 </p>
@@ -105,24 +105,24 @@ const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
           </div>
         </div>
         <div className="header !py-1 !mt-2 lg:!mt-3  lg:py-4 border-b-[1px] border-gray-300">
-          <div className="container flex flex-col md:flex-row items-center justify-between gap-0 lg:gap-3 ">
-            <div className="col1 w-[100%] lg:w-[25%] ">
+          <div className="container flex flex-row items-center justify-between gap-0 lg:gap-3 ">
+            <div className="col1 w-[40%] lg:w-[25%] flex items-center">
                {
                 context?.windowWidth < 992 &&
-                <Button className="text-[25px] !w-[30px]  !h-[30px] !rounded-full !text-gray-700 !min-w-[35px] lg:hidden absolute top-[30px] left-[10px] cursor-pointer"  onClick={()=>setIsOpenCatPanel(true)}><MdOutlineMenuOpen size={20}/ ></Button>
+                <Button className="text-[25px] !w-[30px]  !h-[30px] !rounded-full !text-gray-700 !min-w-[35px] lg:hidden mr-2 cursor-pointer"  onClick={()=>setIsOpenCatPanel(true)}><MdOutlineMenuOpen size={20}/ ></Button>
                }
               <Link to={"/"}>
                 <img
                   src={logo}
                   alt="Logo"
-                  className="h-[50px] lg:relative lg:left-0 relative left-10 md:h-[70px] w-[130px] md:w-[190px] object-cover bg-transparent "
+                  className="h-[50px] md:h-[70px] w-[130px] md:w-[190px] object-cover bg-transparent"
                 />
               </Link>
             </div>
             <div className="col2 w-full lg:w-[45%] fixed top-0 left-0 h-full lg:static p-2 lg:p-0 bg-white z-50 hidden lg:block ">
               <Search />
             </div>
-           <div className="col3 w-full md:w-[39%] flex items-center justify-center md:justify-end pl-0 md:pl-7 relative">
+           <div className="col3 w-[60%] md:w-[39%] flex items-center justify-end pl-0 md:pl-7 relative">
               <ul className="flex items-center justify-center md:justify-end gap-2 md:gap-3 w-full flex-wrap">
   <select 
   value={context?.currency}
@@ -159,102 +159,97 @@ const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
                   </li>
                 ) : (
                   <>
-                  {
-                    context?.windowWidth > 992 &&
-                    <>
-                     <div
-                      className=" !text-[#000] myAccountWrap flex items-center gap-3 cursor-pointer"
-                      onClick={handleClick}
-                    >
-                      <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-[#f1f1f1]">
-                        <FaUserAstronaut className="text-[20px] text-[rgba(0,0,0,0.7)]" />
-                      </Button>
+                  <div
+                    className=" !text-[#000] myAccountWrap flex items-center gap-3 cursor-pointer"
+                    onClick={handleClick}
+                  >
+                    <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-[#f1f1f1]">
+                      <FaUserAstronaut className="text-[20px] text-[rgba(0,0,0,0.7)]" />
+                    </Button>
                     {
                       context?.windowWidth > 992 &&
-                        <div className="info flex flex-col ">
+                      <div className="info flex flex-col ">
                         <h4 className="text-[14px] leading-5 font-[600] !mb-0 capitalize text-left text-black">
                           {context?.userData?.name}
                         </h4>
                         <span className="text-[13px] text-left text-black">
-                            {context?.userData?.email}
+                          {context?.userData?.email}
                         </span>
                       </div>
                     }
-                    
-                    </div>
-                 
-                    <Menu
-                      anchorEl={anchorEl}
-                      id="account-menu"
-                      open={open}
-                      onClose={handleClose}
-                      onClick={handleClose}
-                      slotProps={{
-                        paper: {
-                          elevation: 0,
-                          sx: {
-                            overflow: "visible",
-                            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                            mt: 1.5,
-                            "& .MuiAvatar-root": {
-                              width: 32,
-                              height: 32,
-                              ml: -0.5,
-                              mr: 1,
-                            },
-                            "&::before": {
-                              content: '""',
-                              display: "block",
-                              position: "absolute",
-                              top: 0,
-                              right: 14,
-                              width: 10,
-                              height: 10,
-                              bgcolor: "background.paper",
-                              transform: "translateY(-50%) rotate(45deg)",
-                              zIndex: 0,
-                            },
+
+                  </div>
+
+                  <Menu
+                    anchorEl={anchorEl}
+                    id="account-menu"
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    slotProps={{
+                      paper: {
+                        elevation: 0,
+                        sx: {
+                          overflow: "visible",
+                          filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                          mt: 1.5,
+                          "& .MuiAvatar-root": {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
+                          },
+                          "&::before": {
+                            content: '""',
+                            display: "block",
+                            position: "absolute",
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: "background.paper",
+                            transform: "translateY(-50%) rotate(45deg)",
+                            zIndex: 0,
                           },
                         },
-                      }}
-                      transformOrigin={{ horizontal: "right", vertical: "top" }}
-                      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                    >
-                      <Link to="/my-account" className="w-full block">
-                        <MenuItem
-                          onClick={handleClose}
-                          className="flex gap-2 !py-2"
-                        >
-                          <FaUserAstronaut />{" "}
-                          <span className="text-[14px]">My account </span>
-                        </MenuItem>
-                      </Link>
-                      <Link to="/my-order" className="w-full block">
-                        <MenuItem
-                          onClick={handleClose}
-                          className="flex gap-2 !py-2"
-                        >
-                          <PiBagFill />{" "}
-                          <span className="text-[14px]">Orders</span>
-                        </MenuItem>
-                      </Link>
-                      <Link to="/my-list" className="w-full block">
-                        <MenuItem
-                          onClick={handleClose}
-                          className="flex gap-2 !py-2"
-                        >
-                          <TbHeartHandshake />{" "}
-                          <span className="text-[14px]">My List</span>
-                        </MenuItem>
-                      </Link>
-
-                      <MenuItem onClick={logout} className="flex gap-2 !py-2">
-                        <SlLogout /> <span className="text-[14px]">Logout</span>
+                      },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    <Link to="/my-account" className="w-full block">
+                      <MenuItem
+                        onClick={handleClose}
+                        className="flex gap-2 !py-2"
+                      >
+                        <FaUserAstronaut />{" "}
+                        <span className="text-[14px]">My account </span>
                       </MenuItem>
-                      <Divider />
-                    </Menu>
-                    </>
-                  }
+                    </Link>
+                    <Link to="/my-order" className="w-full block">
+                      <MenuItem
+                        onClick={handleClose}
+                        className="flex gap-2 !py-2"
+                      >
+                        <PiBagFill />{" "}
+                        <span className="text-[14px]">Orders</span>
+                      </MenuItem>
+                    </Link>
+                    <Link to="/my-list" className="w-full block">
+                      <MenuItem
+                        onClick={handleClose}
+                        className="flex gap-2 !py-2"
+                      >
+                        <TbHeartHandshake />{" "}
+                        <span className="text-[14px]">My List</span>
+                      </MenuItem>
+                    </Link>
+
+                    <MenuItem onClick={logout} className="flex gap-2 !py-2">
+                      <SlLogout /> <span className="text-[14px]">Logout</span>
+                    </MenuItem>
+                    <Divider />
+                  </Menu>
                    
                   </>
                 )}

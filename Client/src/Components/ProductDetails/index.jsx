@@ -86,7 +86,7 @@ const addToCart = (product, userId, quantity) => {
   return (
     <>
       <h1 className=" text-[18px] sm:text-[24px] font-[600] !mb-2">{props?.item?.name}</h1>
-      <div className="flex items-start lg:items-center sm:items-center flex-col sm:flex-row gap-3 md:flex-row lg:flex-row text-[13px] justify-start">
+      <div className="flex items-center flex-col sm:flex-row gap-3 text-[13px]">
         <span className="text-gray-400">
           Brand :{" "}
           <span className="font-[500] text-black opacity-75">
@@ -94,7 +94,7 @@ const addToCart = (product, userId, quantity) => {
           </span>
         </span>
       </div>
-      <div className="flex flex-col lg:flex-row  sm:flex-row md:flex-row sm:items-center items-start gap-4 py-1 !mt-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 py-1 !mt-0">
 <div className="flex items-center gap-4">
 <span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">
   {context?.formatPrice(props?.item?.oldPrice)}
@@ -116,7 +116,7 @@ const addToCart = (product, userId, quantity) => {
         </div>
       </div>
 
-      <p className="!mt-2 pr-10 !mb-5">{props?.item?.description}</p>
+      <p className="!mt-0 pr-0 lg:pr-10 !mb-5">{props?.item?.description}</p>
       {props?.item?.size?.length !== 0 && (
         <div className="flex items-center gap-1">
           <span className="text-[16px]">Size :</span>
@@ -140,8 +140,8 @@ const addToCart = (product, userId, quantity) => {
         </div>
       )}
 
-      <p className="text-[14px] !mt-4 mb-2">Delivery Time 5-12 Days</p>
-      <div className="flex items-center !mt-4 gap-4">
+      <p className="text-[14px] !mt-2 lg:!mt-4 mb-2">Delivery Time 5-12 Days</p>
+      <div className="flex items-center !mt-2 lg:!mt-4 gap-4">
         <div className="qtyBoxWrapper w-[69px]">
           <QtyBox handleSelectQty={handleSelectQty} />
         </div>
@@ -162,7 +162,7 @@ const addToCart = (product, userId, quantity) => {
         </Button>
       </div>
 
-      <div className="flex items-center gap-4 !mt-6">
+      <div className="flex items-center gap-4 !mt-4 lg:!mt-6">
         <span className="flex items-center gap-3 text-[13px ] lg:text-[15px] link cursor-pointer font-[600] ">
           <TbHeartHandshake className="text-[19px]" />
           Add to Wishlist
