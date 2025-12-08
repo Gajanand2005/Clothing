@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import MyListItems from "./MyListItems";
+import MyListItems from "./myListItems.jsx";
 import AccountSidebar from "../../Components/AccountSidebar";
 import { MyContext } from "../../App";
 import Button from "@mui/material/Button";
