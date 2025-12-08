@@ -339,10 +339,6 @@ setOpenSizeChart,
             <Route path={"/order/success"} element={<Success/>} />
             <Route path={"/order/failed"} element={<Failed/>} />
             <Route
-              path={"/order-tracking"}
-              element={<OrderTracking />}
-            />
-            <Route
               path={"/help-center"}
               element={<HelpCenter />}
             />
