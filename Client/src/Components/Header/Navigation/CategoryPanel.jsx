@@ -6,7 +6,7 @@ import "./style.css";
 import Divider from '@mui/material/Divider';
 import { IoMdClose } from "react-icons/io";
 
-import CategoryCollapse from '../../CategoryCollapse/Index'
+import CategoryCollapse from '../../CategoryCollapse/index.jsx'
 import Button from '@mui/material/Button';
 import { MyContext } from '../../../App';
 

@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
-import ProductItem from '../ProductItem/Index';
+import ProductItem from '../ProductItem/index.jsx';
 const ProductSlider  = (props) => {
   return (
     <section className='productsSlider py-5'>

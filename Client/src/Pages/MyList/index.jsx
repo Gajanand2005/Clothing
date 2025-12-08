@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import MyListItems from "./myListItems.jsx";
-import AccountSidebar from "../../Components/AccountSidebar";
+import AccountSidebar from "../../Components/AccountSidebar/index.jsx";
 import { MyContext } from "../../App";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";

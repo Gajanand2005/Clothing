@@ -1,7 +1,7 @@
 import React, { use, useContext, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import logo from "../../assets/ba-removebg-preview.png";
-import Search from "../Search/Index";
+import Search from "../Search/Index.jsx";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";

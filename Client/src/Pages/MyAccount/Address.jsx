@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AccountSidebar from "../../Components/AccountSidebar";
+import AccountSidebar from "../../Components/AccountSidebar/index.jsx";
 import Radio from "@mui/material/Radio";
 import { useContext } from "react";
 import { MyContext } from "../../App";

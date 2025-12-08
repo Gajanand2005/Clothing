@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { LuCarTaxiFront } from "react-icons/lu";
 import { TbHeartHandshake } from "react-icons/tb";
-import QtyBox from "../QtyBox/Index";
+import QtyBox from "../QtyBox/index.jsx";
 import Button from "@mui/material/Button";
 import { MdPhotoSizeSelectActual } from "react-icons/md";
 import { MyContext } from "../../App";

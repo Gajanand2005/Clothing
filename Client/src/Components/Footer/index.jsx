@@ -23,7 +23,7 @@ import { MyContext } from "../../App.jsx";
 import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
-import ProductZoom from "../ProductZoom";
+import ProductZoom from "../ProductZoom/index.jsx";
 import ProductDetailsComponent from "../ProductDetails/index.jsx";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";

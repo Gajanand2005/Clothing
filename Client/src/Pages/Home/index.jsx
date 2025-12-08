@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import { fetchDataFromApi } from "../../Utlis/Api.js";
 import { MyContext } from "../../App.jsx";
 import ProductLoading from "../../Components/ProductLoading/Index.jsx";
-import ProductSlider from "../../Components/ProductSlider/Index.jsx";
+import ProductSlider from "../../Components/ProductSlider/index.jsx";
 
 
 const Home = () => {
