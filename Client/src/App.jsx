@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import Footer from "./Components/Footer/Index.jsx";
+import Footer from "./Components/Footer/index.jsx";
 import MobileBottomNav from "./Components/MobileBottomNav/Index.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductListing from "./Pages/ProductListing/Index.jsx";
