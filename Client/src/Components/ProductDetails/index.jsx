@@ -30,57 +30,57 @@ const ProductDetailsComponent = (props) => {
 
 
 
-//add to cart Ai version
-const addToCart = (product, userId, quantity) => {
-  if (!userId) {
-    context?.alertBox("error", "Please login first");
-    return;
-  }
+ //add to cart Ai version
+ const addToCart = (product, userId, quantity) => {
+   if (!userId) {
+     context?.alertBox("error", "Please login first");
+     return;
+   }
 
-  // Stock validation
-  if (quantity > product?.countInStock) {
-    context?.alertBox("error", "The requested quantity exceeds available stock.");
-    return;
-  }
+   // Stock validation
+   if (quantity > product?.countInStock) {
+     context?.alertBox("error", "The requested quantity exceeds available stock.");
+     return;
+   }
 
-  // Size validation
-  if (props?.item?.size?.length !== 0) {
-    if (selectedTabName === null) {
-      setTabError(true);
-      setIsLoading(false);
-      return;
-    }
-  }
+   // Size validation
+   if (props?.item?.size?.length !== 0) {
+     if (selectedTabName === null) {
+       setTabError(true);
+       setIsLoading(false);
+       return;
+     }
+   }
 
-  const productItem = {
-    productTitle: product?.name,
-    name: product?.name,
-    image: product?.images[0],
-    price: product?.price,
-    oldPrice: product?.oldPrice,
-    discount: product?.discount,
-    quantity: quantity,
-    countInStock: product?.countInStock,
-    productId: product?._id,
-    subTotal: parseInt(product?.price * quantity),
-    userId: userId,
-    brand: product?.brand,
-    size: selectedTabName,
-  };
+   const productItem = {
+     productTitle: product?.name,
+     name: product?.name,
+     image: product?.images[0],
+     price: product?.price,
+     oldPrice: product?.oldPrice,
+     discount: product?.discount,
+     quantity: quantity,
+     countInStock: product?.countInStock,
+     productId: product?._id,
+     subTotal: parseInt(product?.price * quantity),
+     userId: userId,
+     brand: product?.brand,
+     size: selectedTabName,
+   };
 
-  setIsLoading(true);
+   setIsLoading(true);
 
-  postData("/api/cart/add", productItem).then((res) => {
-    if (res?.error === false) {
-      context?.alertBox("success", res?.message);
-      context?.getCartItems();
-      setTimeout(() => setIsLoading(false), 1000);
-    } else {
-      context?.alertBox("error", res?.message);
-      setIsLoading(false);
-    }
-  });
-};
+   postData("/api/cart/add", productItem).then((res) => {
+     if (res?.error === false) {
+       context?.alertBox("success", res?.message);
+       context?.getCartItems();
+       setTimeout(() => setIsLoading(false), 1000);
+     } else {
+       context?.alertBox("error", res?.message);
+       setIsLoading(false);
+     }
+   });
+ };
 
 
   return (
@@ -174,5 +174,4 @@ const addToCart = (product, userId, quantity) => {
 };
 
 export default ProductDetailsComponent;
-
 
