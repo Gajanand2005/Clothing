@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import HomeSlider from "../../Components/HomeSlider/index.jsx";
 import HomeCatSlider from "../../Components/HomeCatSlider/index.jsx";
-import AdsBannerSlider from "../../components/AdsBannerSlider/index.jsx";
+import AdsBannerSlider from "../../Components/AdsBannerSlider/index.jsx";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
