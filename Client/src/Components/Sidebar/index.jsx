@@ -168,59 +168,6 @@ context?.setSearchData([])
 }, [location])
 
 
-
-
-// useEffect(() => {
-//   const queryParameters = new URLSearchParams(location.search);
-
-//   if (location.search.includes("catId")) {
-//     const id = queryParameters.get("catId");
-//     setFilters({
-//       catId: [id],
-//       subCatId: [],
-//       thirdsubCatId: [],
-//       minPrice: "",
-//       maxPrice: "",
-//       page: 1,
-//       limit: 25
-//     });
-//     return;
-//   }
-
-//   if (location.search.includes("subCatId")) {
-//     const id = queryParameters.get("subCatId");
-//     setFilters({
-//       catId: [],
-//       subCatId: [id],
-//       thirdsubCatId: [],
-//       minPrice: "",
-//       maxPrice: "",
-//       page: 1,
-//       limit: 25
-//     });
-//     return;
-//   }
-
-//   if (location.search.includes("thirdsubCatId")) {
-//     const id = queryParameters.get("thirdsubCatId");
-//     setFilters({
-//       catId: [],
-//       subCatId: [],
-//       thirdsubCatId: [id],
-//       minPrice: "",
-//       maxPrice: "",
-//       page: 1,
-//       limit: 25
-//     });
-//     return;
-//   }
-
-// }, [location]);
-
-
-
-
-
 useEffect(() => {
   filters.page = props.page;
  filterData();
@@ -279,60 +226,7 @@ useEffect(() => {
         </Collapse>
       </div>
 
-         {/* <div className="box mt-3">
-        <h3 className="mb-3 w-full text-[16px] font-[600] flex items-center pr-5 ">
-          Availability
-          <Button className=" !text-black !w-[30px] !h-[30px] !min-w-[30px] !rounded-full !ml-auto" onClick={()=>setIsOpenAvailFilter(!isOpenAvailFilter)}>
-            {
-              isOpenAvailFilter===true ? <FaAngleUp /> :   <FaAngleDown />
-            }
-          
-            
-          </Button>
-        </h3>
-        <Collapse isOpened={isOpenAvailFilter}>
-          <div className="scroll px-4 relative -left-[13px] ">
-            {availOptions.map((option, index) => (
-              <FormControlLabel
-                key={index}
-                control={<Checkbox size="small" />}
-                label={option}
-                className="w-full"
-                checked={filters?.availability?.includes(option)}
-                onChange={() => handleCheckboxChange('availability', option)}
-              />
-            ))}
-          </div>
-        </Collapse>
-      </div>
-     
-    
-         <div className="box mt-3">
-        <h3 className="mb-3 w-full text-[16px] font-[600] flex items-center pr-5 ">
-          Size
-          <Button className=" !text-black !w-[30px] !h-[30px] !min-w-[30px] !rounded-full !ml-auto" onClick={()=>setIsOpenSizeFilter(!isOpenSizeFilter)}>
-            {
-              isOpenSizeFilter===true ? <FaAngleUp /> :   <FaAngleDown />
-            }
-          
-            
-          </Button>
-        </h3>
-        <Collapse isOpened={isOpenSizeFilter}>
-          <div className="scroll px-5 pb-3 relative -left-[13px] ">
-            {sizeOptions.map((option, index) => (
-              <FormControlLabel
-                key={index}
-                control={<Checkbox size="small" />}
-                label={option}
-                className="w-full"
-                checked={filters?.size?.includes(option)}
-                onChange={() => handleCheckboxChange('size', option)}
-              />
-            ))}
-          </div>
-        </Collapse>
-      </div> */}
+  
 
     
          <div className="box mt-4">

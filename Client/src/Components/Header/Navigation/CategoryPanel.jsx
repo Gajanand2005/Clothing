@@ -34,11 +34,7 @@ const CategoryPanel = (props) => {
       }
 
       <Divider />
-      {    context?.windowWidth < 992 &&
-      <Link to='/login' className="p-3 block">
-  <Button className="btn-org btn w-full !text-white !bg-orange-600 hover:!bg-black btn"  onClick={() => props.setIsOpenCatPanel(false)}> Login</Button>
-</Link>
-    }
+ 
     </Box>
   );
   return (
