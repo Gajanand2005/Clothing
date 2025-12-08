@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import ProductZoom from "../../Components/ProductZoom/index.jsx";
-import Reviews from "../../Pages/ProductDetails/reviews";
+import Reviews from "../../Pages/ProductDetails/Reviews.jsx";
 import ProductSlider from "../../Components/ProductSlider/Index";
 import ProductDetailsComponent from "../../Components/ProductDetails/index.jsx";
 import { useParams } from "react-router-dom";
