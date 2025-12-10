@@ -1,1 +1,0 @@
-click on the cart continue shopping doesnot lead to main page - its an error 

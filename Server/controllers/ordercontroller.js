@@ -48,7 +48,24 @@ export const getOrdersDetailsController = async (req, res)=>{
     try {
         const userId = req.userId;
 
-        const orderlist = await OrderModel.find({userId: userId}).sort({createdAt: -1}).populate('delivery_address userId products.productId')
+        // Fetch user to check role
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                error: true,
+                success: false
+            });
+        }
+
+        let query = {};
+        if (user.role !== 'ADMIN' && user.role !== 'PRODUCT_UPLOADER') {
+            // Regular users see only their orders
+            query.userId = userId;
+        }
+        // Admins and Product Uploaders see all orders (no filter on userId)
+
+        const orderlist = await OrderModel.find(query).sort({createdAt: -1}).populate('delivery_address userId products.productId')
 
         return res.json({
             message: "Order list fetched successfully",
@@ -58,7 +75,7 @@ export const getOrdersDetailsController = async (req, res)=>{
         })
 
     } catch (error) {
-         return res.status(500).json({
+          return res.status(500).json({
             message: error.message || error,
             error : true,
             success: false
@@ -98,6 +115,18 @@ export const updateOrderStatusController = async (req, res)=>{
 
 export const totalSalesController = async (req,res)=>{
     try {
+        const userId = req.userId;
+
+        // Fetch user to check role
+        const user = await UserModel.findById(userId);
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).json({
+                message: "Access denied. Admin role required.",
+                error: true,
+                success: false
+            });
+        }
+
         const currentYear = req.query.year ? parseInt(req.query.year) : new Date().getFullYear();
         const ordersList = await OrderModel.find();
 
