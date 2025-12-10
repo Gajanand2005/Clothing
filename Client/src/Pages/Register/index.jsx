@@ -10,7 +10,6 @@ import { MyContext } from "../../App";
 import CircularProgress from '@mui/material/CircularProgress';
 import { FaS } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import "./register.css"
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
@@ -248,5 +247,3 @@ const Register = () => {
 };
 
 export default Register;
-
-

@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import thief from '../../assets/thief.png'
-import OtpBox from '../../Components/OtpBox/index.jsx';
+import OtpBox from '../../Components/OtpBox/Index';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { postData } from '../../Utils/Api';
-import './style.css'
 
 import { MyContext } from '../../App';
 
@@ -86,5 +85,3 @@ const Verify = () => {
 }
 
 export default Verify
-
-

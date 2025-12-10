@@ -8,8 +8,7 @@ import { MyContext } from "../../App";
 import CircularProgress from "@mui/material/CircularProgress";
 import { postData, fetchDataFromApi } from "../../Utils/Api";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { firebaseApp } from "../../firebase.jsx";
-import "./login.css"
+import { firebaseApp } from "../../firebase";
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 
@@ -239,7 +238,7 @@ window.scrollTo(0,0)
 
               <div className="flex items-center w-full !mt-3">
                 <Button
-                  className=" !text-white !bg-orange-600 hover:!bg-black w-full !text-[18px] !p-3 flex gap-3 btn "
+                  className=" !text-white !bg-orange-600 hover:!bg-black w-full !text-[18px] !p-3 flex gap-3"
                   type="submit"
                   disabled={!valideValue}
                 >
@@ -277,5 +276,3 @@ window.scrollTo(0,0)
 };
 
 export default Login;
-
-

@@ -157,9 +157,9 @@ export async function createProduct(req, res) {
 export async function getAllProducts(req,res){
     try {
         const user = await UserModel.findById(req.userId);
-        if (!user || user.role !== 'ADMIN') {
+        if (!user || (user.role !== 'ADMIN' && user.role !== 'PRODUCT_UPLOADER')) {
             return res.status(403).json({
-                message: "Access denied. Admin role required.",
+                message: "Access denied. Admin or Product Uploader role required.",
                 error: true,
                 success: false
             });

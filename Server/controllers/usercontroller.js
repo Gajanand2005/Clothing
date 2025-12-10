@@ -786,90 +786,23 @@ export async function getAllUsers(req, res) {
     }
 }
 
-// update user role
-export async function updateUserRole(req, res) {
-    try {
-        const userId = req.userId; // current user
-        const { targetUserId, role } = req.body;
-
-        if (!targetUserId || !role) {
-            return res.status(400).json({
-                message: "Provide targetUserId and role",
-                error: true,
-                success: false
-            });
-        }
-
-        // Check if current user is admin
-        const currentUser = await UserModel.findById(userId);
-        if (!currentUser || currentUser.role !== 'ADMIN') {
-            return res.status(403).json({
-                message: "Access denied. Admin role required.",
-                error: true,
-                success: false
-            });
-        }
-
-        // Validate role
-        if (!['ADMIN', 'USER', 'PRODUCT_UPLOADER'].includes(role)) {
-            return res.status(400).json({
-                message: "Invalid role. Must be 'ADMIN', 'USER', or 'PRODUCT_UPLOADER'",
-                error: true,
-                success: false
-            });
-        }
-
-        const updatedUser = await UserModel.findByIdAndUpdate(
-            targetUserId,
-            { role: role },
-            { new: true }
-        ).select('name email mobile avatar role status');
-
-        if (!updatedUser) {
-            return res.status(404).json({
-                message: "User not found",
-                error: true,
-                success: false
-            });
-        }
-
-        return res.status(200).json({
-            message: "User role updated successfully",
-            error: false,
-            success: true,
-            data: updatedUser
-        });
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message || error,
-            error: true,
-            success: false
-        });
-    }
-}
-
 // get reviews
 export async function getReviews(req, res) {
     try {
         const productId= req.query.productId;
-        
-        // Validate productId
-        if(!productId){
+        const reviews = await ReviewModel.find({productId:productId});
+        if(reviews.length === 0){
             return res.status(400).json({
                 error: true,
-                success: false,
-                message: "Product ID is required"
+                success: false
             })
         }
 
-        const reviews = await ReviewModel.find({productId:productId});
-        
-        // Return empty array if no reviews found (not an error)
-        return res.status(200).json({
-            error: false,
-            success: true,
-            reviews: reviews || []
-        })
+            return res.status(200).json({
+                error: false,
+                success: true,
+              reviews: reviews
+            })
 
     } catch (error) {
         return res.status(500).json({
@@ -879,4 +812,3 @@ export async function getReviews(req, res) {
         })
     }
 }
-
