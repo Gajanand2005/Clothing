@@ -72,14 +72,14 @@ export const getOrdersDetailsController = async (req, res)=>{
         const perPage = parseInt(req.query.perPage) || 10000;
 
         // Build query filter based on user role
-        // ADMIN and PRODUCT_UPLOADER see all orders
-        // USER sees only their own orders
+        // ADMIN sees all orders
+        // USER and PRODUCT_UPLOADER see only their own orders
         let queryFilter = {};
-        if (user.role === 'USER') {
+        if (user.role === 'USER' || user.role === 'PRODUCT_UPLOADER') {
             // Convert userId to ObjectId for proper MongoDB query
             queryFilter = { userId: new mongoose.Types.ObjectId(userId) };
         }
-        // For ADMIN and PRODUCT_UPLOADER, queryFilter remains {} (empty object = all orders)
+        // For ADMIN, queryFilter remains {} (empty object = all orders)
 
         // Get total count based on role
         const totalPosts = await OrderModel.countDocuments(queryFilter);
@@ -166,16 +166,31 @@ export const totalSalesController = async (req,res)=>{
 
         // Fetch user to check role
         const user = await UserModel.findById(userId);
-        if (!user || user.role !== 'ADMIN') {
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                error: true,
+                success: false
+            });
+        }
+
+        if (user.role !== 'ADMIN' && user.role !== 'PRODUCT_UPLOADER' && user.role !== 'USER') {
             return res.status(403).json({
-                message: "Access denied. Admin role required.",
+                message: "Access denied. Valid role required.",
                 error: true,
                 success: false
             });
         }
 
         const currentYear = req.query.year ? parseInt(req.query.year) : new Date().getFullYear();
-        const ordersList = await OrderModel.find();
+
+        // Build query filter based on user role
+        let queryFilter = {};
+        if (user.role === 'USER') {
+            queryFilter = { userId: new mongoose.Types.ObjectId(userId) };
+        }
+
+        const ordersList = await OrderModel.find(queryFilter);
 
         let totalSales = 0;
         let monthlySales = [
@@ -251,9 +266,17 @@ export const totalUsersController = async(req,res)=>{
 
         // Fetch user to check role
         const user = await UserModel.findById(userId);
-        if (!user || user.role !== 'ADMIN') {
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                error: true,
+                success: false
+            });
+        }
+
+        if (user.role !== 'ADMIN' && user.role !== 'PRODUCT_UPLOADER' && user.role !== 'USER') {
             return res.status(403).json({
-                message: "Access denied. Admin role required.",
+                message: "Access denied. Valid role required.",
                 error: true,
                 success: false
             });

@@ -156,15 +156,6 @@ export async function createProduct(req, res) {
 // get all products
 export async function getAllProducts(req,res){
     try {
-        const user = await UserModel.findById(req.userId);
-        if (!user || (user.role !== 'ADMIN' && user.role !== 'PRODUCT_UPLOADER')) {
-            return res.status(403).json({
-                message: "Access denied. Admin or Product Uploader role required.",
-                error: true,
-                success: false
-            });
-        }
-
         const page = parseInt(req.query.page) || 1;
         const perPage = parseInt(req.query.perPage) || 10000;
         const totalPosts = await ProductModel.countDocuments();
