@@ -40,8 +40,13 @@ const Orders = () => {
           if(res?.error===false){
             setOrders(res?.data);
           }
+        }).catch((error) => {
+          console.error('Error refetching orders:', error);
         })
       }
+    }).catch((error) => {
+      console.error('Error updating order status:', error);
+      context.alertBox("Error", "Failed to update order status");
     })
   };
  
@@ -50,6 +55,8 @@ const Orders = () => {
      if(res?.error===false){
      setOrders(res?.data);
      }
+   }).catch((error) => {
+     console.error('Error fetching orders:', error);
    })
  },[])
  
@@ -62,10 +69,10 @@ const Orders = () => {
           <div className="col2 w-full">
            <div className="shadow-md rounded-md  bg-white">
               <div className="py-2 px-3 border-b border-[rgba(0,0,0,0.1)]">
-                <h2 className="text-[18px] font-[600]">My Order</h2>
+                <h2 className="text-[18px] font-[600]">All Orders</h2>
                 <p className="!mt-0">
                   There are
-                  <span className="font-bold text-orange-600 ">{orders?.length}</span> Order
+                  <span className="font-bold text-orange-600 ">{orders?.length}</span> Order{orders?.length !== 1 ? 's' : ''}
                 </p>
                   <div className="relative overflow-x-auto !mt-5">
                     {/* Desktop table (visible on sm and up) */}

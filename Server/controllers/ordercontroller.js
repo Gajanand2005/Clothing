@@ -1,6 +1,7 @@
 import OrderModel from "../models/ordermodel.js";
 import ProductModel from'../models/productmodel.js';
 import UserModel from '../models/usermodel.js';
+import mongoose from 'mongoose';
 
 export const createOrderController = async (req, res)=>{
     try {
@@ -58,24 +59,59 @@ export const getOrdersDetailsController = async (req, res)=>{
             });
         }
 
-        let query = {};
-        if (user.role !== 'ADMIN' && user.role !== 'PRODUCT_UPLOADER') {
-            // Regular users see only their orders
-            query.userId = userId;
+        // Validate user role
+        if (user.role !== 'ADMIN' && user.role !== 'USER' && user.role !== 'PRODUCT_UPLOADER') {
+            return res.status(403).json({
+                message: "Access denied. Valid role required.",
+                error: true,
+                success: false
+            });
         }
-        // Admins and Product Uploaders see all orders (no filter on userId)
 
-        const orderlist = await OrderModel.find(query).sort({createdAt: -1}).populate('delivery_address userId products.productId')
+        const page = parseInt(req.query.page) || 1;
+        const perPage = parseInt(req.query.perPage) || 10000;
+
+        // Build query filter based on user role
+        // ADMIN and PRODUCT_UPLOADER see all orders
+        // USER sees only their own orders
+        let queryFilter = {};
+        if (user.role === 'USER') {
+            // Convert userId to ObjectId for proper MongoDB query
+            queryFilter = { userId: new mongoose.Types.ObjectId(userId) };
+        }
+        // For ADMIN and PRODUCT_UPLOADER, queryFilter remains {} (empty object = all orders)
+
+        // Get total count based on role
+        const totalPosts = await OrderModel.countDocuments(queryFilter);
+        const totalPages = Math.ceil(totalPosts / perPage);
+
+        if (totalPages > 0 && page > totalPages) {
+            return res.status(404).json({
+                message: "Page not found",
+                success: false,
+                error: true
+            });
+        }
+
+        // Fetch orders based on role-based filter
+        const orderlist = await OrderModel.find(queryFilter)
+            .sort({createdAt: -1})
+            .populate('delivery_address userId products.productId')
+            .skip((page - 1) * perPage)
+            .limit(perPage)
+            .exec();
 
         return res.json({
             message: "Order list fetched successfully",
             data: orderlist,
+            totalPages: totalPages,
+            page: page,
             error: false,
             success: true,
         })
 
     } catch (error) {
-          return res.status(500).json({
+           return res.status(500).json({
             message: error.message || error,
             error : true,
             success: false
@@ -87,8 +123,19 @@ export const updateOrderStatusController = async (req, res)=>{
     const { id } = req.params;
     const { order_status } = req.body;
 
+    try {
+        const userId = req.userId;
 
-   try {
+        // Fetch user to check role
+        const user = await UserModel.findById(userId);
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).json({
+                message: "Access denied. Admin role required.",
+                error: true,
+                success: false
+            });
+        }
+
      const updateOrder = await OrderModel.findByIdAndUpdate(
         id,
         {
@@ -200,6 +247,18 @@ export const totalSalesController = async (req,res)=>{
 
 export const totalUsersController = async(req,res)=>{
     try {
+        const userId = req.userId;
+
+        // Fetch user to check role
+        const user = await UserModel.findById(userId);
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).json({
+                message: "Access denied. Admin role required.",
+                error: true,
+                success: false
+            });
+        }
+
         const currentYear = req.query.year ? parseInt(req.query.year) : new Date().getFullYear();
         const users = await UserModel.aggregate([
             {

@@ -21,7 +21,7 @@ productRouter.post('/create', auth, createProduct);
 productRouter.post('/filters',filters);
 productRouter.post('/search/get' ,searchProductController)
 productRouter.post('/sortBy',sortBy);
-productRouter.get('/getAllProducts',  getAllProducts);
+productRouter.get('/getAllProducts', auth, getAllProducts);
 productRouter.get('/getAllProductsByCatId/:id',  getAllProductsByCatId);
 productRouter.get('/getAllProductsByCatName',  getAllProductsByCatName);
 productRouter.get('/getAllProductsBySubCatId/:id',  getAllProductsBySubCatId);

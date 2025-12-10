@@ -1,7 +1,8 @@
 import ProductModel from '../models/productmodel.js';
 import ProductSizeModel from '../models/productSize.js';
+import UserModel from '../models/usermodel.js';
 import { v2 as cloudinary } from 'cloudinary';
-import { error } from 'console';
+
 import fs, { fdatasync } from 'fs';
 import { console } from 'inspector';
 
@@ -155,6 +156,14 @@ export async function createProduct(req, res) {
 // get all products
 export async function getAllProducts(req,res){
     try {
+        const user = await UserModel.findById(req.userId);
+        if (!user || user.role !== 'ADMIN') {
+            return res.status(403).json({
+                message: "Access denied. Admin role required.",
+                error: true,
+                success: false
+            });
+        }
 
         const page = parseInt(req.query.page) || 1;
         const perPage = parseInt(req.query.perPage) || 10000;
