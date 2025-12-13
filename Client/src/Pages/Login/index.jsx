@@ -152,8 +152,9 @@ window.scrollTo(0,0)
             password: "",
           });
 
-          localStorage.setItem("accessToken", res?.data?.accessToken);
-          localStorage.setItem("refreshToken", res?.data?.refreshToken);
+          localStorage.setItem("userAccessToken", res?.data?.accessToken);
+          localStorage.setItem("userRefreshToken", res?.data?.refreshToken);
+          localStorage.setItem("userRole", "user");
 
           context.setIsLogin(true);
 

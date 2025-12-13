@@ -93,8 +93,10 @@ const Login = () => {
             password: "",
           });
 
-          localStorage.setItem("accessToken", res?.data?.accessToken);
-          localStorage.setItem("refreshToken", res?.data?.refreshToken);
+        localStorage.setItem("adminAccessToken", res?.data?.accessToken);
+localStorage.setItem("adminRefreshToken", res?.data?.refreshToken);
+localStorage.setItem("adminRole", "admin");
+
 
           context.setIsLogin(true);
 

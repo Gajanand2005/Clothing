@@ -1,12 +1,12 @@
 import axios from 'axios';
 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-const getAccessToken = () => localStorage.getItem('accessToken');
-const getRefreshToken = () => localStorage.getItem('refreshToken');
+const getAccessToken = () => localStorage.getItem('userAccessToken');
+const getRefreshToken = () => localStorage.getItem('userRefreshToken');
 
 const clearStoredTokens = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userAccessToken');
+    localStorage.removeItem('userRefreshToken');
 };
 
 const mergeConfig = (config = {}, defaultHeaders = {}) => {
