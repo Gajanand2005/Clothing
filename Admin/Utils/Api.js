@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const apiUrl = 'https://clothing-jkzv.onrender.com' || 'http://localhost:8000';
 
 
 /* ================= TOKENS ================= */
